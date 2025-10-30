@@ -1,0 +1,12 @@
+name: piaToolV2
+title: piaToolV2
+username: cdatolo
+account: cdatolo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15830547
+bundleId: 11067867
+url: https://cdatolo.shinyapps.io/piaToolV2/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
