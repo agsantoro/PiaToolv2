@@ -1,6 +1,49 @@
+library(shiny)
+library(htmltools)
+
+# Carga de datos (asumiendo que los archivos existen en el entorno de ejecución)
 load("data/dataMortReg.rda")
 load("data/dataMortProv.rda")
 load("data/mortalityCauses.rda")
+
+paises_info <- list(
+  # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
+  "ARGENTINA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
+      alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Argentina")
+  ),
+  "CHILE" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
+      alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Chile")
+  ),
+  "URUGUAY" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
+      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Uruguay")
+  )
+)
+
+options_con_html <- lapply(names(paises_info), function(cod) {
+  list(value = cod, content = as.character(paises_info[[cod]]))
+})
+
+# Le damos formato de lista con nombres para usar en el argumento 'choices'
+paises_con_banderas <- setNames(
+  lapply(options_con_html, function(x) x$content),
+  lapply(options_con_html, function(x) x$value)
+)
+
 
 chart_page <- div(
   
@@ -31,6 +74,13 @@ chart_page <- div(
       font-family: 'Roboto', sans-serif;
     }
     
+    .dropdown-menu {
+    position: absolute; 
+    top: 100%;          
+    left: 0;
+    z-index: 10;        
+    
+}
     i, .fa, .fas, .far, .fab, .fal, .fad,
     [class*='icon-'], [class^='icon-'] {
       font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Pro', 'FontAwesome', inherit !important;
@@ -101,6 +151,45 @@ chart_page <- div(
       text-decoration: none !important;
       color: inherit !important;
     }
+    
+    /* Estilos para los nuevos botones fijos */
+    .floating-buttons-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Separación uniforme entre botones */
+      z-index: 1000; /* Asegura que estén sobre el contenido */
+    }
+    
+    .floating-btn {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .floating-btn:hover {
+      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Para el botón principal que no tiene el texto del icono */
+    .floating-btn .fa {
+      margin: 0 !important;
+    }
     "
   ),
   
@@ -110,7 +199,7 @@ chart_page <- div(
     
     # Imagen izquierda
     img(
-      src = "iecslogo.png",  # Reemplaza con la ruta de tu imagen
+      src = "iecslogo.png", # Reemplaza con la ruta de tu imagen
       alt = "Logo izquierdo",
       class = "header-logo"
     ),
@@ -120,11 +209,11 @@ chart_page <- div(
       class = "header-title-container",
       
       # Título centrado
-      h1("Observatorio de las inequidades de género en la mortalidad", class = "header-title"),
+      h1("Programme Impact Assessment Tool", class = "header-title"),
       
       # Icono home con link a landing page
       tags$a(
-        href = "?page=landing",  # Ajusta según tu sistema de navegación
+        href = "?page=landing", # Ajusta según tu sistema de navegación
         onclick = "Shiny.setInputValue('goto_landing', Math.random(), {priority: 'event'});",
         icon("home", class = "home-icon"),
         title = "Ir al inicio",
@@ -150,10 +239,10 @@ chart_page <- div(
       display: flex;
       flex-direction: row;",
     
-    # PANEL IZQUIERDO (40%) - Azul institucional sobrio
+    # PANEL IZQUIERDO (30%) - Azul institucional sobrio
     div(
       style = "
-        width: 40%;
+        width: 30%;
         background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
         padding: 40px;
         display: inline;
@@ -182,12 +271,12 @@ chart_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("chart-bar", style = "
+          icon("heart", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Gráficos Interactivos", 
+          h2("HEARTS", 
              style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -203,10 +292,20 @@ chart_page <- div(
         
         tags$div(
           style = "overflow-y: auto; height: 80%; width: 100% !important;",
-          selectInput(inputId = "country",
-                      label = "Seleccionar país",
-                      choices = "Argentina",
-                      selected = "Argentina"),
+          pickerInput(
+            inputId = "country",
+            label = "Selecciona un País:",
+            choices = names(paises_con_banderas),
+            selected = "AR", # Argentina por defecto
+            choicesOpt = list(
+              content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+            ),
+            options = list(
+              style = "btn-info", # Estilo elegante (bootstrap)
+              liveSearch = TRUE,  # Permite buscar
+              size = 5           # Muestra 5 elementos antes de scroll
+            )
+          ),
           uiOutput("inputs_hearts")
         )
         
@@ -214,31 +313,18 @@ chart_page <- div(
       )
     ),
     
-    # PANEL DERECHO (60%) - Fondo limpio y profesional
+    # PANEL DERECHO (70%) - Fondo limpio y profesional
     div(
       style = "
-        width: 60%;
+        width: 70%;
         padding: 40px;
         display: inline;
         flex-direction: column;
         justify-content: center;
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);",
       
-      # Título profesional
-      h2(paste0("Análisis de Datos de Mortalidad"),
-         style = "
-         
-           font-size: 1.5em; 
-           margin-bottom: 20px; 
-           font-weight: 400; 
-           text-align: center; 
-           color: #2C5F8B;
-           border-bottom: 2px solid #4A90A4;
-           padding-bottom: 15px;"),
       
-      p("El Centro de Implementación e Innovación en Políticas de Salud (CIIPS) presenta esta plataforma 
-        de análisis interactivo para la exploración de datos de mortalidad y brechas de género en Argentina. 
-        Desarrollada con metodologías basadas en evidencia para investigadores, académicos y tomadores de decisión.",
+      p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
         style = "
           font-size: 1.1em; 
           margin-bottom: 40px; 
@@ -276,6 +362,40 @@ chart_page <- div(
       style = "margin: 0;"
     )
   ),
+  
+  # Contenedor de botones flotantes (AÑADIDO)
+  div(
+    class = "floating-buttons-container",
+    
+    # Botón 1: Guardar Escenario (Encima del de Crear)
+    actionButton(
+      inputId = "save_scenario_btn",
+      label = NULL,
+      icon = icon("save"), # Icono de disquete (save)
+      class = "floating-btn",
+      title = "Guardar Escenario en Pantalla"
+    ),
+    
+    # Botón 2: Nuevo Escenario
+    actionButton(
+      inputId = "new_scenario_btn",
+      label = NULL,
+      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+      class = "floating-btn",
+      title = "Crear Nuevo Escenario"
+    ),
+    
+    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+    # Usaré un icono de descarga y un ID genérico para este.
+    actionButton(
+      inputId = "fixed_original_btn",
+      label = NULL,
+      icon = icon("download"),
+      class = "floating-btn",
+      title = "Descargar Resultados"
+    )
+  ),
+  
   # CSS adicional para estilo institucional sobrio
   tags$style(HTML("
     /* Eliminar subrayado y cambios de color en enlaces */
@@ -452,6 +572,16 @@ chart_page <- div(
       
       .main-content {
         margin-top: 70px;
+      }
+      
+      .floating-buttons-container {
+        bottom: 10px;
+        right: 10px;
+      }
+      
+      .floating-btn {
+        width: 45px;
+        height: 45px;
       }
     }
     

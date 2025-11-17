@@ -12,18 +12,18 @@ toggle_advanced_inputs = function (input, output, session) {
   })
   
   
-  observeEvent(input$toggle_avanzado_hearts, {
-    
-    load("hearts_map_inputs.Rdata")
-    inputs_hide = hearts_map_inputs$i_names[hearts_map_inputs$avanzado==T]
-    
-    for (i in c(inputs_hide)) {
-      isVisible <- shinyjs::toggleState(id = i)
-      toggle(id = i, anim = TRUE, animType = "slide", condition = isVisible)
-      enable(i)
-    }
-  })
-  
+  # observeEvent(input$toggle_avanzado_hearts, {
+  #   
+  #   load("hearts_map_inputs.Rdata")
+  #   inputs_hide = hearts_map_inputs$i_names[hearts_map_inputs$avanzado==T]
+  #   
+  #   for (i in c(inputs_hide)) {
+  #     isVisible <- shinyjs::toggleState(id = i)
+  #     toggle(id = i, anim = TRUE, animType = "slide", condition = isVisible)
+  #     enable(i)
+  #   }
+  # })
+  # 
   
   observeEvent(input$toggle_avanzado_hpp, {
     load("hpp_map_inputs.Rdata")

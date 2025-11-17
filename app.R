@@ -182,10 +182,6 @@ ui <- fluidPage(
       )
   ),
   
-  # Ícono fijo
-  div(class = "fixed-icon", id = "fixedIcon",
-      tags$i(class = "fas fa-info")
-  ),
   
   # JavaScript para manejar el modal
   tags$script(HTML("
@@ -350,8 +346,27 @@ server <- function(input, output, session) {
     ui_hearts(input, base_line, targets_default, costs, population)
   })
   
-  output$resultados_hearts = renderUI({
-    ui_resultados_hearts(input,output,run_hearts)
+  observeEvent(input$hearts_go, {
+    show("resultados_hearts")
+    browser()
+    
+    output$resultados_hearts = renderUI({
+      
+      ui_resultados_hearts(input,output,run_hearts)
+    })
+    lapply(hearts_map_inputs$i_names, function (i) {
+      disable(i)
+      
+    })
+  })
+  
+  onclick("new_scenario_btn", {
+    
+    hide("resultados_hearts")
+    lapply(hearts_map_inputs$i_names, function (i) {
+      enable(i)
+      
+    })
   })
 }
 
