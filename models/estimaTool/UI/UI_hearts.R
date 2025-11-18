@@ -1,8 +1,6 @@
-ui_hearts = function (input,base_line, targets_default, costs, population) {
-  
+ui_hearts = function (input,base_line, targets_default, costs, population, hearts_map_inputs) {
   country_sel = str_to_title(input$country)
   renderUI({
-    
     input_labels = c(
       'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (objetivo)',
       'Población total del país (n)',
@@ -64,95 +62,136 @@ ui_hearts = function (input,base_line, targets_default, costs, population) {
         i_labels = c(i_labels,input_labels[i])
       }
       
-      hearts_map_inputs = data.frame(
+      df_hearts_map_inputs = data.frame(
         intervencion = "HEARTS",
         i_names,
         i_labels
       )
       
-      hearts_map_inputs$avanzado = NA
-      hearts_map_inputs$avanzado[c(1)] = F
-      hearts_map_inputs$avanzado[is.na(hearts_map_inputs$avanzado)] = T
-      rownames(hearts_map_inputs) = 1:nrow(hearts_map_inputs)
+      df_hearts_map_inputs$avanzado = NA
+      df_hearts_map_inputs$avanzado[c(1)] = F
+      df_hearts_map_inputs$avanzado[is.na(df_hearts_map_inputs$avanzado)] = T
+      rownames(df_hearts_map_inputs) = 1:nrow(df_hearts_map_inputs)
       
-      bsc = which(hearts_map_inputs$avanzado==F)
-      avz = which(hearts_map_inputs$avanzado==T)
+      hearts_map_inputs(df_hearts_map_inputs)
+      
+      hearts_map_inputs()
+      
+      bsc = which(hearts_map_inputs()$avanzado==F)
+      avz = which(hearts_map_inputs()$avanzado==T)
       prc = c(3,4,5,6,11)
       
       
-      save(
-        hearts_map_inputs,
-        file = "hearts_map_inputs.Rdata"
-      )
+      # save(
+      #   hearts_map_inputs,
+      #   file = "hearts_map_inputs.Rdata"
+      # )
       
     }
-    
     tagList(
-      
-      lapply(bsc, function (i) {
-        sliderInput(paste0("hearts_input_",i),
-                    tags$div(input_labels[i],icon("circle-info","fa-1x",title = inputs_hover[i])),
-                    value = 100*targets_default$treatment[targets_default$country==country_sel],
-                    min=0,
-                    max=100,
-                    step=.1)
-      })
-      ,
-      
-      tags$header(style="background-color: black; color: white; text-align: center", 
-                  tags$h1(style="display: inline-block; margin: 0 auto;", class="flex-grow mt-8 mb-8",tags$b("Avanzado")),
-                  actionLink(inputId = "toggle_avanzado_hearts", label=icon("stream", style = "color: white;"))
-      ),
-      br(),
-      hidden(
-        
-        lapply(avz, function (i) {
+      tags$div(
+        lapply(bsc, function(i) {
           if (!i %in% prc) {
-            numericInput(paste0("hearts_input_",i),
-                         tags$div(input_labels[i],icon("circle-info","fa-1x",title = inputs_hover[i], verify_fa = FALSE)),
-                         value = input_values[i],
-                         step=.1)
+            numericInput(
+              paste0("hearts_input_", i),
+              tags$div(input_labels[i], icon("circle-info", "fa-1x", 
+                                             title = inputs_hover[i], verify_fa = FALSE)),
+              value = input_values[i],
+              step = 0.1
+            )
           } else {
-            sliderInput(paste0("hearts_input_",i),
-                        tags$div(input_labels[i],icon("circle-info","fa-1x",title = inputs_hover[i], verify_fa = FALSE)),
-                        value = input_values[i]*100,
-                        min=0,
-                        max=100,
-                        step=.1)
+            sliderInput(
+              paste0("hearts_input_", i),
+              tags$div(input_labels[i], icon("circle-info", "fa-1x", 
+                                             title = inputs_hover[i], verify_fa = FALSE)),
+              value = input_values[i] * 100,
+              min = 0,
+              max = 100,
+              step = 0.1
+            )
           }
-          
         })
-        
-        
       ),
       
+      hr(),
+      
+      tags$div(
+        tags$button(
+          class = "btn btn-default btn-block",
+          `data-toggle` = "collapse",
+          `data-target` = "#collapseInputs",
+          style = "text-align: center; margin-bottom: 10px; position: relative; border: 2px solid #DEE2E6; font-size: 13px; background-color: white; border-radius: 6px;",
+          "Parámetros avanzados",
+          tags$span(
+            icon("caret-down"),
+            style = "position: absolute; right: 15px; top: 50%; transform: translateY(-50%);"
+          )
+        ),
+        
+        tags$div(
+          id = "collapseInputs",
+          class = "collapse",
+          style = "padding: 10px; border: 1px solid #ddd; border-radius: 4px;",
+          lapply(avz, function(i) {
+            if (!i %in% prc) {
+              numericInput(
+                paste0("hearts_input_", i),
+                tags$div(input_labels[i], icon("circle-info", "fa-1x", 
+                                               title = inputs_hover[i], verify_fa = FALSE)),
+                value = input_values[i],
+                step = 0.1
+              )
+            } else {
+              sliderInput(
+                paste0("hearts_input_", i),
+                tags$div(input_labels[i], icon("circle-info", "fa-1x", 
+                                               title = inputs_hover[i], verify_fa = FALSE)),
+                value = input_values[i] * 100,
+                min = 0,
+                max = 100,
+                step = 0.1
+              )
+            }
+          })
+        ),
+        hr(),
+        tags$div(
+          
+            column(12,
+                   actionButton(
+                     "hearts_go",
+                     icon("play")),
+                   align = "right")
+          
+        )
+      ),
+      # Script para rotar el ícono al abrir/cerrar
+      tags$script(HTML("
+    $('#collapseInputs').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+  "))
+      ,
+      # CSS para evitar el cambio de color en hover
+      tags$style(HTML("
+    [data-target='#collapseInputs']:hover {
+      background-color: white !important;
+      border-color: #DEE2E6 !important;
+    }
+    [data-target='#collapseInputs']:focus {
+      background-color: white !important;
+      outline: none !important;
+    }
+  "))
+        
+        
+      
+    
       
       
-      # ,
-      # hidden(
-      #   lapply(c(3), function (i) {
-      #     sliderInput(paste0("hearts_input_",i),
-      #                 tags$div(input_names[i],icon("circle-info","fa-1x",title = model_card_hearts$Descripción[model_card_hearts$inputID==paste0("hearts_input_",i)])),
-      #                 value = 100*base_line[base_line$country==country_sel,names(input_names[i])],
-      #                 min=0,
-      #                 max=100,
-      #                 step=.1)
-      #   }),
-      #   lapply(c(1,2,4), function (i) {
-      #     sliderInput(paste0("hearts_input_",i),
-      #                 tags$div(input_names[i],icon("circle-info","fa-1x",title = model_card_hearts$Descripción[model_card_hearts$inputID==paste0("hearts_input_",i)])),
-      #                 value = 100*base_line[base_line$country==country_sel,names(input_names[i])],
-      #                 min=0,
-      #                 max=100,
-      #                 step=.1)
-      #   }),
-      #   lapply(c(5,6,7), function (i) {
-      #     numericInput(paste0("hearts_input_",i),
-      #                  tags$div(input_names[i],icon("circle-info","fa-1x",title = model_card_hearts$Descripción[model_card_hearts$inputID==paste0("hearts_input_",i)])),
-      #                 value = base_line[base_line$country==country_sel,names(input_names[i])],
-      #                 step=.1)
-      #   })
-      # )
     )
     
     
@@ -320,7 +359,6 @@ ui_resultados_hearts = function(input,output,resultados) {
     })
     
     output$hearts_grafico = renderUI({
-      
       if(length(run_hearts)>0) {
         table = run_hearts$resumen_resultados
         indicadores = c(
@@ -527,7 +565,7 @@ ui_resultados_hearts = function(input,output,resultados) {
     tagList(
       fluidRow(class="shadow-xl ring-1 ring-gray-900/5 my-6 py-8",
                column(12,
-                      uiOutput("hearts_grafico"))
+                      withSpinner(uiOutput("hearts_grafico")))
       ),
       # fluidRow(
       #   column(6,
