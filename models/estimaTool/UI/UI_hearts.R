@@ -1,5 +1,5 @@
 ui_hearts = function (input,base_line, targets_default, costs, population, hearts_map_inputs) {
-  country_sel = str_to_title(input$country)
+  country_sel = str_to_title(isolate(input$country))
   renderUI({
     input_labels = c(
       'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (objetivo)',
@@ -202,7 +202,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
 
 ui_resultados_hearts = function(input,output,resultados) {
   paste(input$hearts_input_1)
-  country_sel = str_to_title(input$country)
+  country_sel = str_to_title(isolate(input$country))
   
   if (is.null(input$hearts_input_1)==F) {
     run_hearts = resultados()

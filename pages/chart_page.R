@@ -16,6 +16,14 @@ paises_info <- list(
     ),
     tags$span("Argentina")
   ),
+  "BRAZIL" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
+      alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Brazil")
+  ),
   "CHILE" = tags$div(
     style = "display: flex; align-items: center;",
     tags$img(
@@ -24,14 +32,39 @@ paises_info <- list(
     ),
     tags$span("Chile")
   ),
-  "URUGUAY" = tags$div(
+  "COLOMBIA" = tags$div(
     style = "display: flex; align-items: center;",
     tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
-      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
+      alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
     ),
-    tags$span("Uruguay")
+    tags$span("Colombia")
+  ),
+  "COSTA RICA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
+      alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Costa Costa Rica")
+  ),
+  "MEXICO" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
+      alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Mexico")
+  ),
+  "PERU" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
+      alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Peru")
   )
+  
 )
 
 options_con_html <- lapply(names(paises_info), function(cod) {
@@ -291,21 +324,25 @@ chart_page <- div(
 
         tags$div(
           style = "overflow-y: auto; height: 80%; width: 100% !important;",
-          pickerInput(
-            inputId = "country",
-            label = "Selecciona un País:",
-            choices = names(paises_con_banderas),
-            selected = "AR", # Argentina por defecto
-            choicesOpt = list(
-              content = unname(paises_con_banderas) # Le pasamos el vector de HTML
-            ),
-            options = list(
-              style = "btn-info", # Estilo elegante (bootstrap)
-              liveSearch = TRUE,  # Permite buscar
-              size = 5           # Muestra 5 elementos antes de scroll
+          div(
+            id = "inputContainer",
+            pickerInput(
+              inputId = "country",
+              label = "Selecciona un País:",
+              choices = names(paises_con_banderas),
+              selected = "AR", # Argentina por defecto
+              choicesOpt = list(
+                content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+              ),
+              options = list(
+                style = "btn-info", # Estilo elegante (bootstrap)
+                liveSearch = TRUE,  # Permite buscar
+                size = 5           # Muestra 5 elementos antes de scroll
+              )
             )
-          ),
+          ,
           uiOutput("inputs_hearts")
+          )
         )
         
         

@@ -358,10 +358,9 @@ server <- function(input, output, session) {
     show("resultados_hearts")
     
     output$resultados_hearts = renderUI({
-      
        ui_resultados_hearts(input,output,run_hearts)
     })
-    lapply(isolate(hearts_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
@@ -370,7 +369,7 @@ server <- function(input, output, session) {
   onclick("new_scenario_btn", {
     
     hide("resultados_hearts")
-    lapply(hearts_map_inputs()$i_names, function (i) {
+    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
       enable(i)
       
     })
