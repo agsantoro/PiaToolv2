@@ -281,15 +281,14 @@ chart_page <- div(
         ),
         
         # Texto descriptivo
-        p("Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina. 
-          Analice la evolución de las brechas de género. Descargue figuras y reportes.",
+        p(strong("Seleccione los parámetros del modelo"),
           style = "
-            font-size: 1.05em; 
-            line-height: 1.6; 
-            color: #495057; 
+            font-size: 1.05em;
+            line-height: 1.6;
+            color: #B985A9;
             margin-bottom: 35px;",
           class = "animate-left"),
-        
+
         tags$div(
           style = "overflow-y: auto; height: 80%; width: 100% !important;",
           pickerInput(

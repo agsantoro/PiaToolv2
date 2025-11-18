@@ -1,7 +1,6 @@
-ui_hearts = function (input,base_line, targets_default, costs, population) {
+ui_hearts = function (input,base_line, targets_default, costs, population, hearts_map_inputs) {
   country_sel = str_to_title(input$country)
   renderUI({
-    
     input_labels = c(
       'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (objetivo)',
       'Población total del país (n)',
@@ -63,25 +62,30 @@ ui_hearts = function (input,base_line, targets_default, costs, population) {
         i_labels = c(i_labels,input_labels[i])
       }
       
-      hearts_map_inputs = data.frame(
+      df_hearts_map_inputs = data.frame(
         intervencion = "HEARTS",
         i_names,
         i_labels
       )
       
-      hearts_map_inputs$avanzado = NA
-      hearts_map_inputs$avanzado[c(1)] = F
-      hearts_map_inputs$avanzado[is.na(hearts_map_inputs$avanzado)] = T
-      rownames(hearts_map_inputs) = 1:nrow(hearts_map_inputs)
-      bsc = which(hearts_map_inputs$avanzado==F)
-      avz = which(hearts_map_inputs$avanzado==T)
+      df_hearts_map_inputs$avanzado = NA
+      df_hearts_map_inputs$avanzado[c(1)] = F
+      df_hearts_map_inputs$avanzado[is.na(df_hearts_map_inputs$avanzado)] = T
+      rownames(df_hearts_map_inputs) = 1:nrow(df_hearts_map_inputs)
+      
+      hearts_map_inputs(df_hearts_map_inputs)
+      
+      hearts_map_inputs()
+      
+      bsc = which(hearts_map_inputs()$avanzado==F)
+      avz = which(hearts_map_inputs()$avanzado==T)
       prc = c(3,4,5,6,11)
       
       
-      save(
-        hearts_map_inputs,
-        file = "hearts_map_inputs.Rdata"
-      )
+      # save(
+      #   hearts_map_inputs,
+      #   file = "hearts_map_inputs.Rdata"
+      # )
       
     }
     tagList(
@@ -355,7 +359,6 @@ ui_resultados_hearts = function(input,output,resultados) {
     })
     
     output$hearts_grafico = renderUI({
-      
       if(length(run_hearts)>0) {
         table = run_hearts$resumen_resultados
         indicadores = c(
@@ -562,7 +565,7 @@ ui_resultados_hearts = function(input,output,resultados) {
     tagList(
       fluidRow(class="shadow-xl ring-1 ring-gray-900/5 my-6 py-8",
                column(12,
-                      uiOutput("hearts_grafico"))
+                      withSpinner(uiOutput("hearts_grafico")))
       ),
       # fluidRow(
       #   column(6,

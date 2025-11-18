@@ -15,6 +15,8 @@ library(paletteer)
 library(openxlsx)
 library(plotly)
 library(reactable)
+library(shinyWidgets)
+library(shinycssloaders)
 
 source("modules/toggle_advanced_inputs.R")
 source("models/estimaTool/UI/UI_hearts.R")
@@ -60,6 +62,9 @@ ui <- fluidPage(
     
     "body {font-family: 'Roboto', sans-serif !important;}
     
+    .shiny-input-number {
+    text-align: center;
+    }
     .tlist-group {
     font-size: 0.7em !important;}
     
@@ -208,6 +213,8 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   router_server()
   
+  hearts_map_inputs = reactiveVal()
+  
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
   
@@ -343,18 +350,18 @@ server <- function(input, output, session) {
     load("models/estimaTool/targets_default.RData")
     load("models/estimaTool/costs.RData")
     load("models/estimaTool/population.RData")
-    ui_hearts(input, base_line, targets_default, costs, population)
+    ui_hearts(input, base_line, targets_default, costs, population, hearts_map_inputs)
   })
   
   observeEvent(input$hearts_go, {
+    
     show("resultados_hearts")
-    browser()
     
     output$resultados_hearts = renderUI({
       
-      ui_resultados_hearts(input,output,run_hearts)
+       ui_resultados_hearts(input,output,run_hearts)
     })
-    lapply(hearts_map_inputs$i_names, function (i) {
+    lapply(isolate(hearts_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
@@ -363,7 +370,7 @@ server <- function(input, output, session) {
   onclick("new_scenario_btn", {
     
     hide("resultados_hearts")
-    lapply(hearts_map_inputs$i_names, function (i) {
+    lapply(hearts_map_inputs()$i_names, function (i) {
       enable(i)
       
     })
