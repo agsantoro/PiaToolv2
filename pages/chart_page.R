@@ -376,6 +376,24 @@ chart_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
       
+      p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+      style = "
+          font-size: 1.1em; 
+          margin-bottom: 40px; 
+          color: #495057; 
+          text-align: justify; 
+          line-height: 1.7;
+          padding: 0 20px;"),
+    
+      p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+      style = "
+        font-size: 1.1em; 
+        margin-bottom: 40px; 
+        color: #495057; 
+          text-align: justify; 
+        line-height: 1.7;
+        padding: 0 20px;"),
+      
       # Grid de características con estilo sobrio
       div(
         style = "display: grid; 
