@@ -264,7 +264,9 @@ chart_page <- div(
         class = "text-right text-lg",
         tags$a(href = "", "Español"),
         " | ", # El separador de texto simple
-        tags$a(href = "", "Inglés")
+        tags$a(href = "", "Inglés"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Portugués")
       )
     )
   ),
@@ -360,40 +362,66 @@ chart_page <- div(
     div(
       style = "
         width: 70%;
-        padding: 40px;
+        padding: 20px;
         display: inline;
         flex-direction: column;
         justify-content: center;
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);",
       
-      
-      p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+      div(
         style = "
-          font-size: 1.1em; 
-          margin-bottom: 40px; 
-          color: #495057; 
-          text-align: justify; 
-          line-height: 1.7;
-          padding: 0 20px;"),
+        
+        
+        padding: 30px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+        ",
       
-      p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
-      style = "
-          font-size: 1.1em; 
-          margin-bottom: 40px; 
+      div(
+        style = "
+        /* Fondo degradado discreto basado en #EE8223 */
+        background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+        border-radius: 8px; /* Bordes suaves */
+        padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
+        margin-bottom: 20px; /* Separación del gráfico de resultados */
+        border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
+      ",
+        p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+          style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
           color: #495057; 
           text-align: justify; 
           line-height: 1.7;
           padding: 0 20px;"),
-    
-      p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
-      style = "
-        font-size: 1.1em; 
-        margin-bottom: 40px; 
+        
+        p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+          style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
+          color: #495057; 
+          text-align: justify; 
+          line-height: 1.7;
+          padding: 0 20px;"),
+        
+        p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+          style = "
+        font-size: 0.9em; 
+        margin-bottom: 5px; 
         color: #495057; 
           text-align: justify; 
         line-height: 1.7;
         padding: 0 20px;"),
-      
+        
+      ),
+        
+        
       # Grid de características con estilo sobrio
       div(
         style = "display: grid; 
@@ -405,6 +433,11 @@ chart_page <- div(
         # Caja de gráfico con estilo institucional
         uiOutput("resultados_hearts")
       )
+      )
+        
+        
+      
+      
     )
   ),
   div(

@@ -124,7 +124,9 @@ landing_page <- div(
         class = "text-right text-lg",
         tags$a(href = "", "Español"),
         " | ", # El separador de texto simple
-        tags$a(href = "", "Inglés")
+        tags$a(href = "", "Inglés"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Portugués")
       )
     )
       
@@ -219,11 +221,8 @@ landing_page <- div(
         # Columna 1: Logo y descripción
         div(
           style = "text-align: left;",
-          img(
-            src = "CIPS_fondo-transparente (2).png",
-            style = "height: 60px; width: auto; margin-bottom: 15px; filter: brightness(0) invert(1);"
-          ),
-          h4("Centro de Implementación e Innovación en Políticas de Salud", 
+          
+          h4("Instituto de Efectividad Clínica y Sanitaria", 
              style = "color: white; font-size: 1.1em; font-weight: 500; margin-bottom: 10px; line-height: 1.3;"),
           p("Desarrollamos proyectos de investigación y cooperación técnica para mejorar la equidad, accesibilidad y calidad del sistema de salud.",
             style = "color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.5; margin: 0;")
