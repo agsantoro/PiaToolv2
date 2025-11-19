@@ -115,11 +115,19 @@ landing_page <- div(
     ),
     
     # Imagen derecha
-    img(
-      src = "CIPS_fondo-transparente (2).png",  # Reemplaza con la ruta de tu imagen
-      alt = "Logo derecho", 
-      class = "header-logo"
+    tags$div(
+      class = "p-2", 
+      # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
+      # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
+      
+      tags$div(
+        class = "text-right text-lg",
+        tags$a(href = "", "Español"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Inglés")
+      )
     )
+      
   ),
   
   # Contenido principal con margen superior
