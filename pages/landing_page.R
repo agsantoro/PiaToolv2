@@ -102,7 +102,7 @@ landing_page <- div(
       class = "header-title-container",
       
       # Título centrado
-      h1("Observatorio de las inequidades de género en la mortalidad", class = "header-title"),
+      h1("Programme Impact Assessment Tool", class = "header-title"),
       
       # Icono home con link a landing page
       # tags$a(
@@ -156,7 +156,7 @@ landing_page <- div(
 
       # Primera característica - CON COLOR DE FONDO SUAVE
       menuBox(
-        title = "HEARTS",
+        title = "Iniciativa HEARTS",
         text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
         Analice la evolución de las brechas de género. Descargue figuras y reportes.",
         iconType = "heart",
@@ -164,7 +164,7 @@ landing_page <- div(
         linkTo = "chart"
       ),
       menuBox(
-        title = "HPV",
+        title = "Vacunación contra el VPH",
         text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
         Analice la evolución de las brechas de género. Descargue figuras y reportes.",
         iconType = "heart",
@@ -172,7 +172,7 @@ landing_page <- div(
         linkTo = "chart"
       ),
       menuBox(
-        title = "TBC",
+        title = "Tratamiento de observación directa por vídeo para tuberculosis",
         text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
         Analice la evolución de las brechas de género. Descargue figuras y reportes.",
         iconType = "heart",
