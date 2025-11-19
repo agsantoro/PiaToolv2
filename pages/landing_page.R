@@ -140,7 +140,7 @@ landing_page <- div(
             box-sizing: border-box;",
     
     
-    h3("Este portal es una herramienta clave para analizar y visualizar las tendencias, diferencias y patrones geográficos de la mortalidad en Argentina, desagregados por sexo. Ofrece información actualizada y detallada para identificar disparidades, monitorear la evolución de las brechas de género y diseñar políticas de salud equitativas.",
+    h3("La Herramienta PIA Tool es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la Organización Mundial de la Salud.",
        class = "animate-left",
        style = "margin-bottom: 40px; opacity: 0.9;width: 60%; margin-top: 0"),
     
@@ -157,25 +157,22 @@ landing_page <- div(
       # Primera característica - CON COLOR DE FONDO SUAVE
       menuBox(
         title = "Iniciativa HEARTS",
-        text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
-        Analice la evolución de las brechas de género. Descargue figuras y reportes.",
+        text = "El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
         iconType = "heart",
         iconColor = "#2C5F8B",
         linkTo = "chart"
       ),
       menuBox(
         title = "Vacunación contra el VPH",
-        text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
-        Analice la evolución de las brechas de género. Descargue figuras y reportes.",
-        iconType = "heart",
+        text = "El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
+        iconType = "syringe",
         iconColor = "#2C5F8B",
         linkTo = "chart"
       ),
       menuBox(
-        title = "Tratamiento de observación directa por vídeo para tuberculosis",
-        text = "Compare el desempeño de las diferentes jurisdicciones y regiones de Argentina.
-        Analice la evolución de las brechas de género. Descargue figuras y reportes.",
-        iconType = "heart",
+        title = "Tratamiento de observación directa por vídeo para tuberculosis (VDOT)",
+        text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
+        iconType = "lungs",
         iconColor = "#2C5F8B",
         linkTo = "chart"
       )
