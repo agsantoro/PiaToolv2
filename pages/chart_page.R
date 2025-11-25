@@ -318,7 +318,7 @@ chart_page <- div(
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("HEARTS", 
+          h2("Iniciativa HEARTS", 
              style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
         ),
         
