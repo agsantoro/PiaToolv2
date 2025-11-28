@@ -120,14 +120,19 @@ landing_page <- div(
       # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
       # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
       
-      tags$div(
-        class = "text-right text-lg",
-        tags$a(href = "", "Español"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Inglés"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Portugués")
-      )
+        tags$div(
+          class = "text-right text-lg",
+          tags$a(href = "", "Español"),
+          " | ", # El separador de texto simple
+          tags$a(href = "", "Inglés"),
+          " | ", # El separador de texto simple
+          tags$a(href = "", "Portugués")
+        ),
+        data.step = 2,
+        data.intro = "This is a slider",
+        data.hint = "You can slide me"
+      
+      
     )
       
   ),
@@ -149,54 +154,73 @@ landing_page <- div(
             min-height: 100vh; 
             box-sizing: border-box;",
     
+    introBox(
+      h3("La Herramienta PIA Tool es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la Organización Mundial de la Salud.",
+         class = "animate-left",
+         style = "margin-bottom: 40px; opacity: 0.9;width: 60%; margin-top: 0"),
+      data.step = 2,
+      data.intro = "dsda",
+      data.hint = "ffff"
+    ),    
     
-    h3("La Herramienta PIA Tool es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la Organización Mundial de la Salud.",
-       class = "animate-left",
-       style = "margin-bottom: 40px; opacity: 0.9;width: 60%; margin-top: 0"),
-    
+    introBox(
+      actionButton("help", "Press for instructions"),
+      data.step = 4,
+      data.intro = "This is a button",
+      data.hint = "You can press me"
+    ),
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
-    div(
-      style = "display: grid; 
+    introBox(
+      div(
+        style = "display: grid; 
                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                grid-auto-rows: 1fr;
                gap: 20px; 
                max-width: 1000px; 
                margin: 0 auto;
                padding: 20px 20px 20px 20px;",
-
-      # Primera característica - CON COLOR DE FONDO SUAVE
-      menuBox(
-        title = "Iniciativa HEARTS",
-        text = "El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
-        iconType = "heart",
-        iconColor = "#2C5F8B",
-        linkTo = "chart"
+        
+        
+        # Primera característica - CON COLOR DE FONDO SUAVE
+        
+        
+        menuBox(
+          title = "Iniciativa HEARTS",
+          text = "El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+          iconType = "heart",
+          iconColor = "#2C5F8B",
+          linkTo = "chart"
+        ),
+        menuBox(
+          title = "Vacunación contra el VPH",
+          text = "El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
+          iconType = "syringe",
+          iconColor = "#2C5F8B",
+          linkTo = "chart"
+        ),
+        menuBox(
+          title = "Tratamiento de observación directa por vídeo para tuberculosis (VDOT)",
+          text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
+          iconType = "lungs",
+          iconColor = "#2C5F8B",
+          linkTo = "chart"
+        )
+        # menuBox(
+        #   title = "Brechas de género",
+        #   text = "Compare la evolución histórica de las brechas de género para los principales indicadores
+        #   de mortalidad.",
+        #   iconType = "chart-line",
+        #   iconColor = "#737B4F",
+        #   linkTo = "gaps"
+        # ),
+        
+        
       ),
-      menuBox(
-        title = "Vacunación contra el VPH",
-        text = "El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
-        iconType = "syringe",
-        iconColor = "#2C5F8B",
-        linkTo = "chart"
-      ),
-      menuBox(
-        title = "Tratamiento de observación directa por vídeo para tuberculosis (VDOT)",
-        text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
-        iconType = "lungs",
-        iconColor = "#2C5F8B",
-        linkTo = "chart"
-      )
-      # menuBox(
-      #   title = "Brechas de género",
-      #   text = "Compare la evolución histórica de las brechas de género para los principales indicadores
-      #   de mortalidad.",
-      #   iconType = "chart-line",
-      #   iconColor = "#737B4F",
-      #   linkTo = "gaps"
-      # ),
-      
-      
+      data.step = 1,
+      data.intro = "Acá se seleccionan los modelos",
+      data.hint = "fff"
     )
+    
   ),
   
   # FOOTER INSTITUCIONAL CIIPS

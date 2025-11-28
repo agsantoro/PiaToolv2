@@ -17,6 +17,7 @@ library(plotly)
 library(reactable)
 library(shinyWidgets)
 library(shinycssloaders)
+library(rintrojs)
 
 source("modules/toggle_advanced_inputs.R")
 source("models/estimaTool/UI/UI_hearts.R")
@@ -46,6 +47,8 @@ load("labels/labels_region.rda")
 # Definir las páginas
 
 ui <- fluidPage(
+  introjsUI(),
+  
   shinyjs::useShinyjs(),
   
   tags$head(
@@ -60,7 +63,10 @@ ui <- fluidPage(
   ),
   tags$style(
     
-    "body {font-family: 'Roboto', sans-serif !important;}
+    "
+    
+    
+    body {font-family: 'Roboto', sans-serif !important;}
     
     .shiny-input-number {
     text-align: center;
@@ -84,6 +90,11 @@ ui <- fluidPage(
     animation: slideInLeft 1s ease-out;
   }
   
+  .introjs-tooltiptext {
+    background-color: red;
+  
+  
+  }
   /* Ícono fijo abajo a la derecha */
       .fixed-icon {
         position: fixed;
@@ -212,6 +223,15 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   router_server()
+  
+  observeEvent(input$help,
+               introjs(session, options = list("nextLabel"="Siguiente"
+                                               ),
+                       events = list("oncomplete"=I('alert("Glad that is over")')))
+  )
+  
+  hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
+         events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
   
   hearts_map_inputs = reactiveVal()
   
