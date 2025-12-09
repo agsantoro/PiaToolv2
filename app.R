@@ -366,10 +366,6 @@ server <- function(input, output, session) {
   })
     
   output$inputs_hearts = renderUI({
-    load("models/estimaTool/base_line.RData")
-    load("models/estimaTool/targets_default.RData")
-    load("models/estimaTool/costs.RData")
-    load("models/estimaTool/population.RData")
     ui_hearts(input, base_line, targets_default, costs, population, hearts_map_inputs)
   })
   

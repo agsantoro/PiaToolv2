@@ -1,52 +1,33 @@
 library(dplyr)
 library(tidyr)
 
-# load("estimaTool/base_line.RData")
-# write.xlsx(base_line,file="estimaTool/base_line.xlsx")
-
-# base_line = read.xlsx("estimaTool/base_line.xlsx")
-base_line = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "parameters") %>% 
+##### carga baseline #####
+base_line = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "parameters") %>% 
   dplyr::filter(category == "base_line") %>% dplyr::select(parameter, country, value) %>%
   pivot_wider(names_from = parameter) %>% as.data.frame()
-  
-# load("estimaTool/targets_default.RData")
-# write.xlsx(targets_default,file = "estimaTool/targets_default.xlsx")
-#targets_default = read.xlsx("estimaTool/targets_default.xlsx")
 
-targets_default = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "parameters") %>% 
+##### carga targets default #####
+targets_default = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "parameters") %>% 
   dplyr::filter(category == "targets_default") %>% dplyr::select(parameter, country, value) %>%
   pivot_wider(names_from = parameter) %>% as.data.frame()
 
-# load("estimaTool/population.RData")
-# write.xlsx(population,file = "estimaTool/population.xlsx")
-#population = read.xlsx("estimaTool/population.xlsx")
-
-population = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "parameters") %>% 
+##### carga poblacion #####
+population = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "parameters") %>% 
   dplyr::filter(category == "population") %>% dplyr::select(parameter, country, value) %>%
   pivot_wider(names_from = parameter) %>% as.data.frame()
 
-# load("estimaTool/costs.RData")
-# write.xlsx(costs,file = "estimaTool/costs.xlsx")
-# costs = read.xlsx("estimaTool/costs.xlsx")
-
-costs = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "parameters") %>% 
+##### carga costos #####
+costs = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "parameters") %>% 
   dplyr::filter(category == "costs") %>% dplyr::select(parameter, country, value) %>% as.data.frame()
 
+##### carga fatality data #####
+fatality_data = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "table_fatality_data")[1:4]
 
-# load("estimaTool/fatality_data.RData")
-# write.xlsx(fatality_data,file = "estimaTool/fatality_data.xlsx")
-# fatality_data = read.xlsx("estimaTool/fatality_data.xlsx")
-fatality_data = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "table_fatality_data")
+##### carga life exp #####
+life_exp = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "table_life_exp")
 
-# load("estimaTool/life_exp.RData")
-# write.xlsx(life_exp,file = "estimaTool/life_exp.xlsx")
-# life_exp = read.xlsx("estimaTool/life_exp.xlsx")
-life_exp = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "table_life_exp")
-
-# load("estimaTool/mortality_data.RData")
-# write.xlsx(mortality_data,file = "estimaTool/mortality_data.xlsx")
-# mortality_data = read.xlsx("estimaTool/mortality_data.xlsx")
-mortality_data = read.xlsx("models/estimaTool/inputs/inputs.xlsx", sheet = "table_mortality_data")
+##### carga mortality data #####
+mortality_data = read.xlsx("models/estimaTool/inputs/inputs2025.xlsx", sheet = "table_mortality_data")
 
 
 VA = function(tasa_descuento_anual,num_periodos) {

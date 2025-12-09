@@ -46,7 +46,15 @@ paises_info <- list(
       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
       alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
     ),
-    tags$span("Costa Costa Rica")
+    tags$span("Costa Rica")
+  ),
+  "JAMAICA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
+      alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Jamaica")
   ),
   "MEXICO" = tags$div(
     style = "display: flex; align-items: center;",
@@ -63,6 +71,22 @@ paises_info <- list(
       alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
     ),
     tags$span("Peru")
+  ),
+  "REPÚBLICA DOMINICANA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
+      alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("República Dominicana")
+  ),
+  "URUGUAY" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
+      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Uruguay")
   )
   
 )
