@@ -22,6 +22,12 @@ library(rintrojs)
 source("modules/toggle_advanced_inputs.R")
 source("models/estimaTool/UI/UI_hearts.R")
 source("models/estimaTool/estimaTool.R")
+source("models/hpv/UI/UI_hpv.R", encoding = "UTF-8")
+source("models/hpv/getPrime.R", encoding = "UTF-8")
+source("models/tbc/UI/UI_tbc.R", encoding = "UTF-8")
+source("models/tbc/funcion.R", encoding = "UTF-8")
+
+
 source("functions/graf_esc.R")
 
 source("visualization functions/indicatorsList.R")
@@ -38,11 +44,9 @@ source("visualization functions/modalText.R")
 source("functions/getStyle.R")
 
 source("pages/landing_page.R")
-source("pages/chart_page.R")
-
-load("labels/labels_provincia.rda")
-load("labels/labels_sexo.rda")
-load("labels/labels_region.rda")
+source("pages/hearts_page.R")
+source("pages/hpv_page.R")
+source("pages/tbc_page.R")
 
 # Definir las páginas
 
@@ -85,6 +89,18 @@ ui <- fluidPage(
       opacity: 1;
     }
   }
+  .introjs-hint {
+  visibility: hidden !important;
+  }
+  
+  .introjs-showElement {
+  z-index: 10 !important;
+  }
+  
+  .introjs-tooltipReferenceLayer {
+  z-index: 10 !important;
+  }
+  
   
   .animate-left {
     animation: slideInLeft 1s ease-out;
@@ -109,7 +125,7 @@ ui <- fluidPage(
         justify-content: center;
         cursor: pointer;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
+        z-index: 100000;
       }
       
       .fixed-icon:hover {
@@ -217,7 +233,9 @@ ui <- fluidPage(
   # Contenido principal sin margen adicional para páginas completas
   router_ui(
     route("/", landing_page),
-    route("chart", chart_page)
+    route("hearts", hearts_page),
+    route("hpv", hpv_page),
+    route("tbc", tbc_page)
   )
 )
 
@@ -234,6 +252,8 @@ server <- function(input, output, session) {
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
   
   hearts_map_inputs = reactiveVal()
+  hpv_map_inputs = reactiveVal()
+  tbc_map_inputs = reactiveVal()
   
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
@@ -365,29 +385,179 @@ server <- function(input, output, session) {
     }
   })
     
+  ##### outputs hearts #####
+  
   output$inputs_hearts = renderUI({
     ui_hearts(input, base_line, targets_default, costs, population, hearts_map_inputs)
   })
   
   observeEvent(input$hearts_go, {
     
-    show("resultados_hearts")
-    
+    toggle("resultados_hearts")
     output$resultados_hearts = renderUI({
        ui_resultados_hearts(input,output,run_hearts)
     })
+    
+    
     lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
   })
   
-  onclick("new_scenario_btn", {
+  
+  ##### HPV #####
+  
+  run_hpv  <-  reactive({
     
+    getPrime(
+      input = input,
+      country= input$country,
+      coverageBase = input$coverageBase,
+      #input$birthCohortSizeFemale,
+      cohortSizeAtVaccinationAgeFemale = input$cohortSizeAtVaccinationAgeFemale,
+      coverageAllDosis = input$coverageAllDosis,
+      vaccineEfficacyVsHPV16_18 = input$vaccineEfficacyVsHPV16_18,
+      targetAgeGroup = input$targetAgeGroup,
+      vaccinePricePerFIG = input$vaccinePricePerFIG,
+      vaccineDeliveryCostPerFIG = input$vaccineDeliveryCostPerFIG,
+      totalVaccineCostPerFIG = input$totalVaccineCostPerFIG,
+      cancerTreatmentCostPerEpisodeOverLifetime = input$cancerTreatmentCostPerEpisodeOverLifetime,
+      DALYsForCancerDiagnosis = input$DALYsForCancerDiagnosis,
+      DALYsForNonTerminalCancerSequelaePperYear = input$DALYsForNonTerminalCancerSequelaePperYear,
+      DALYsForTerminalCancer = input$DALYsForTerminalCancer,
+      discountRate = input$discountRate,
+      proportionOfCervicalCancerCasesThatAreDueToHPV16_18 = input$proportionOfCervicalCancerCasesThatAreDueToHPV16_18,
+      #input$GDPPerCapita,
+      costoProg = input$costoProg,
+      mortall = mortall,
+      mortcecx = mortcecx,
+      incidence = incidence,
+      #dalys,
+      parameters = parameters
+    )
+  })
+  
+  ##### outputs hpv #####
+  
+  output$inputs_hpv = renderUI({
+    output$uiOutput_basica <- ui_hpv_basica(input,inputs_hpv(), run_hearts(), hpv_map_inputs)
+  })
+  
+  
+  observeEvent(input$targetAgeGroup, {
+    
+    updateNumericInput(session, "cohortSizeAtVaccinationAgeFemale", value = 
+                         cohortSizeAcVac[cohortSizeAcVac$age == input$targetAgeGroup & cohortSizeAcVac$country == input$country,]$value)
+    
+  })
+  
+  onclick("hpv_go", {
+    
+    toggle("resultados_hpv")
+    
+    output$resultados_hpv = renderUI({
+      tagList(
+        #ui_grafico_nuevo_hpv(run_hpv(), input, output),
+        ui_grafico_hpv(run_hpv(), input),
+        ui_tabla_hpv(run_hpv(), input)
+      )
+      
+    })
+    
+    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+      disable(i)
+      
+    })
+  })
+  
+  
+  
+  ##### TBC #####
+  
+  tbc_run <- reactive({
+    
+    if (length(input$VOTrrExito)!=0) {
+      table = modelo_tbc(input$country,
+                         input$VOTrrExito,
+                         input$VOTadherencia/100,
+                         input$costo_evento_VOT,
+                         input$cantidad_vot_semana,
+                         input$ttoExitoso_Duracion,
+                         input$pExitoso/100,
+                         input$pFalla/100,
+                         input$pMuerte/100,
+                         input$VOTrrFalla,
+                         input$VOTrrMuerte,
+                         input$DOTrrExito,
+                         input$DOTrrFalla,
+                         input$DOTrrMuerte,
+                         input$DOTadherencia/100,
+                         input$cantidad_dot_semana,
+                         input$mediana_edad_paciente,
+                         input$cohorte,
+                         input$utilidad_pob_gral,
+                         input$disutilidad_tbc_activa,
+                         input$prob_internacion_con_falla/100,
+                         input$cantidadDiasInternacion,
+                         input$costo_trat_induccion,
+                         input$costo_trat_consolidacion,
+                         input$costo_seguimiento,
+                         input$costo_examenes_complemen,
+                         input$costo_evento_DOT,
+                         input$costo_internacion,
+                         input$costoConsulta,
+                         input$costo_trat_multires_induccion,
+                         input$costo_trat_multires_consolidacion,
+                         input$tasa_descuento_anual/100,
+                         input$costo_intervencion_vDOT)
+      table
+    }
+    
+  })
+  
+  ##### outputs tbc #####
+  
+  output$inputs_tbc = renderUI({
+    ui_tbc(input, tbc_map_inputs)
+  })
+  
+  observeEvent(input$tbc_go, {
+    toggle("resultados_tbc")
+    output$resultados_tbc = renderUI({
+      ui_resultados_tbc(input,output,tbc_run)
+    })
+    
+    
+    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+      disable(i)
+      
+    })
+  })
+  
+  
+  
+  
+  
+  ##### onclick #####
+  onclick("new_scenario_btn_hearts", {
     hide("resultados_hearts")
     lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
       enable(i)
-      
+    })
+  })
+  
+  onclick("new_scenario_btn_hpv", {
+    hide("resultados_hpv")
+    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  onclick("new_scenario_btn_tbc", {
+    hide("resultados_tbc")
+    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+      enable(i)
     })
   })
 }

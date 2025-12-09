@@ -34,7 +34,7 @@ landing_page <- div(
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(16, 51, 98, 0.1);
-      z-index: 1000;
+      z-index: 1020;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -120,21 +120,21 @@ landing_page <- div(
       # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
       # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
       
-        tags$div(
-          class = "text-right text-lg",
-          tags$a(href = "", "Español"),
-          " | ", # El separador de texto simple
-          tags$a(href = "", "Inglés"),
-          " | ", # El separador de texto simple
-          tags$a(href = "", "Portugués")
-        ),
-        data.step = 2,
-        data.intro = "This is a slider",
-        data.hint = "You can slide me"
+      tags$div(
+        class = "text-right text-lg",
+        tags$a(href = "", "Español"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Inglés"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Portugués")
+      ),
+      data.step = 2,
+      data.intro = "This is a slider",
+      data.hint = "You can slide me"
       
       
     )
-      
+    
   ),
   
   # Contenido principal con margen superior
@@ -152,12 +152,17 @@ landing_page <- div(
             justify-content: center;
             text-align: center; 
             min-height: 100vh; 
-            box-sizing: border-box;",
+            box-sizing: border-box;
+    text-align; center !important;",
     
     introBox(
       h3("La Herramienta PIA Tool es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la Organización Mundial de la Salud.",
          class = "animate-left",
-         style = "margin-bottom: 40px; opacity: 0.9;width: 60%; margin-top: 0"),
+         style = "margin-bottom: 40px; 
+                  opacity: 0.9;width: 60%; 
+                  margin-top: 0; 
+                  margin-left: auto;
+            margin-right: auto;"),
       data.step = 2,
       data.intro = "dsda",
       data.hint = "ffff"
@@ -189,21 +194,21 @@ landing_page <- div(
           text = "El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
           iconType = "heart",
           iconColor = "#2C5F8B",
-          linkTo = "chart"
+          linkTo = "hearts"
         ),
         menuBox(
           title = "Vacunación contra el VPH",
           text = "El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
           iconType = "syringe",
           iconColor = "#2C5F8B",
-          linkTo = "chart"
+          linkTo = "hpv"
         ),
         menuBox(
           title = "Tratamiento de observación directa por vídeo para tuberculosis (VDOT)",
           text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
           iconType = "lungs",
           iconColor = "#2C5F8B",
-          linkTo = "chart"
+          linkTo = "tbc"
         )
         # menuBox(
         #   title = "Brechas de género",

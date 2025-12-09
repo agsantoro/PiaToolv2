@@ -102,7 +102,7 @@ paises_con_banderas <- setNames(
 )
 
 
-chart_page <- div(
+hpv_page <- div(
   
   tags$head(
     tags$link(
@@ -337,12 +337,12 @@ chart_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("heart", style = "
+          icon("syringe", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Iniciativa HEARTS", 
+          h2("Vacunación contra el VPH", 
              style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -374,7 +374,7 @@ chart_page <- div(
               )
             )
           ,
-          uiOutput("inputs_hearts")
+          uiOutput("inputs_hpv")
           )
         )
         
@@ -455,7 +455,7 @@ chart_page <- div(
                  padding: 0 20px;",
         
         # Caja de gráfico con estilo institucional
-        uiOutput("resultados_hearts")
+        hidden(uiOutput("resultados_hpv"))
       )
       )
         
@@ -487,7 +487,7 @@ chart_page <- div(
     
     # Botón 1: Guardar Escenario (Encima del de Crear)
     actionButton(
-      inputId = "save_scenario_btn",
+      inputId = "save_scenario_btn_hpv",
       label = NULL,
       icon = icon("save"), # Icono de disquete (save)
       class = "floating-btn",
@@ -496,7 +496,7 @@ chart_page <- div(
     
     # Botón 2: Nuevo Escenario
     actionButton(
-      inputId = "new_scenario_btn",
+      inputId = "new_scenario_btn_hpv",
       label = NULL,
       icon = icon("rocket"), # Icono de cohete (nuevo escenario)
       class = "floating-btn",

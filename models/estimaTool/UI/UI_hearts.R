@@ -157,11 +157,11 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
         hr(),
         tags$div(
           
-            column(12,
-                   actionButton(
-                     "hearts_go",
-                     icon("play")),
-                   align = "right")
+          column(12,
+                 actionButton(
+                   "hearts_go",
+                   icon("play")),
+                 align = "right")
           
         )
       ),
@@ -173,7 +173,26 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
     $('#collapseInputs').on('hide.bs.collapse', function () {
       $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
     });
+  ")),
+      
+      tags$script(HTML("
+    $('#collapseInputs_hpv').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs_hpv').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+  ")),
+      
+      tags$script(HTML("
+    $('#collapseInputs_tbc').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_tbc\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs_tbc').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_tbc\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
   "))
+      
       ,
       # CSS para evitar el cambio de color en hover
       tags$style(HTML("
@@ -201,7 +220,6 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
 }
 
 ui_resultados_hearts = function(input,output,resultados) {
-  paste(input$hearts_input_1)
   country_sel = str_to_title(isolate(input$country))
   
   if (is.null(input$hearts_input_1)==F) {

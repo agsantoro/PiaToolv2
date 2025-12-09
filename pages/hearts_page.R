@@ -1,8 +1,108 @@
+library(shiny)
+library(htmltools)
+
+# Carga de datos (asumiendo que los archivos existen en el entorno de ejecución)
 load("data/dataMortReg.rda")
 load("data/dataMortProv.rda")
 load("data/mortalityCauses.rda")
 
-gaps_page <- div(
+paises_info <- list(
+  # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
+  "ARGENTINA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
+      alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Argentina")
+  ),
+  "BRAZIL" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
+      alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Brazil")
+  ),
+  "CHILE" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
+      alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Chile")
+  ),
+  "COLOMBIA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
+      alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Colombia")
+  ),
+  "COSTA RICA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
+      alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Costa Rica")
+  ),
+  "JAMAICA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
+      alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Jamaica")
+  ),
+  "MEXICO" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
+      alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Mexico")
+  ),
+  "PERU" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
+      alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Peru")
+  ),
+  "REPÚBLICA DOMINICANA" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
+      alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("República Dominicana")
+  ),
+  "URUGUAY" = tags$div(
+    style = "display: flex; align-items: center;",
+    tags$img(
+      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
+      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+    ),
+    tags$span("Uruguay")
+  )
+  
+)
+
+options_con_html <- lapply(names(paises_info), function(cod) {
+  list(value = cod, content = as.character(paises_info[[cod]]))
+})
+
+# Le damos formato de lista con nombres para usar en el argumento 'choices'
+paises_con_banderas <- setNames(
+  lapply(options_con_html, function(x) x$content),
+  lapply(options_con_html, function(x) x$value)
+)
+
+
+hearts_page <- div(
   
   tags$head(
     tags$link(
@@ -31,6 +131,13 @@ gaps_page <- div(
       font-family: 'Roboto', sans-serif;
     }
     
+    .dropdown-menu {
+    position: absolute; 
+    top: 100%;          
+    left: 0;
+    z-index: 10;        
+    
+}
     i, .fa, .fas, .far, .fab, .fal, .fad,
     [class*='icon-'], [class^='icon-'] {
       font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Pro', 'FontAwesome', inherit !important;
@@ -101,6 +208,45 @@ gaps_page <- div(
       text-decoration: none !important;
       color: inherit !important;
     }
+    
+    /* Estilos para los nuevos botones fijos */
+    .floating-buttons-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Separación uniforme entre botones */
+      z-index: 1000; /* Asegura que estén sobre el contenido */
+    }
+    
+    .floating-btn {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .floating-btn:hover {
+      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Para el botón principal que no tiene el texto del icono */
+    .floating-btn .fa {
+      margin: 0 !important;
+    }
     "
   ),
   
@@ -110,7 +256,7 @@ gaps_page <- div(
     
     # Imagen izquierda
     img(
-      src = "iecslogo.png",  # Reemplaza con la ruta de tu imagen
+      src = "iecslogo.png", # Reemplaza con la ruta de tu imagen
       alt = "Logo izquierdo",
       class = "header-logo"
     ),
@@ -120,11 +266,11 @@ gaps_page <- div(
       class = "header-title-container",
       
       # Título centrado
-      h1("Observatorio de las inequidades de género en la mortalidad", class = "header-title"),
+      h1("Programme Impact Assessment Tool", class = "header-title"),
       
       # Icono home con link a landing page
       tags$a(
-        href = "?page=landing",  # Ajusta según tu sistema de navegación
+        href = "?page=landing", # Ajusta según tu sistema de navegación
         onclick = "Shiny.setInputValue('goto_landing', Math.random(), {priority: 'event'});",
         icon("home", class = "home-icon"),
         title = "Ir al inicio",
@@ -133,10 +279,19 @@ gaps_page <- div(
     ),
     
     # Imagen derecha
-    img(
-      src = "CIPS_fondo-transparente (2).png",  # Reemplaza con la ruta de tu imagen
-      alt = "Logo derecho", 
-      class = "header-logo"
+    tags$div(
+      class = "p-2", 
+      # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
+      # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
+      
+      tags$div(
+        class = "text-right text-lg",
+        tags$a(href = "", "Español"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Inglés"),
+        " | ", # El separador de texto simple
+        tags$a(href = "", "Portugués")
+      )
     )
   ),
   
@@ -150,14 +305,13 @@ gaps_page <- div(
       display: flex;
       flex-direction: row;",
     
-    # PANEL IZQUIERDO (40%) - Azul institucional sobrio
+    # PANEL IZQUIERDO (30%) - Azul institucional sobrio
     div(
       style = "
-        width: 40%;
+        width: 30%;
         background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
         padding: 40px;
         display: inline;
-        
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -183,59 +337,44 @@ gaps_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("chart-line", style = "
+          icon("heart", style = "
     font-size: 3em; 
-    color: #737B4F;
+    color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Brechas de género", 
+          h2("Iniciativa HEARTS", 
              style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
         ),
         
         # Texto descriptivo
-        p("Compare la evolución histórica de las brechas de género para los principales indicadores
-        de mortalidad.",
+        p(strong("Seleccione los parámetros del modelo"),
           style = "
-            font-size: 1.05em; 
-            line-height: 1.6; 
-            color: #495057; 
+            font-size: 1.05em;
+            line-height: 1.6;
+            color: #B985A9;
             margin-bottom: 35px;",
           class = "animate-left"),
         
         tags$div(
           style = "overflow-y: auto; height: 80%; width: 100% !important;",
-          selectInput(
-            inputId = "indicador",
-            label = "Seleccionar indicador",
-            choices = indicatorsList(),
-            selected = "tmape",
-            width = "100%"
-            
-          ),
-          selectInput(
-            inputId = "geo",
-            label = "Segmentación geográfica",
-            choices = c("Jurisdicciones","Regiones"),
-            selected = "Jurisdicciones",
-            multiple = F,
-            width = "100%"
-          ),        
-          selectInput(
-            inputId = "area",
-            label = "Seleccionar área",
-            choices= "",
-            selected = "01",
-            multiple = T,
-            width = "100%"
-          ),
-          treeviewInput(
-            inputId = "causas",
-            label = "Seleccionar causa:",
-            choices = make_tree(mortalityCauses,colnames(mortalityCauses)),
-            selected = "0000 TODAS LAS CAUSAS",
-            returnValue = "text",
-            closeDepth = 0,
-            width = "100%"
+          div(
+            id = "inputContainer",
+            pickerInput(
+              inputId = "country",
+              label = "Selecciona un País:",
+              choices = names(paises_con_banderas),
+              selected = "AR", # Argentina por defecto
+              choicesOpt = list(
+                content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+              ),
+              options = list(
+                style = "btn-info", # Estilo elegante (bootstrap)
+                liveSearch = TRUE,  # Permite buscar
+                size = 5           # Muestra 5 elementos antes de scroll
+              )
+            )
+            ,
+            uiOutput("inputs_hearts")
           )
         )
         
@@ -243,57 +382,86 @@ gaps_page <- div(
       )
     ),
     
-    # PANEL DERECHO (60%) - Fondo limpio y profesional
+    # PANEL DERECHO (70%) - Fondo limpio y profesional
     div(
       style = "
-        width: 60%;
-        padding: 40px;
+        width: 70%;
+        padding: 20px;
         display: inline;
         flex-direction: column;
         justify-content: center;
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);",
       
-      # Título profesional
-      h2(paste0("Análisis de Datos de Mortalidad"),
-         style = "
-         
-           font-size: 1.5em; 
-           margin-bottom: 20px; 
-           font-weight: 400; 
-           text-align: center; 
-           color: #2C5F8B;
-           border-bottom: 2px solid #4A90A4;
-           padding-bottom: 15px;"),
-      
-      p("El Centro de Implementación e Innovación en Políticas de Salud (CIIPS) presenta esta plataforma 
-        de análisis interactivo para la exploración de datos de mortalidad y brechas de género en Argentina. 
-        Desarrollada con metodologías basadas en evidencia para investigadores, académicos y tomadores de decisión.",
+      div(
         style = "
-          font-size: 1.1em; 
-          margin-bottom: 40px; 
+        
+        
+        padding: 30px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+        ",
+        
+        div(
+          style = "
+        /* Fondo degradado discreto basado en #EE8223 */
+        background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+        border-radius: 8px; /* Bordes suaves */
+        padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
+        margin-bottom: 20px; /* Separación del gráfico de resultados */
+        border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
+      ",
+          p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+            style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
           color: #495057; 
           text-align: justify; 
           line-height: 1.7;
           padding: 0 20px;"),
-      
-      # Grid de características con estilo sobrio
-      div(
-        style = "display: grid; 
+          
+          p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+            style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
+          color: #495057; 
+          text-align: justify; 
+          line-height: 1.7;
+          padding: 0 20px;"),
+          
+          p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+            style = "
+        font-size: 0.9em; 
+        margin-bottom: 5px; 
+        color: #495057; 
+          text-align: justify; 
+        line-height: 1.7;
+        padding: 0 20px;"),
+          
+        ),
+        
+        
+        # Grid de características con estilo sobrio
+        div(
+          style = "display: grid; 
                  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                  grid-auto-rows: 1fr;
                  gap: 20px;
                  padding: 0 20px;",
-        
-        # Caja de gráfico con estilo institucional
-        plotBox(
-          title = "Visualización de Datos",
-          text = "Gráficos interactivos para análisis epidemiológico",
-          iconType = "chart-line",
-          iconColor = "#737B4F",
-          outputIdName = "gaps"
           
+          # Caja de gráfico con estilo institucional
+          hidden(uiOutput("resultados_hearts"))
         )
       )
+      
+      
+      
+      
     )
   ),
   div(
@@ -312,6 +480,40 @@ gaps_page <- div(
       style = "margin: 0;"
     )
   ),
+  
+  # Contenedor de botones flotantes (AÑADIDO)
+  div(
+    class = "floating-buttons-container",
+    
+    # Botón 1: Guardar Escenario (Encima del de Crear)
+    actionButton(
+      inputId = "save_scenario_btn_hearts",
+      label = NULL,
+      icon = icon("save"), # Icono de disquete (save)
+      class = "floating-btn",
+      title = "Guardar Escenario en Pantalla"
+    ),
+    
+    # Botón 2: Nuevo Escenario
+    actionButton(
+      inputId = "new_scenario_btn_hearts",
+      label = NULL,
+      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+      class = "floating-btn",
+      title = "Crear Nuevo Escenario"
+    ),
+    
+    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+    # Usaré un icono de descarga y un ID genérico para este.
+    actionButton(
+      inputId = "fixed_original_btn",
+      label = NULL,
+      icon = icon("download"),
+      class = "floating-btn",
+      title = "Descargar Resultados"
+    )
+  ),
+  
   # CSS adicional para estilo institucional sobrio
   tags$style(HTML("
     /* Eliminar subrayado y cambios de color en enlaces */
@@ -488,6 +690,16 @@ gaps_page <- div(
       
       .main-content {
         margin-top: 70px;
+      }
+      
+      .floating-buttons-container {
+        bottom: 10px;
+        right: 10px;
+      }
+      
+      .floating-btn {
+        width: 45px;
+        height: 45px;
       }
     }
     
