@@ -164,13 +164,21 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
                  align = "right")
           
         )
-      )
+      ),
        
       
     
       
       
-    )
+    
+    tags$script(HTML("
+    $('#collapseInputs').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+  ")))
     
     
     

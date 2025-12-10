@@ -234,6 +234,20 @@ landing_page <- div(
           iconType = "lungs",
           iconColor = "#2C5F8B",
           linkTo = "hepC"
+        ),
+        menuBox(
+          title = "Hemorragia post-parto",
+          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          iconType = "lungs",
+          iconColor = "#2C5F8B",
+          linkTo = "hpp"
+        ),
+        menuBox(
+          title = "Profilaxis pre-exposición",
+          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          iconType = "lungs",
+          iconColor = "#2C5F8B",
+          linkTo = "prep"
         )
         
         # menuBox(

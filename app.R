@@ -30,6 +30,11 @@ source("models/tbc/funcion.R", encoding = "UTF-8")
 source("models/hepC/UI/UI_hepC.R", encoding = "UTF-8")
 source("models/hepC/funcion_hepC.R", encoding = "UTF-8")
 
+source("models/hpp/UI/UI_hpp.R")
+source("models/hpp/funciones/funciones.R")
+
+source("models/prep/UI/UI_prep.R")
+source("models/prep/fn_prep4.R")
 
 source("functions/graf_esc.R")
 
@@ -51,6 +56,8 @@ source("pages/hearts_page.R")
 source("pages/hpv_page.R")
 source("pages/tbc_page.R")
 source("pages/hepC_page.R")
+source("pages/hpp_page.R")
+source("pages/prep_page.R")
 
 # Definir las páginas
 
@@ -115,6 +122,20 @@ ui <- fluidPage(
   
   
   }
+  
+  
+  .introjs-helperLayer {
+     box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
+    width: 831.6px;
+    height: 685.7px;
+    top: 314px;
+    left: -5px;
+    opacity: 1;
+    z-index: 10 !important;
+  }
+  
+  
+  
   /* Ícono fijo abajo a la derecha */
       .fixed-icon {
         position: fixed;
@@ -204,6 +225,7 @@ ui <- fluidPage(
     "
   
   ),
+  
   title = "Pia Tool 2.0",
   
   # Overlay del modal
@@ -240,7 +262,9 @@ ui <- fluidPage(
     route("hearts", hearts_page),
     route("hpv", hpv_page),
     route("tbc", tbc_page),
-    route("hepC", hepC_page)
+    route("hepC", hepC_page),
+    route("hpp", hpp_page),
+    route("prep", prep_page)
   )
 )
 
@@ -260,6 +284,8 @@ server <- function(input, output, session) {
   hpv_map_inputs = reactiveVal()
   tbc_map_inputs = reactiveVal()
   hepC_map_inputs = reactiveVal()
+  hpp_map_inputs = reactiveVal()
+  prep_map_inputs = reactiveVal()
   
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
@@ -609,8 +635,106 @@ server <- function(input, output, session) {
   
   
   
+  ##### HPP #####
   
-  ##### onclick #####
+  hpp_run = reactive({
+    
+    if (length(input$hpp_uso_oxitocina_base)>0) {
+      
+      resultados = resultados_comparados(
+        pais = str_to_title(input$country),
+        usoOxitocina_base = input$hpp_uso_oxitocina_base/100,
+        usoOxitocina_target = input$hpp_uso_oxitocina_taget/100,
+        partos_anuales = input$hpp_partos_anuales,
+        edad_al_parto = input$hpp_edad_parto,
+        partos_institucionales = input$hpp_partos_institucionales/100,
+        eficacia_Intervencion = 0.30230,
+        mortalidad_materna = input$hpp_mortalidad_materna,
+        mortalidad_hpp = input$hpp_mortalidad_hpp/100,
+        pHPP = input$hpp_pHPP/100,
+        pHPP_Severa = input$hpp_pHPP_Severa/100,
+        pHisterectomia = input$hpp_pHisterectomia/100,
+        eficaciaOxitocina = input$hpp_eficaciaOxitocina/100,  
+        uHisterectomia = input$hpp_uHisterectomia,
+        costo_oxitocina = input$hpp_costo_oxitocina,
+        descuento = input$hpp_tasa_descuento/100, #Tasa de descuento (INPUT)
+        costoIntervencion = input$hpp_costo_programatico #Costo de la intervención  (INPUT)
+      )
+    }
+    
+  })
+  
+  
+  
+  ##### outputs hpp #####
+  
+  output$inputs_hpp = renderUI({
+    ui_hpp(input, hpp_map_inputs)
+  })
+  
+  observeEvent(input$hpp_go, {
+    toggle("resultados_hpp")
+    output$resultados_hpp = renderUI({
+      tagList(
+        ui_resultados_hpp(input, output, hpp_run)
+      )
+    })
+    
+    
+    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+      disable(i)
+    })
+  })
+  
+  
+  
+  
+  
+  
+  
+  ##### PREP #####
+  
+  prep_run = reactive({
+    if (length(input$duracionPrEP)>0) {
+      corrida = NA
+      for (i in names(get_prep_params(input$country))) {
+        corrida = c(corrida, input[[i]])
+      }
+      corrida = corrida[2:length(corrida)]
+      names(corrida) = names(get_prep_params(input$country))
+      
+      resultados = funcionCalculos(corrida,toupper(input$country))
+      resultados
+    }
+  })
+  
+  
+  ##### outputs prep #####
+  
+  output$inputs_prep = renderUI({
+    ui_prep(input, prep_map_inputs)
+  })
+  
+  observeEvent(input$prep_go, {
+    toggle("resultados_prep")
+    output$resultados_prep = renderUI({
+      tagList(
+        ui_resultados_prep(input, output, prep_run)
+      )
+    })
+
+
+    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+      disable(i)
+    })
+  })
+
+
+
+  
+  
+  
+  ##### ONCLICK #####
   
   # hearts
   onclick("new_scenario_btn_hearts", {
@@ -640,6 +764,22 @@ server <- function(input, output, session) {
   onclick("new_scenario_btn_hepC", {
     hide("resultados_hepC")
     lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  # hpp
+  onclick("new_scenario_btn_hpp", {
+    hide("resultados_hpp")
+    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  # prep
+  onclick("new_scenario_btn_prep", {
+    hide("resultados_prep")
+    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })

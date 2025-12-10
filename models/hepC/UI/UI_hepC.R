@@ -192,7 +192,15 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
                  align = "right")
           
         )
-      )
+      ),
+      tags$script(HTML("
+    $('#collapseInputs_hepC').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hepC\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hepC\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+  "))
     )
   })
 }

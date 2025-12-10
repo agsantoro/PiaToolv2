@@ -324,7 +324,7 @@ hearts_page <- div(
           background: rgba(255, 255, 255, 0.95);
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(44, 95, 139, 0.15);
-          
+          padding: 40px;
           width: 100%;
           border: 1px solid rgba(44, 95, 139, 0.1);",
         
