@@ -12,6 +12,24 @@ landing_page <- div(
   padding;0;
     } 
   
+  #help {
+  background-color: #dce7f4 !important;
+          padding: 12px;
+          color: #2C5F8B;
+          border-radius: 12px;
+          box-shadow: 0 8px 30px rgba(44, 95, 139, 0.15);
+          
+          width: 100%;
+          border: 1px solid rgba(44, 95, 139, 0.1);
+}
+ 
+     /* Efecto hover suave para help */
+    #help:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(44, 95, 139, 0.15);
+      border: 1px solid rgba(44, 95, 139, 0.1);
+    }
+    
   .container-fluid {
   font-size: 1.3em;
         padding: 0 !important;
@@ -212,7 +230,7 @@ landing_page <- div(
         ),
         menuBox(
           title = "Hepatitis C",
-          text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
+          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
           iconType = "lungs",
           iconColor = "#2C5F8B",
           linkTo = "hepC"

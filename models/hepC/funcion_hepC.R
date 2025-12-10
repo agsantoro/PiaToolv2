@@ -300,7 +300,7 @@ hepC_conTrat = function (
   loop = loop[loop %in% 12:(max(loop)-12)] 
   
   for (i in loop) {
-    print(i)
+    # print(i)
     # Asignación para arrayModelo$utilidadAcumuladoDescontado
     
     #browser(expr = {i==24} )

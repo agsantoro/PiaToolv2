@@ -322,7 +322,6 @@ hearts_page <- div(
       div(
         style = "
           background: rgba(255, 255, 255, 0.95);
-          padding: 40px;
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(44, 95, 139, 0.15);
           
@@ -586,6 +585,8 @@ hearts_page <- div(
       box-shadow: 0 12px 30px rgba(44, 95, 139, 0.15);
       border-color: #2C5F8B;
     }
+    
+
     
     /* Hover para el botón principal con estilo institucional */
     a div[style*='linear-gradient(135deg, #2C5F8B']:hover {

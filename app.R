@@ -604,7 +604,6 @@ server <- function(input, output, session) {
     
     lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
       disable(i)
-      
     })
   })
   
