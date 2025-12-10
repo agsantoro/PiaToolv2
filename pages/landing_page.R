@@ -209,7 +209,15 @@ landing_page <- div(
           iconType = "lungs",
           iconColor = "#2C5F8B",
           linkTo = "tbc"
+        ),
+        menuBox(
+          title = "Hepatitis C",
+          text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
+          iconType = "lungs",
+          iconColor = "#2C5F8B",
+          linkTo = "hepC"
         )
+        
         # menuBox(
         #   title = "Brechas de género",
         #   text = "Compare la evolución histórica de las brechas de género para los principales indicadores

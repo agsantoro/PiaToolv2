@@ -210,6 +210,7 @@ ui_hpv_basica = function (input,inputs_hpv, run_hearts, hpv_map_inputs) {
 
 ui_grafico_nuevo_hpv = function(run_hpv, input, output) {
   if (length(input$coverageBase)>0) {
+    browser()
     table = run_hpv$outcomes
     
     indicadores = c(

@@ -164,49 +164,8 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
                  align = "right")
           
         )
-      ),
-      # Script para rotar el ícono al abrir/cerrar
-      tags$script(HTML("
-    $('#collapseInputs').on('show.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
-    });
-    $('#collapseInputs').on('hide.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
-    });
-  ")),
-      
-      tags$script(HTML("
-    $('#collapseInputs_hpv').on('show.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
-    });
-    $('#collapseInputs_hpv').on('hide.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
-    });
-  ")),
-      
-      tags$script(HTML("
-    $('#collapseInputs_tbc').on('show.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs_tbc\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
-    });
-    $('#collapseInputs_tbc').on('hide.bs.collapse', function () {
-      $('[data-target=\"#collapseInputs_tbc\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
-    });
-  "))
-      
-      ,
-      # CSS para evitar el cambio de color en hover
-      tags$style(HTML("
-    [data-target='#collapseInputs']:hover {
-      background-color: white !important;
-      border-color: #DEE2E6 !important;
-    }
-    [data-target='#collapseInputs']:focus {
-      background-color: white !important;
-      outline: none !important;
-    }
-  "))
-        
-        
+      )
+       
       
     
       

@@ -27,6 +27,9 @@ source("models/hpv/getPrime.R", encoding = "UTF-8")
 source("models/tbc/UI/UI_tbc.R", encoding = "UTF-8")
 source("models/tbc/funcion.R", encoding = "UTF-8")
 
+source("models/hepC/UI/UI_hepC.R", encoding = "UTF-8")
+source("models/hepC/funcion_hepC.R", encoding = "UTF-8")
+
 
 source("functions/graf_esc.R")
 
@@ -47,6 +50,7 @@ source("pages/landing_page.R")
 source("pages/hearts_page.R")
 source("pages/hpv_page.R")
 source("pages/tbc_page.R")
+source("pages/hepC_page.R")
 
 # Definir las páginas
 
@@ -235,7 +239,8 @@ ui <- fluidPage(
     route("/", landing_page),
     route("hearts", hearts_page),
     route("hpv", hpv_page),
-    route("tbc", tbc_page)
+    route("tbc", tbc_page),
+    route("hepC", hepC_page)
   )
 )
 
@@ -254,6 +259,7 @@ server <- function(input, output, session) {
   hearts_map_inputs = reactiveVal()
   hpv_map_inputs = reactiveVal()
   tbc_map_inputs = reactiveVal()
+  hepC_map_inputs = reactiveVal()
   
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
@@ -538,8 +544,76 @@ server <- function(input, output, session) {
   
   
   
+  ##### HEPATITIS C #####
+  
+  hepC_run = reactive({
+    if (length(input$cohorte) > 0) {
+      hepC = hepC_full(
+        input,
+        output,
+        input_pais = str_to_title(input$country),
+        input_cohorte = input$cohorte,
+        input_AtasaDescuento = 0.03,
+        input_F0 = input$F0/100,
+        input_F1 = input$F1/100,
+        input_F2 = input$F2/100,
+        input_F3 = input$F3/100,
+        input_F4 = input$F4/100,
+        input_aCostoF0F2 = input$aCostoF0F2,
+        input_aCostoF3 = input$aCostoF3,
+        input_aCostoF4 = input$aCostoF4,
+        input_aCostoDC = input$aCostoDC,
+        input_aCostoHCC = input$aCostoHCC,
+        input_pSVR = input$pSVR/100,
+        input_tDuracion_Meses = input$tDuracion_Meses,
+        input_pAbandono = input$pAbandono/100,
+        input_Costo_Tratamiento = input$Costo_Tratamiento,
+        input_Costo_Evaluacion = input$Costo_Evaluacion
+      )
+      hepC_indicators = names(hepC$Comparacion)
+      hepC_values = unlist(hepC$Comparacion)
+      
+      hepCTable = data.frame(
+        hepC_indicators,
+        hepC_values
+      )
+      
+      rownames(hepCTable) = NULL
+      colnames(hepCTable) = c("Indicador", "Valor")
+      hepCTable
+    }
+    
+    
+  })
+  
+  
+  ##### outputs hep c #####
+  
+  output$inputs_hepC = renderUI({
+    ui_hepC(input, datosPais, hepC_map_inputs)
+  })
+  
+  observeEvent(input$hepC_go, {
+    toggle("resultados_hepC")
+    output$resultados_hepC = renderUI({
+      tagList(
+        ui_resultados_hepC(input,output,hepC_run)
+      )
+    })
+    
+    
+    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+      disable(i)
+      
+    })
+  })
+  
+  
+  
   
   ##### onclick #####
+  
+  # hearts
   onclick("new_scenario_btn_hearts", {
     hide("resultados_hearts")
     lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
@@ -547,6 +621,7 @@ server <- function(input, output, session) {
     })
   })
   
+  # hpv
   onclick("new_scenario_btn_hpv", {
     hide("resultados_hpv")
     lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
@@ -554,9 +629,18 @@ server <- function(input, output, session) {
     })
   })
   
+  # tbc
   onclick("new_scenario_btn_tbc", {
     hide("resultados_tbc")
     lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  # hepC
+  onclick("new_scenario_btn_hepC", {
+    hide("resultados_hepC")
+    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
