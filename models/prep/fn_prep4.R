@@ -20,10 +20,8 @@ funcionPrincipal <- function(linea,paisCol, parametro){
   limiteEdadContagiosos = 55
 # Usando list2env para crear variables en el entorno global
 list2env(parametro, envir = .GlobalEnv)
-  
 
 input_prep <- readxl::read_excel("models/prep/data/inputs_prep.xlsx")
-
 # datos_paises <- readxl::read_excel("prep/data/Datos_paises.xlsx")
 # utilidades <- readxl::read_excel("prep/data/utilidades.xlsx")
 # utilidades2 <- readxl::read_excel("prep/data/utilidades.xlsx", sheet = "Hoja2")
@@ -559,8 +557,6 @@ for (i in 2:(numeroCiclos+1)) {
   #Si hay personas en riesgo de contagiarse tenemos que calcular la probabilidad
   # Cálculo de la probabilidad de tener HIV en el ciclo
   # Verificamos si hay personas en riesgo de contagiarse
-  
-
   
   if (personasRiesgo > 0) {
     
@@ -1442,6 +1438,7 @@ print("fin")
 #                    )
 
 get_prep_params = function (paisCol) {
+  #if (paisCol == "URUGUAY") {browser()}
   lista = list(
     
     ###basicos
@@ -1464,7 +1461,6 @@ get_prep_params = function (paisCol) {
     adherenciaPrEP = 0,
     eficaciaPrEP = 0,
     edadFinPrEP = 50,
-    
     prevalenciaHIV = input_prep %>%
       dplyr::filter(PAIS==paisCol & PARAMETRO=="% de HIV en la poblacion") %>%
       dplyr::select(VALOR) %>% as.numeric(),

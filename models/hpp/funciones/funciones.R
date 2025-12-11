@@ -23,7 +23,6 @@ hpp = function (pais,
                 costoIntervencion = 0, #Costo de la intervención  (INPUT)
                 base
 ) {
-  browser()
   if (base) {
     usoOxitocina = round(usoOxitocina * partos_institucionales,3)
   }
