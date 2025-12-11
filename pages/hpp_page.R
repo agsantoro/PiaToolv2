@@ -471,7 +471,7 @@ hpp_page <- div(
     tags$p(
       
       as.character(format(Sys.Date(), "%Y")), # Obtiene el año actual dinámicamente
-      " CIIPS - IECS. Todos los derechos reservados.",
+      " IECS. Todos los derechos reservados.",
       style = "margin: 0;"
     )
   ),

@@ -350,7 +350,7 @@ landing_page <- div(
         
         div(
           style = "color: rgba(255,255,255,0.7); font-size: 0.85em;",
-          "© 2025 CIIPS - IECS. Observatorio de inequidades de género en mortalidad."
+          "© 2025 IECS. Programme Impact Assessment Tool."
         ),
         
         div(
