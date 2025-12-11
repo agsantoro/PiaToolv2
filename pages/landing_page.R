@@ -229,23 +229,23 @@ landing_page <- div(
           linkTo = "tbc"
         ),
         menuBox(
-          title = "Hepatitis C",
-          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          iconType = "lungs",
+          title = "Tratamiento para la hepatitis C crónica",
+          text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica. Mediante la modificación de parámetros como la efectividad del tratamiento antiviral y los costos del mismo, podrá calcular indicadores como la cantidad de cirrosis, de carcinomas hepatocelulares y de muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          iconType = "virus",
           iconColor = "#2C5F8B",
           linkTo = "hepC"
         ),
         menuBox(
-          title = "Hemorragia post-parto",
-          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          iconType = "lungs",
+          title = "Uso de oxitocina para la prevención de la hemorragia post parto",
+          text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma. Con este modelo podrá calcular indicadores como la cantidad de hemorragias postparto evitadas, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          iconType = "baby",
           iconColor = "#2C5F8B",
           linkTo = "hpp"
         ),
         menuBox(
-          title = "Profilaxis pre-exposición",
-          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          iconType = "lungs",
+          title = "Profilaxis pre exposición (PrEP) para VIH",
+          text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP. Con este modelo podrá obtener indicadores como la cantidad de casos de VIH evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          iconType = "pills",
           iconColor = "#2C5F8B",
           linkTo = "prep"
         )

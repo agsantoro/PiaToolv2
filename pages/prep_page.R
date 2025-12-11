@@ -332,12 +332,12 @@ prep_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("syringe", style = "
+          icon("pills", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Tratamiento de observación directa por vídeo para tuberculosis (VDOT)", 
+          h2("Profilaxis pre exposición (PrEP) para VIH", 
              style = "margin: 0; font-size: 1.5em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -411,7 +411,7 @@ prep_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-        p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+        p("El modelo de PrEP (Profilaxis Pre-exposición) permite evaluar el impacto del uso de PrEP oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -420,7 +420,7 @@ prep_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+        p("Con este modelo podrá obtener indicadores como la cantidad de casos de VIH evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -429,7 +429,7 @@ prep_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+        p("Este modelo fue ideado por el equipo investigador de esta aplicación.",
           style = "
         font-size: 0.9em; 
         margin-bottom: 5px; 

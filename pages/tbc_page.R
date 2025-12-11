@@ -332,7 +332,7 @@ tbc_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("syringe", style = "
+          icon("lungs", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
@@ -411,7 +411,7 @@ tbc_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-        p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+        p("El modelo de VDOT (Tratamiento Directamente Observado por Video) permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -420,7 +420,8 @@ tbc_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+        p("Con este modelo podrá obtener indicadores como la cantidad de muertes evitadas, los años de vida ajustados por discapacidad evitados, el costo total de la intervención y el retorno de inversión (ROI).
+",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -429,7 +430,7 @@ tbc_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+        p("Este modelo está basado en el modelo descrito por Fekadu y cols.",
           style = "
         font-size: 0.9em; 
         margin-bottom: 5px; 

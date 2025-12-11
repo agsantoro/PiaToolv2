@@ -416,7 +416,7 @@ hpv_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-        p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+        p("El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -425,7 +425,7 @@ hpv_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+        p("Con este modelo podrá calcular indicadores como el número de CCU evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -434,7 +434,7 @@ hpv_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+        p("Este modelo está basado en la herramienta Papillomavirus Rapid Interface for Modelling and Economics (PRIME).",
           style = "
         font-size: 0.9em; 
         margin-bottom: 5px; 

@@ -337,12 +337,12 @@ hepC_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("heart", style = "
+          icon("virus", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Hepatitis C", 
+          h2("Tratamiento para la hepatitis C crónica", 
              style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -416,7 +416,7 @@ hepC_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-          p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+          p("El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica.",
             style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -425,7 +425,7 @@ hepC_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
           
-          p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+          p("Mediante la modificación de parámetros como la efectividad del tratamiento antiviral y los costos del mismo, podrá calcular indicadores como la cantidad de cirrosis, de carcinomas hepatocelulares y de muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
             style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -434,7 +434,7 @@ hepC_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
           
-          p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+          p("Este modelo está basado en el modelo MATCH.",
             style = "
         font-size: 0.9em; 
         margin-bottom: 5px; 
