@@ -1,5 +1,5 @@
 
-ui_hpv_basica = function (input,inputs_hpv, run_hearts, hpv_map_inputs) {
+ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
   inputs_names = c(
     'Porcentaje de cobertura objetivo (esquema completo) (%)',
     'Costo de vacunación (esquema completo)',
@@ -94,7 +94,6 @@ ui_hpv_basica = function (input,inputs_hpv, run_hearts, hpv_map_inputs) {
     hpv_map_inputs(addData)
     
   }
-  
   
   renderUI({
     

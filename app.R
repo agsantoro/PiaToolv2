@@ -271,6 +271,8 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   router_server()
   
+  
+  
   observeEvent(input$help,
                introjs(session, options = list("nextLabel"="Siguiente"
                                                ),
@@ -476,6 +478,7 @@ server <- function(input, output, session) {
     output$uiOutput_basica <- ui_hpv_basica(input,inputs_hpv(), run_hearts(), hpv_map_inputs)
   })
   
+  outputOptions(output, "inputs_hpv", suspendWhenHidden = T)
   
   observeEvent(input$targetAgeGroup, {
     

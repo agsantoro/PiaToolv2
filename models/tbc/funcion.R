@@ -36,7 +36,15 @@ modelo_tbc <- function(pais_seleccionado,
                        tasa_descuento_anual,
                        costo_intervencion_vDOT
 ){
+  
+  
+  
   pais_seleccionado = str_to_title(pais_seleccionado)
+  
+  if (pais_seleccionado == "República Dominicana") {pais_seleccionado = "Republica Dominicana"}
+  
+  
+  
   
   inputs_tbc <- readxl::read_excel("models/tbc/data/inputs_tbc.xlsx")
   
@@ -48,6 +56,7 @@ modelo_tbc <- function(pais_seleccionado,
       PAIS == "México" ~ "Mexico",
       PAIS == "Perú" ~ "Peru",
       PAIS == "Brasil" ~ "Brazil",
+      PAIS == "República Dominicana" ~ "Republica Dominicana",
       TRUE ~ iconv(PAIS, to = "ASCII//TRANSLIT")
     ))
   
