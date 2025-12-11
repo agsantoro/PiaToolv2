@@ -332,12 +332,12 @@ hpp_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("syringe", style = "
+          icon("baby", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Hemorragia post-parto", 
+          h2("Uso de oxitocina para la prevención de la hemorragia postparto", 
              style = "margin: 0; font-size: 1.5em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -411,7 +411,7 @@ hpp_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-        p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+        p("El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -420,7 +420,7 @@ hpp_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+        p("Con este modelo podrá calcular indicadores como la cantidad de hemorragias postparto evitadas, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -429,7 +429,7 @@ hpp_page <- div(
           line-height: 1.7;
           padding: 0 20px;"),
         
-        p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+        p("Este modelo está basado en el realizado por el IECS en https://doi.org/10.1371/journal.pone.0129044",
           style = "
         font-size: 0.9em; 
         margin-bottom: 5px; 
