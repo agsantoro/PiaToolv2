@@ -94,7 +94,6 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     hpv_map_inputs(addData)
     
   }
-  
   renderUI({
     
     tagList(

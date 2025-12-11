@@ -481,7 +481,6 @@ server <- function(input, output, session) {
   outputOptions(output, "inputs_hpv", suspendWhenHidden = T)
   
   observeEvent(input$targetAgeGroup, {
-    
     updateNumericInput(session, "cohortSizeAtVaccinationAgeFemale", value = 
                          cohortSizeAcVac[cohortSizeAcVac$age == input$targetAgeGroup & cohortSizeAcVac$country == input$country,]$value)
     

@@ -23,10 +23,10 @@ hpp = function (pais,
                 costoIntervencion = 0, #Costo de la intervención  (INPUT)
                 base
 ) {
+  browser()
   if (base) {
     usoOxitocina = round(usoOxitocina * partos_institucionales,3)
   }
-  
   # Carga información de países
   # load("hpp/data/datosPais.RData")
   # write.xlsx(datosPais,file="hpp/data/datosPais.xlsx")

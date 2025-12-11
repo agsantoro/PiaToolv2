@@ -1,6 +1,7 @@
 ui_hpp = function (input, hpp_map_inputs) {
   renderUI({
-    load("models/hpp/data/datosPais.RData")
+    browser()
+    datosPais = readxl::read_xlsx("models/hpp/data/datosPais.xlsx")
     country = str_to_title(input$country)
     datosPais = datosPais %>% dplyr::filter(pais==country)
     
