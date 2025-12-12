@@ -172,7 +172,7 @@ visibility: hidden;
     
     # Imagen izquierda
     img(
-      src = "iecslogo.png",  # Reemplaza con la ruta de tu imagen
+      src = "ops.png",  # Reemplaza con la ruta de tu imagen
       alt = "Logo izquierdo",
       class = "header-logo"
     ),
