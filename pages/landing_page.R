@@ -93,6 +93,18 @@ visibility: hidden;
 .introjs-tooltipReferenceLayer,
 .introjs-showElement {
   z-index: 3000 !important;  /* mayor que el header */
+  
+}
+
+.introjs-tooltip {
+background: #ffffff !important;
+  color: #2c3e50 !important;
+  padding: 25px 30px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+  max-width: 420px !important;
+  font-family: 'Roboto', sans-serif !important;
+  border: 1px solid rgba(16,51,98,0.1) !important;
 }
 
 /* Overlay oscuro por debajo del header, por encima del contenido */
@@ -243,9 +255,9 @@ visibility: hidden;
     ),    
     
     introBox(
-      actionButton("help", "Press for instructions"),
+      actionButton("help", "Ayuda"),
       data.step = 3,
-      data.intro = "This is a button",
+      data.intro = "En todas las páginas encontrará este botón para obtener ayuda sobre el contenido.",
       data.hint = "You can press me"
     ),
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA

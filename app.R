@@ -270,10 +270,8 @@ server <- function(input, output, session) {
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
   
   observeEvent(input$help,
-               introjs(session, options = list("nextLabel"="Onwards and Upwards",
-                                               "prevLabel"="Did you forget something?",
-                                               "skipLabel"="Don't be a quitter"),
-                       events = list("oncomplete"=I('alert("Glad that is over")')))
+               introjs(session, options = list("nextLabel"="Siguiente",
+                                               "prevLabel"="Anterior"))
   )
 
   
