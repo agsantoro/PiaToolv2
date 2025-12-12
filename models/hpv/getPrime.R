@@ -108,7 +108,6 @@ getPrime = function (
   cancerDisabilitiesPreVac = ceCx16_18MortalityPreVac * lifeTable$Ex
   
   cancerDisabilitiesPreVacDisc = ceCx16_18MortalityPreVacDisc * lifeTable$ExDisc
-  
   dalysNonFatal = (DALYsForCancerDiagnosis+parameters$`DALYs for cancer sequelae year`[parameters$Country==country]*4)
   dalysFatal = (DALYsForTerminalCancer+DALYsForCancerDiagnosis)
   dalysNonFatalDisc = DALYsForCancerDiagnosis+DALYsForNonTerminalCancerSequelaePperYear*(1/(1+discountRate)+1/(1+discountRate)^2+1/(1+discountRate)^3+1/(1+discountRate)^4)
