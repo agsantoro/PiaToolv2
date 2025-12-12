@@ -1,5 +1,31 @@
 landing_page <- div(
-  
+  tags$script(HTML("
+  // ========================
+  // Cerrar IntroJS al click fuera
+  // ========================
+  document.addEventListener('click', function(e) {
+    // Si el click ocurre dentro del tooltip, no cerrar
+    if (e.target.closest && e.target.closest('.introjs-tooltip')) return;
+
+    // Si el click ocurre en el overlay, cerrar el tour
+    if (e.target.classList.contains('introjs-overlay') ||
+        (e.target.closest && e.target.closest('.introjs-overlay'))) {
+
+      if (window.introJs) {
+        window.introJs().exit();
+      }
+    }
+  });
+
+  // ========================
+  // Cerrar con tecla ESC
+  // ========================
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && window.introJs) {
+      window.introJs().exit();
+    }
+  });
+")),
   tags$style(
     "
     body {
@@ -43,23 +69,59 @@ landing_page <- div(
     }
     
     /* Estilos para el header fijo */
-    .fixed-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(16, 51, 98, 0.1);
-      z-index: 1020;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-sizing: border-box;
+   .fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
+  z-index: 2000; /* Suficientemente alto, pero no rompe IntroJS */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+   }
+.introjs-hint {
+visibility: hidden;
+}
+
+.introjs-helperLayer,
+.introjs-tooltipReferenceLayer,
+.introjs-showElement {
+  z-index: 3000 !important;  /* mayor que el header */
+}
+
+/* Overlay oscuro por debajo del header, por encima del contenido */
+    .introjs-overlay {
+      pointer-events: auto !important;
+      z-index: 4000 !important;
     }
-    
+
+/* Capa que resalta el elemento (highlight) */
+.introjs-helperLayer {
+  z-index: 5000 !important;
+  box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px,
+              rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
+}
+
+/* Elemento destacado */
+.introjs-showElement {
+  z-index: 6000 !important;
+}
+
+/* Capa base del tooltip */
+.introjs-tooltipReferenceLayer {
+  z-index: 7000 !important;
+}
+
+/* Tooltip de IntroJS – SIEMPRE arriba de todo */
+.introjs-tooltip {
+  z-index: 8000 !important;
+}    
     .header-logo {
       height: 50px;
       width: auto;
@@ -145,12 +207,7 @@ landing_page <- div(
         tags$a(href = "", "Inglés"),
         " | ", # El separador de texto simple
         tags$a(href = "", "Portugués")
-      ),
-      data.step = 2,
-      data.intro = "This is a slider",
-      data.hint = "You can slide me"
-      
-      
+      )
     )
     
   ),
@@ -178,17 +235,16 @@ landing_page <- div(
          class = "animate-left",
          style = "margin-bottom: 40px; 
                   opacity: 0.9;width: 60%; 
-                  margin-top: 0; 
+                  margin-top: 20px; 
                   margin-left: auto;
             margin-right: auto;"),
-      data.step = 2,
-      data.intro = "dsda",
-      data.hint = "ffff"
+      data.step = 1,
+      data.intro = "Bienvenido/a al PIATools ! Para un tutorial de la herramienta, presione siguiente."
     ),    
     
     introBox(
       actionButton("help", "Press for instructions"),
-      data.step = 4,
+      data.step = 3,
       data.intro = "This is a button",
       data.hint = "You can press me"
     ),
@@ -260,11 +316,13 @@ landing_page <- div(
         # ),
         
         
+        
       ),
-      data.step = 1,
-      data.intro = "Acá se seleccionan los modelos",
-      data.hint = "fff"
+      data.step = 2,
+      data.intro = "En cada una de estas tarjetas se pueden ver los títulos de las intervenciones y un breve resúmen del  modelo empleado. Para comenzar a utilizar los modelos, haga click en la tarjeta correspondiente."
+      
     )
+      
     
   ),
   
