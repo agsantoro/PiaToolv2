@@ -283,6 +283,7 @@ server <- function(input, output, session) {
   hepC_map_inputs = reactiveVal()
   hpp_map_inputs = reactiveVal()
   prep_map_inputs = reactiveVal()
+  sifilis_map_inputs = reactiveVal()
   
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)

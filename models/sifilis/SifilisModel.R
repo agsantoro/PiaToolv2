@@ -1,4 +1,3 @@
-
 library(readxl)
 library(dplyr)
 library(tidyr)
@@ -6,6 +5,8 @@ library(stringr)
 library(tibble)
 
 MAX_AÑOS_MUERTES <- 5
+
+
 
 formatear_pesos <- function(x, decimales = 0) {
   if (is.numeric(x)){
@@ -537,14 +538,36 @@ correrModelo <- function(parametros) {
 }
 #cargarDatos()
 #print("Datos cargados.")
-cargar <- function() {
-    
-  data <- read_excel("lparametros.xlsx", sheet = "parametros")
-  View(data)
-  datafiltrada <- data[data$Pais %in% c("ARGENTINA", "GLOBAL"), ]
+cargar <- function(country) {
+  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "parametros")
+  datafiltrada <- data[data$Pais %in% c(country, "GLOBAL"), ]
   PARAMETROS <- as.list(datafiltrada$Valor)
   names(PARAMETROS) <- datafiltrada$Parametro  
-  
-  print(PARAMETROS$pRTPSensibilidad)
   return(PARAMETROS)
 }
+
+
+##### para shiny #####
+
+sifilisInputList = function(country) {
+  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "Clasificacion Parametros", col_names = F)
+  colnames(data) = c("grupo","var","label","tipo")
+  data$porc = F
+  data$porc[substring(data$var,1,1) == "p"] = T
+  data[data$tipo!="No incluido",]
+}
+
+params = cargar("ARGENTINA")
+
+paramsRunSifilis <- lapply(names(params), function(i) {
+  if (i %in% sifilisInputList("ARGENTINA")$var) {
+    "traer de input[[i]]"
+  } else {
+    "traer de params[[i]]"
+  }
+})
+
+
+# la corrida sería:
+# run_sifilis = correrModelo(paramsRunSifilis)
+
