@@ -1,5 +1,31 @@
 landing_page <- div(
-  
+  tags$script(HTML("
+  // ========================
+  // Cerrar IntroJS al click fuera
+  // ========================
+  document.addEventListener('click', function(e) {
+    // Si el click ocurre dentro del tooltip, no cerrar
+    if (e.target.closest && e.target.closest('.introjs-tooltip')) return;
+
+    // Si el click ocurre en el overlay, cerrar el tour
+    if (e.target.classList.contains('introjs-overlay') ||
+        (e.target.closest && e.target.closest('.introjs-overlay'))) {
+
+      if (window.introJs) {
+        window.introJs().exit();
+      }
+    }
+  });
+
+  // ========================
+  // Cerrar con tecla ESC
+  // ========================
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && window.introJs) {
+      window.introJs().exit();
+    }
+  });
+")),
   tags$style(
     "
     body {
@@ -43,23 +69,71 @@ landing_page <- div(
     }
     
     /* Estilos para el header fijo */
-    .fixed-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(16, 51, 98, 0.1);
-      z-index: 1020;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-sizing: border-box;
+   .fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
+  z-index: 2000; /* Suficientemente alto, pero no rompe IntroJS */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+   }
+.introjs-hint {
+visibility: hidden;
+}
+
+.introjs-helperLayer,
+.introjs-tooltipReferenceLayer,
+.introjs-showElement {
+  z-index: 3000 !important;  /* mayor que el header */
+  
+}
+
+.introjs-tooltip {
+background: #ffffff !important;
+  color: #2c3e50 !important;
+  padding: 25px 30px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+  max-width: 420px !important;
+  font-family: 'Roboto', sans-serif !important;
+  border: 1px solid rgba(16,51,98,0.1) !important;
+}
+
+/* Overlay oscuro por debajo del header, por encima del contenido */
+    .introjs-overlay {
+      pointer-events: auto !important;
+      z-index: 4000 !important;
     }
-    
+
+/* Capa que resalta el elemento (highlight) */
+.introjs-helperLayer {
+  z-index: 5000 !important;
+  box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px,
+              rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
+}
+
+/* Elemento destacado */
+.introjs-showElement {
+  z-index: 6000 !important;
+}
+
+/* Capa base del tooltip */
+.introjs-tooltipReferenceLayer {
+  z-index: 7000 !important;
+}
+
+/* Tooltip de IntroJS – SIEMPRE arriba de todo */
+.introjs-tooltip {
+  z-index: 8000 !important;
+}    
     .header-logo {
       height: 50px;
       width: auto;
@@ -110,7 +184,7 @@ landing_page <- div(
     
     # Imagen izquierda
     img(
-      src = "iecslogo.png",  # Reemplaza con la ruta de tu imagen
+      src = "ops.png",  # Reemplaza con la ruta de tu imagen
       alt = "Logo izquierdo",
       class = "header-logo"
     ),
@@ -145,12 +219,7 @@ landing_page <- div(
         tags$a(href = "", "Inglés"),
         " | ", # El separador de texto simple
         tags$a(href = "", "Portugués")
-      ),
-      data.step = 2,
-      data.intro = "This is a slider",
-      data.hint = "You can slide me"
-      
-      
+      )
     )
     
   ),
@@ -178,18 +247,17 @@ landing_page <- div(
          class = "animate-left",
          style = "margin-bottom: 40px; 
                   opacity: 0.9;width: 60%; 
-                  margin-top: 0; 
+                  margin-top: 20px; 
                   margin-left: auto;
             margin-right: auto;"),
-      data.step = 2,
-      data.intro = "dsda",
-      data.hint = "ffff"
+      data.step = 1,
+      data.intro = "Bienvenido/a al PIATools ! Para un tutorial de la herramienta, presione siguiente."
     ),    
     
     introBox(
-      actionButton("help", "Press for instructions"),
-      data.step = 4,
-      data.intro = "This is a button",
+      actionButton("help", "Ayuda"),
+      data.step = 3,
+      data.intro = "En todas las páginas encontrará este botón para obtener ayuda sobre el contenido.",
       data.hint = "You can press me"
     ),
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
@@ -230,21 +298,21 @@ landing_page <- div(
         ),
         menuBox(
           title = "Tratamiento para la hepatitis C crónica",
-          text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica. Mediante la modificación de parámetros como la efectividad del tratamiento antiviral y los costos del mismo, podrá calcular indicadores como la cantidad de cirrosis, de carcinomas hepatocelulares y de muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica.",
           iconType = "virus",
           iconColor = "#2C5F8B",
           linkTo = "hepC"
         ),
         menuBox(
           title = "Uso de oxitocina para la prevención de la hemorragia post parto",
-          text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma. Con este modelo podrá calcular indicadores como la cantidad de hemorragias postparto evitadas, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma.",
           iconType = "baby",
           iconColor = "#2C5F8B",
           linkTo = "hpp"
         ),
         menuBox(
           title = "Profilaxis pre exposición (PrEP) para VIH",
-          text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP. Con este modelo podrá obtener indicadores como la cantidad de casos de VIH evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP.",
           iconType = "pills",
           iconColor = "#2C5F8B",
           linkTo = "prep"
@@ -260,11 +328,13 @@ landing_page <- div(
         # ),
         
         
+        
       ),
-      data.step = 1,
-      data.intro = "Acá se seleccionan los modelos",
-      data.hint = "fff"
+      data.step = 2,
+      data.intro = "En cada una de estas tarjetas se pueden ver los títulos de las intervenciones y un breve resúmen del  modelo empleado. Para comenzar a utilizar los modelos, haga click en la tarjeta correspondiente."
+      
     )
+      
     
   ),
   

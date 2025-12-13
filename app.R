@@ -100,67 +100,60 @@ ui <- fluidPage(
       opacity: 1;
     }
   }
-  .introjs-hint {
-  visibility: hidden !important;
-  }
-  
-  .introjs-showElement {
-  z-index: 10 !important;
-  }
-  
-  .introjs-tooltipReferenceLayer {
-  z-index: 10 !important;
-  }
   
   
   .animate-left {
     animation: slideInLeft 1s ease-out;
   }
   
-  .introjs-tooltiptext {
-    background-color: red;
-  
-  
-  }
-  
-  
-  .introjs-helperLayer {
-     box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
-    width: 831.6px;
-    height: 685.7px;
-    top: 314px;
-    left: -5px;
-    opacity: 1;
-    z-index: 10 !important;
-  }
   
   
   
-  /* Ícono fijo abajo a la derecha */
-      .fixed-icon {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background: rgba(70, 130, 180, 0.7);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        z-index: 100000;
-      }
-      
-      .fixed-icon:hover {
-        background: rgba(70, 130, 180, 0.9);
-      }
-      
-      .fixed-icon i {
-        color: white;
-        font-size: 28px;
-      }
+  /* --- HEADER --- */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
+  z-index: 999999999 !important;  /* siempre arriba */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+  pointer-events: auto !important;
+}
+
+/* --- INTROJS FIX PARA NO TAPAR EL HEADER --- */
+
+/* El overlay oscuro NO debe tapar al header */
+.introjs-overlay {
+  z-index: 999999990 !important;  
+}
+
+/* La capa que resalta el elemento tampoco debe tapar al header */
+.introjs-helperLayer {
+  z-index: 999999991 !important;
+}
+
+/* La referencia del tooltip tampoco */
+.introjs-tooltipReferenceLayer {
+  z-index: 999999992 !important;
+}
+
+/* El elemento enfocado */
+.introjs-showElement {
+  z-index: 999999993 !important;
+}
+
+/* El tooltip SÍ debe aparecer arriba del header */
+.introjs-tooltip {
+  z-index: 999999999 !important;
+}
       
       /* Modal elegante */
 .elegant-modal {
@@ -256,6 +249,8 @@ ui <- fluidPage(
     });
   ")),
   
+  
+  
   # Contenido principal sin margen adicional para páginas completas
   router_ui(
     route("/", landing_page),
@@ -271,16 +266,16 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   router_server()
   
-  
-  
-  observeEvent(input$help,
-               introjs(session, options = list("nextLabel"="Siguiente"
-                                               ),
-                       events = list("oncomplete"=I('alert("Glad that is over")')))
-  )
-  
   hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
+  
+  observeEvent(input$help,
+               introjs(session, options = list("nextLabel"="Siguiente",
+                                               "prevLabel"="Anterior"))
+  )
+
+  
+  
   
   hearts_map_inputs = reactiveVal()
   hpv_map_inputs = reactiveVal()
