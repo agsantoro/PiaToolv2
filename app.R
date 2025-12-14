@@ -36,6 +36,9 @@ source("models/hpp/funciones/funciones.R")
 source("models/prep/UI/UI_prep.R")
 source("models/prep/fn_prep4.R")
 
+source("models/sifilis/UI/UI_sifilis.R")
+source("models/sifilis/SifilisModel.R")
+
 source("functions/graf_esc.R")
 
 source("visualization functions/indicatorsList.R")
@@ -58,6 +61,7 @@ source("pages/tbc_page.R")
 source("pages/hepC_page.R")
 source("pages/hpp_page.R")
 source("pages/prep_page.R")
+source("pages/sifilis_page.R")
 
 # Definir las páginas
 
@@ -259,7 +263,9 @@ ui <- fluidPage(
     route("tbc", tbc_page),
     route("hepC", hepC_page),
     route("hpp", hpp_page),
-    route("prep", prep_page)
+    route("prep", prep_page),
+    route("sifilis", sifilis_page)
+    
   )
 )
 
@@ -727,6 +733,55 @@ server <- function(input, output, session) {
     })
   })
 
+  
+  
+  
+  
+  
+  ##### SIFILIS #####
+  
+  sifilis_run = reactive({
+    if (is.null(input$country) == F) {
+      
+      
+      
+      params = cargar(input$country)
+      inputsCountry = sifilisInputList()
+      
+      paramsRunSifilis <- lapply(inputsCountry$var, function(i) {
+        if (inputsCountry$tipo[inputsCountry$var == i] %in% c("Avanzado", "Basico")) {
+          input[[i]]
+        } else {
+          params[[i]]
+        }
+      })
+      
+      names(paramsRunSifilis) = inputsCountry$var
+      correrModelo(paramsRunSifilis)
+      
+    }
+  })
+
+  
+  ##### outputs prep #####
+  
+  output$inputs_sifilis = renderUI({
+    UI_sifilis(input, sifilis_map_inputs)
+  })
+  
+  observeEvent(input$sifilis_go, {
+   
+  toggle("resultados_sifilis")
+   output$resultados_sifilis = renderUI({
+     tagList(
+       ui_resultados_sifilis(input, output, sifilis_run())
+     )
+   })
+  
+   lapply(c("inputContainer",sifilis_map_inputs()$i_names), function (i) {
+     disable(i)
+   })
+  })
 
 
   
@@ -778,6 +833,14 @@ server <- function(input, output, session) {
   onclick("new_scenario_btn_prep", {
     hide("resultados_prep")
     lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  # sifilis
+  onclick("new_scenario_btn_sifilis", {
+    hide("resultados_sifilis")
+    lapply(c("inputContainer",sifilis_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })

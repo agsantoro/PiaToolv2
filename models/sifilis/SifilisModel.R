@@ -549,25 +549,20 @@ cargar <- function(country) {
 
 ##### para shiny #####
 
-sifilisInputList = function(country) {
+sifilisInputList = function() {
   data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "Clasificacion Parametros", col_names = F)
   colnames(data) = c("grupo","var","label","tipo")
   data$porc = F
   data$porc[substring(data$var,1,1) == "p"] = T
-  data[data$tipo!="No incluido",]
+  data
 }
-
-params = cargar("ARGENTINA")
-
-paramsRunSifilis <- lapply(names(params), function(i) {
-  if (i %in% sifilisInputList("ARGENTINA")$var) {
-    "traer de input[[i]]"
-  } else {
-    "traer de params[[i]]"
-  }
-})
 
 
 # la corrida sería:
 # run_sifilis = correrModelo(paramsRunSifilis)
+
+#par = cargar("ARGENTINA")
+
+
+
 
