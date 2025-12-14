@@ -115,7 +115,6 @@ ui <- fluidPage(
   
   
   
-  
   /* --- HEADER --- */
 .fixed-header {
   position: fixed;
@@ -160,8 +159,11 @@ ui <- fluidPage(
 /* El tooltip SÍ debe aparecer arriba del header */
 .introjs-tooltip {
   z-index: 999999999 !important;
+  
 }
-      
+
+
+
       /* Modal elegante */
 .elegant-modal {
   display: none;

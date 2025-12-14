@@ -97,7 +97,7 @@ visibility: hidden;
 }
 
 .introjs-tooltip {
-background: #ffffff !important;
+
   color: #2c3e50 !important;
   padding: 25px 30px !important;
   border-radius: 14px !important;
