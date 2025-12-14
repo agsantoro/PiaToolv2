@@ -176,6 +176,53 @@ background: #ffffff !important;
     .main-content {
       margin-top: 80px; /* Espacio para el header fijo */
     }
+    
+    
+    .floating-btn {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    #help.floating-btn  {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    
+    .floating-btn:hover {
+      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Para el botón principal que no tiene el texto del icono */
+    .floating-btn .fa {
+      margin: 0 !important;
+    }
     "
   ),
   
@@ -211,12 +258,23 @@ background: #ffffff !important;
       data.intro = "Bienvenido/a al PIATools ! Para un tutorial de la herramienta, presione siguiente."
     ),    
     
-    introBox(
-      actionButton("help", "Ayuda"),
-      data.step = 3,
-      data.intro = "En todas las páginas encontrará este botón para obtener ayuda sobre el contenido.",
-      data.hint = "You can press me"
-    ),
+    div(
+      class = "floating-buttons-container",
+      introBox(
+        
+        actionButton(
+          inputId = "help",
+          label = NULL,
+          icon = icon("question"),
+          class = "floating-btn",
+          title = "Ayuda de navegación"
+        ),
+        data.step = 3,
+        data.intro = "En todas las páginas encontrará este botón para obtener ayuda sobre el contenido.",
+        data.hint = "You can press me"
+      )
+      ),
+    
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
     introBox(
       div(

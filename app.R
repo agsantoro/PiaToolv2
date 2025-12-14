@@ -87,9 +87,6 @@ ui <- fluidPage(
   tags$style(
     
     "
-    [role='button'] {
-    background-color: violet !important;
-    }
     
     body {font-family: 'Roboto', sans-serif !important;}
     
