@@ -83,7 +83,9 @@ ui <- fluidPage(
   tags$style(
     
     "
-    
+    [role='button'] {
+    background-color: violet !important;
+    }
     
     body {font-family: 'Roboto', sans-serif !important;}
     
@@ -435,7 +437,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
@@ -501,7 +503,7 @@ server <- function(input, output, session) {
       
     })
     
-    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
@@ -565,7 +567,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
@@ -632,7 +634,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
@@ -685,7 +687,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
@@ -728,7 +730,7 @@ server <- function(input, output, session) {
     })
 
 
-    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
@@ -778,7 +780,7 @@ server <- function(input, output, session) {
      )
    })
   
-   lapply(c("inputContainer",sifilis_map_inputs()$i_names), function (i) {
+   lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
      disable(i)
    })
   })
@@ -792,7 +794,7 @@ server <- function(input, output, session) {
   # hearts
   onclick("new_scenario_btn_hearts", {
     hide("resultados_hearts")
-    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -800,7 +802,7 @@ server <- function(input, output, session) {
   # hpv
   onclick("new_scenario_btn_hpv", {
     hide("resultados_hpv")
-    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -808,7 +810,7 @@ server <- function(input, output, session) {
   # tbc
   onclick("new_scenario_btn_tbc", {
     hide("resultados_tbc")
-    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -816,7 +818,7 @@ server <- function(input, output, session) {
   # hepC
   onclick("new_scenario_btn_hepC", {
     hide("resultados_hepC")
-    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -824,7 +826,7 @@ server <- function(input, output, session) {
   # hpp
   onclick("new_scenario_btn_hpp", {
     hide("resultados_hpp")
-    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -832,7 +834,7 @@ server <- function(input, output, session) {
   # prep
   onclick("new_scenario_btn_prep", {
     hide("resultados_prep")
-    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -840,7 +842,7 @@ server <- function(input, output, session) {
   # sifilis
   onclick("new_scenario_btn_sifilis", {
     hide("resultados_sifilis")
-    lapply(c("inputContainer",sifilis_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
