@@ -318,9 +318,9 @@ background: #ffffff !important;
           linkTo = "prep"
         ),
         menuBox(
-          title = "Sifilis",
-          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          iconType = "pills",
+          title = "Tests rápidos en punto de cuidado para sífilis gestacional",
+          text = "Este modelo permite evaluar el impacto de la incorporación de test rápidos en el proceso de diagnóstico y tratamiento oportuno de la sífilis en gestantes. El modelo contrasta un escenario basal (pruebas convencionales) con un escenario alternativo (test rápidos) para estimar las variaciones en los resultados de salud adversos en el producto de la gestación, así como en los años de vida ajustados por discapacidad y los costos en salud asociados.",
+          iconType = "vial",
           iconColor = "#2C5F8B",
           linkTo = "sifilis"
         )

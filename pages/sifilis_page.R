@@ -332,12 +332,12 @@ sifilis_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
           
-          icon("lungs", style = "
+          icon("vial", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
           
-          h2("Sifilis", 
+          h2("Tests rápidos en punto de cuidado para Sífilis Gestacional", 
              style = "margin: 0; font-size: 1.5em; font-weight: 500; color: #2C5F8B;")
         ),
         
@@ -411,7 +411,7 @@ sifilis_page <- div(
         margin-bottom: 20px; /* Separación del gráfico de resultados */
         border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
       ",
-        p("Pharetra rutrum torquent tortor magnis dis a sodales lacinia maecenas, ornare cum tempor senectus ac hac ridiculus tellus cursus, aenean malesuada sed nullam vivamus class mattis ultricies. Dis convallis est leo commodo dapibus phasellus felis congue at, cum ridiculus euismod non venenatis himenaeos integer tempus purus placerat, sodales et habitasse praesent etiam vel id vehicula. Eu hac aliquam fusce nec nulla maecenas suscipit litora malesuada penatibus phasellus vitae habitasse lectus, justo sapien ut tempor tristique a accumsan ligula orci natoque nascetur tellus aenean, neque nisi nibh cras sodales turpis condimentum ac hendrerit ad magna lobortis tempus.",
+        p("Este modelo permite evaluar el impacto de la incorporación de test rápidos en el proceso de tamizaje y tratamiento oportuno de la sífilis en gestantes. Lo anterior se logra modificando parámetros clave, como la prevalencia de sífilis gestacional y el porcentaje de embarazadas que recibem tratamiento. El modelo contrasta un escenario basal (pruebas convencionales) con un escenario alternativo (test rápidos) para estimar las variaciones en los resultados de salud adversos en el producto de la gestación (sífilis congénita, muertes neonatales y mortinatos), así como en los años de vida ajustados por discapacidad (AVAD) y los costos en salud asociados.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
