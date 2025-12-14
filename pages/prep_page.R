@@ -417,22 +417,7 @@ prep_page <- div(
       
     )
   ),
-  div(
-    style = "
-    background: linear-gradient(135deg, #2C5F8B 0%, #1a3a5c 100%);
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-    margin-top: 0;
-    font-size: 0.65em;
-    width: 100%;", # Asegura que el footer se extienda a lo ancho
-    tags$p(
-      
-      as.character(format(Sys.Date(), "%Y")), # Obtiene el año actual dinámicamente
-      " IECS. Todos los derechos reservados.",
-      style = "margin: 0;"
-    )
-  ),
+  getFooter(landing=F),
   
   # Contenedor de botones flotantes (AÑADIDO)
   div(
