@@ -41,6 +41,9 @@ source("models/sifilis/SifilisModel.R")
 
 source("functions/graf_esc.R")
 
+
+source("visualization functions/getHeader.R")
+
 source("visualization functions/indicatorsList.R")
 source("visualization functions/menuBox.R")
 source("visualization functions/plotBox.R")
