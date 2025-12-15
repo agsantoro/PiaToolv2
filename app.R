@@ -136,9 +136,16 @@ ui <- fluidPage(
 
 /* --- INTROJS FIX PARA NO TAPAR EL HEADER --- */
 
-/* El overlay oscuro NO debe tapar al header */
+/* El overlay oscuro debe permitir clicks */
 .introjs-overlay {
-  z-index: 999999990 !important;  
+  z-index: 999999990 !important;
+  pointer-events: auto !important;  /* Asegura que pueda recibir clicks */
+  cursor: pointer !important;
+}
+
+/* Asegura que el header no interfiera con los clicks del overlay */
+.fixed-header {
+  pointer-events: auto !important;
 }
 
 /* La capa que resalta el elemento tampoco debe tapar al header */
@@ -283,7 +290,8 @@ server <- function(input, output, session) {
   observeEvent(input$help,
                introjs(session, options = list("nextLabel"="Siguiente",
                                                "prevLabel"="Anterior",
-                                               "exitOnOverlayClick" = TRUE,
+                                               "doneLabel"="Cerrar",
+                                               
                                                "exitOnEsc" = TRUE))
   )
 

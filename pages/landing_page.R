@@ -107,11 +107,25 @@ visibility: hidden;
   border: 1px solid rgba(16,51,98,0.1) !important;
 }
 
-/* Overlay oscuro por debajo del header, por encima del contenido */
-    .introjs-overlay {
-      pointer-events: auto !important;
-      z-index: 4000 !important;
-    }
+.introjs-overlay {
+    pointer-events: auto !important;
+    z-index: 4000 !important;
+    cursor: pointer !important;
+  }
+  
+  /* Bloquear todos los enlaces durante el tour */
+  body:has(.introjs-overlay) a:not(.introjs-tooltip a) {
+    pointer-events: none !important;
+    cursor: default !important;
+    opacity: 0.7;
+  }
+  
+  /* Permitir clicks solo en el elemento destacado */
+  .introjs-showElement a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+  }
 
 /* Capa que resalta el elemento (highlight) */
 .introjs-helperLayer {
