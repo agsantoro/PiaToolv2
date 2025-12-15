@@ -282,7 +282,9 @@ server <- function(input, output, session) {
   
   observeEvent(input$help,
                introjs(session, options = list("nextLabel"="Siguiente",
-                                               "prevLabel"="Anterior"))
+                                               "prevLabel"="Anterior",
+                                               "exitOnOverlayClick" = TRUE,
+                                               "exitOnEsc" = TRUE))
   )
 
   
