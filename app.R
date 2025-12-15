@@ -45,17 +45,7 @@ source("functions/graf_esc.R")
 source("visualization functions/getHeader.R")
 source("visualization functions/getFooter.R")
 source("visualization functions/getHelp.R")
-
-source("visualization functions/indicatorsList.R")
 source("visualization functions/menuBox.R")
-source("visualization functions/plotBox.R")
-source("visualization functions/comparisonChart.R")
-source("visualization functions/getPalette.R")
-source("visualization functions/gapsChart.R")
-source("visualization functions/ratesRatio.R")
-source("visualization functions/ratesDifferences.R")
-source("visualization functions/rmsCalculate.R")
-source("visualization functions/modalText.R")
 
 source("functions/getStyle.R")
 
@@ -308,110 +298,6 @@ server <- function(input, output, session) {
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
   
-  output$modalContent = renderUI({
-    current_page = get_page()
-    modalText(current_page)$content
-    
-  })
-  
-  output$modalTitle = renderUI({
-    current_page = get_page()
-    modalText(current_page)$title
-    
-  })
-  
-  outputOptions(output, "modalContent", suspendWhenHidden = FALSE)
-  outputOptions(output, "modalTitle", suspendWhenHidden = FALSE)
-  
-  
-  
-  observeEvent(input$geo, {
-    if (input$geo == "Jurisdicciones") {
-      updateSelectInput(session,"area",choices = labels_provincia, selected = "01")
-    } else {
-      updateSelectInput(session,"area",choices = labels_region, selected = labels_region[1])
-    }
-  })
-  
-  
-  # datosFiltrados = reactive({
-  #   
-  #   causaSeleccionada = input$causas
-  #   
-  #   if (input$geo == "Jurisdicciones") {
-  #     dataset = dataMortProv
-  #     area = "provincia"
-  #   } else {
-  #     area = "region"
-  #     dataset = dataMortReg
-  #   }
-  #   
-  #   if (length(causaSeleccionada)>0){
-  #     data = dataset %>% dplyr::filter(causa == causaSeleccionada)
-  #   } else {data=data.frame()}
-  #   
-  #   data
-  #   
-  # })
-  
-  output$comparisonChart = renderApexchart({
-    comparisonChart()
-  })
-  
-  output$map = renderLeaflet({
-    leaflet() %>% addTiles() %>% 
-      setView(lng = 144, lat = -37, zoom = 09)
-  })
-  
-  
-  output$grafico = renderUI({
-    
-    if (get_page(session = shiny::getDefaultReactiveDomain()) == "chart") {
-      comparisonChart(
-        input,
-        output,
-        datosFiltrados,
-        indicatorsList,
-        labels_provincia,
-        labels_region,
-        labels_sexo, 
-        diferenciaTasas)
-      
-    }
-  })
-  
-  output$gaps = renderUI({
-    if (length(input$causas)>0) {
-      gapsChart(
-        input,
-        output,
-        session,
-        datosFiltrados,
-        labels_provincia,
-        labels_region,
-        labels_sexo, 
-        ratesRatio, 
-        ratesDifferences,
-        firstTimeGaps
-      )
-    } else {
-      HTML("<strong>Advertencia: </strong><br>Debe seleccionar al menos un grupo de causas de muerte")
-    }
-    
-  })
-  
-  output$mapa = renderLeaflet({
-    
-    if (length(input$causas)>0) {
-      trienio = input$trienio
-      causa = input$causas
-      map = rmsCalculate(input,trienio, causa, "cuartiles")
-      map 
-    } else {
-      return()
-    }
-    })
-  
   
   ##### HEARTS #####
   
@@ -454,7 +340,6 @@ server <- function(input, output, session) {
       
     })
   })
-  
   
   ##### HPV #####
   
@@ -521,8 +406,6 @@ server <- function(input, output, session) {
     })
   })
   
-  
-  
   ##### TBC #####
   
   tbc_run <- reactive({
@@ -585,9 +468,6 @@ server <- function(input, output, session) {
     })
   })
   
-  
-  
-  
   ##### HEPATITIS C #####
   
   hepC_run = reactive({
@@ -630,7 +510,6 @@ server <- function(input, output, session) {
     
   })
   
-  
   ##### outputs hep c #####
   
   output$inputs_hepC = renderUI({
@@ -650,8 +529,6 @@ server <- function(input, output, session) {
       disable(i)
     })
   })
-  
-  
   
   ##### HPP #####
   
@@ -682,8 +559,6 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
   ##### outputs hpp #####
   
   output$inputs_hpp = renderUI({
@@ -704,12 +579,6 @@ server <- function(input, output, session) {
     })
   })
   
-  
-  
-  
-  
-  
-  
   ##### PREP #####
   
   prep_run = reactive({
@@ -725,7 +594,6 @@ server <- function(input, output, session) {
       resultados
     }
   })
-  
   
   ##### outputs prep #####
   
@@ -746,11 +614,6 @@ server <- function(input, output, session) {
       disable(i)
     })
   })
-
-  
-  
-  
-  
   
   ##### SIFILIS #####
   
@@ -796,10 +659,6 @@ server <- function(input, output, session) {
      disable(i)
    })
   })
-
-
-  
-  
   
   ##### ONCLICK #####
   

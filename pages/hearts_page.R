@@ -1,11 +1,6 @@
 library(shiny)
 library(htmltools)
 
-# Carga de datos (asumiendo que los archivos existen en el entorno de ejecución)
-load("data/dataMortReg.rda")
-load("data/dataMortProv.rda")
-load("data/mortalityCauses.rda")
-
 paises_info <- list(
   # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
   "ARGENTINA" = tags$div(
