@@ -44,6 +44,7 @@ source("functions/graf_esc.R")
 
 source("visualization functions/getHeader.R")
 source("visualization functions/getFooter.R")
+source("visualization functions/getHelp.R")
 
 source("visualization functions/indicatorsList.R")
 source("visualization functions/menuBox.R")
@@ -287,13 +288,11 @@ server <- function(input, output, session) {
   hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
   
-  observeEvent(input$help,
-               introjs(session, options = list("nextLabel"="Siguiente",
-                                               "prevLabel"="Anterior",
-                                               "doneLabel"="Cerrar",
-                                               
-                                               "exitOnEsc" = TRUE))
-  )
+  observeEvent(input$help, {
+    pagina_actual <- isolate(get_page())
+    getHelp(pagina_actual, session)
+  })
+  
 
   
   

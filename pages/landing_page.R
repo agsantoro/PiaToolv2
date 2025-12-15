@@ -269,7 +269,8 @@ visibility: hidden;
                   margin-left: auto;
             margin-right: auto;"),
       data.step = 1,
-      data.intro = "Bienvenido/a al PIATools ! Para un tutorial de la herramienta, presione siguiente."
+      data.intro = ""
+      
     ),    
     
     div(
@@ -284,8 +285,7 @@ visibility: hidden;
           title = "Ayuda de navegación"
         ),
         data.step = 3,
-        data.intro = "En todas las páginas encontrará este botón para obtener ayuda sobre el contenido.",
-        data.hint = "You can press me"
+        data.intro = ""
       )
       ),
     
@@ -367,7 +367,7 @@ visibility: hidden;
         
       ),
       data.step = 2,
-      data.intro = "En cada una de estas tarjetas se pueden ver los títulos de las intervenciones y un breve resúmen del  modelo empleado. Para comenzar a utilizar los modelos, haga click en la tarjeta correspondiente."
+      data.intro = ""
       
     )
       

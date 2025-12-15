@@ -277,66 +277,72 @@ hearts_page <- div(
       
       
       # MenuBox con estilo institucional
-      div(
-        style = "
+      introBox(
+        div(
+          style = "
           background: rgba(255, 255, 255, 0.95);
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(44, 95, 139, 0.15);
           padding: 40px;
           width: 100%;
           border: 1px solid rgba(44, 95, 139, 0.1);",
-        
-        div(
-          style = "
+          
+          div(
+            style = "
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 25px;
     gap: 15px;",
-          
-          icon("heart", style = "
+            
+            icon("heart", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
+            
+            h2("Iniciativa HEARTS", 
+               style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
+          ),
           
-          h2("Iniciativa HEARTS", 
-             style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
-        ),
-        
-        # Texto descriptivo
-        p(strong("Seleccione los parámetros del modelo"),
-          style = "
+          # Texto descriptivo
+          p(strong("Seleccione los parámetros del modelo"),
+            style = "
             font-size: 1.05em;
             line-height: 1.6;
             color: #B985A9;
             margin-bottom: 35px;",
-          class = "animate-left"),
-        
-        tags$div(
-          style = "overflow-y: auto; height: 80%; width: 100% !important;",
-          div(
-            id = "inputContainer",
-            pickerInput(
-              inputId = "country",
-              label = "Selecciona un País:",
-              choices = names(paises_con_banderas),
-              selected = "AR", # Argentina por defecto
-              choicesOpt = list(
-                content = unname(paises_con_banderas) # Le pasamos el vector de HTML
-              ),
-              options = list(
-                style = "btn-info", # Estilo elegante (bootstrap)
-                liveSearch = TRUE,  # Permite buscar
-                size = 5           # Muestra 5 elementos antes de scroll
+            class = "animate-left"),
+          
+          tags$div(
+            style = "overflow-y: auto; height: 80%; width: 100% !important;",
+            div(
+              id = "inputContainer",
+              pickerInput(
+                inputId = "country",
+                label = "Selecciona un País:",
+                choices = names(paises_con_banderas),
+                selected = "AR", # Argentina por defecto
+                choicesOpt = list(
+                  content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+                ),
+                options = list(
+                  style = "btn-info", # Estilo elegante (bootstrap)
+                  liveSearch = TRUE,  # Permite buscar
+                  size = 5           # Muestra 5 elementos antes de scroll
+                )
               )
+              ,
+              uiOutput("inputs_hearts")
             )
-            ,
-            uiOutput("inputs_hearts")
           )
-        )
-        
+          
+          
+        ),
+        data.step = 4,
+        data.intro = ""
         
       )
+      
     ),
     
     # PANEL DERECHO (70%) - Fondo limpio y profesional
@@ -424,35 +430,54 @@ hearts_page <- div(
   getFooter(landing=F),
   
   # Contenedor de botones flotantes (AÑADIDO)
-  div(
-    class = "floating-buttons-container",
-    
-    # Botón 1: Guardar Escenario (Encima del de Crear)
-    actionButton(
-      inputId = "save_scenario_btn_hearts",
-      label = NULL,
-      icon = icon("save"), # Icono de disquete (save)
-      class = "floating-btn",
-      title = "Guardar Escenario en Pantalla"
-    ),
-    
-    # Botón 2: Nuevo Escenario
-    actionButton(
-      inputId = "new_scenario_btn_hearts",
-      label = NULL,
-      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
-      class = "floating-btn",
-      title = "Crear Nuevo Escenario"
-    ),
-    
-    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
-    # Usaré un icono de descarga y un ID genérico para este.
-    actionButton(
-      inputId = "fixed_original_btn",
-      label = NULL,
-      icon = icon("download"),
-      class = "floating-btn",
-      title = "Descargar Resultados"
+  
+  
+    div(
+      class = "floating-buttons-container",
+      
+      # Botón 1: Guardar Escenario (Encima del de Crear)
+      introBox(  
+      actionButton(
+        inputId = "save_scenario_btn_hearts",
+        label = NULL,
+        icon = icon("save"), # Icono de disquete (save)
+        class = "floating-btn",
+        title = "Guardar Escenario en Pantalla",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón 2: Nuevo Escenario
+      actionButton(
+        inputId = "new_scenario_btn_hearts",
+        label = NULL,
+        icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+        class = "floating-btn",
+        title = "Crear Nuevo Escenario",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+      # Usaré un icono de descarga y un ID genérico para este.
+      actionButton(
+        inputId = "fixed_original_btn",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        title = "Descargar Resultados",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      
+      actionButton(
+        inputId = "help",
+        label = NULL,
+        icon = icon("question"),
+        class = "floating-btn",
+        title = "Ayuda de navegación",
+        style = "margin-bottom: 6px;"
+      ),
+      data.step = 6,
+      data.intro = ""
     )
   ),
   
