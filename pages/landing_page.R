@@ -352,6 +352,14 @@ visibility: hidden;
           iconType = "vial",
           iconColor = "#2C5F8B",
           linkTo = "sifilis"
+        ),
+        
+        menuBox(
+          title = "Pruebas de amplificación de ácidos nucleicos (NAAT) para diagnóstico de Tuberculosis Pulmonar",
+          text = "Este modelo de cohorte estático simula el proceso diagnóstico y terapéutico de la tuberculosis para evaluar el impacto de la incorporación de las pruebas de amplificación de ácidos nucleicos (NAAT). Lo anterior se logra modificando parámetros clave, como la reducción del retraso diagnóstico y la capacidad de detección temprana de resistencia a fármacos que ofrecen las NAAT. El modelo contrasta un escenario basal (basado en baciloscopia y cultivo) con un escenario alternativo (incorporando NAAT) para estimar las variaciones en los resultados de salud (como el número de casos tratados, muertes por TB y curaciones), así como en los años de vida ajustados por discapacidad (AVAD) y los costos en salud asociados a cada estrategia.",
+          iconType = "lungs-virus",
+          iconColor = "#2C5F8B",
+          linkTo = "naat"
         )
         
         # menuBox(

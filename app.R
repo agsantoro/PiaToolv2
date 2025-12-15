@@ -57,6 +57,7 @@ source("pages/hepC_page.R")
 source("pages/hpp_page.R")
 source("pages/prep_page.R")
 source("pages/sifilis_page.R")
+source("pages/naat_page.R")
 
 # Definir las páginas
 
@@ -267,7 +268,8 @@ ui <- fluidPage(
     route("hepC", hepC_page),
     route("hpp", hpp_page),
     route("prep", prep_page),
-    route("sifilis", sifilis_page)
+    route("sifilis", sifilis_page),
+    route("naat", naat_page)
     
   )
 )
