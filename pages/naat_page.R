@@ -290,12 +290,12 @@ naat_page <- div(
     margin-bottom: 25px;
     gap: 15px;",
             
-            icon("heart", style = "
+            icon("lungs-virus", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
             
-            h2("Iniciativa HEARTS", 
+            h2("Pruebas de amplificación de ácidos nucleicos (NAAT) para diagnóstico de Tuberculosis Pulmonar", 
                style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
           ),
           
