@@ -415,7 +415,7 @@ naat_page <- div(
           # Caja de gráfico con estilo institucional
           div(
             style = "color: #40809C;",
-            h3("En contrucción")
+            h3("En construcción")
           )
           
           #hidden(uiOutput("resultados_hearts"))
