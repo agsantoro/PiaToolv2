@@ -1,11 +1,6 @@
 library(shiny)
 library(htmltools)
 
-# Carga de datos (asumiendo que los archivos existen en el entorno de ejecución)
-load("data/dataMortReg.rda")
-load("data/dataMortProv.rda")
-load("data/mortalityCauses.rda")
-
 paises_info <- list(
   # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
   "ARGENTINA" = tags$div(
@@ -251,49 +246,7 @@ hearts_page <- div(
   ),
   
   # header
-  div(
-    class = "fixed-header",
-    
-    # Imagen izquierda
-    img(
-      src = "iecslogo.png", # Reemplaza con la ruta de tu imagen
-      alt = "Logo izquierdo",
-      class = "header-logo"
-    ),
-    
-    # Contenedor del título con icono home
-    div(
-      class = "header-title-container",
-      
-      # Título centrado
-      h1("Programme Impact Assessment Tool", class = "header-title"),
-      
-      # Icono home con link a landing page
-      tags$a(
-        href = "?page=landing", # Ajusta según tu sistema de navegación
-        onclick = "Shiny.setInputValue('goto_landing', Math.random(), {priority: 'event'});",
-        icon("home", class = "home-icon"),
-        title = "Ir al inicio",
-        style = "text-decoration: none;"
-      )
-    ),
-    
-    # Imagen derecha
-    tags$div(
-      class = "p-2", 
-      # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
-      # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
-      
-      tags$div(
-        class = "text-right text-lg",
-        tags$a(href = "", "Español"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Inglés"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Portugués")
-      )
-    )
-  ),
+  getHeader(homeButton = T),
   
   
   # Contenido principal con layout 40%-60%
@@ -319,66 +272,72 @@ hearts_page <- div(
       
       
       # MenuBox con estilo institucional
-      div(
-        style = "
+      introBox(
+        div(
+          style = "
           background: rgba(255, 255, 255, 0.95);
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(44, 95, 139, 0.15);
           padding: 40px;
           width: 100%;
           border: 1px solid rgba(44, 95, 139, 0.1);",
-        
-        div(
-          style = "
+          
+          div(
+            style = "
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 25px;
     gap: 15px;",
-          
-          icon("heart", style = "
+            
+            icon("heart", style = "
     font-size: 3em; 
     color: #2C5F8B;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
+            
+            h2("Iniciativa HEARTS", 
+               style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
+          ),
           
-          h2("Iniciativa HEARTS", 
-             style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
-        ),
-        
-        # Texto descriptivo
-        p(strong("Seleccione los parámetros del modelo"),
-          style = "
+          # Texto descriptivo
+          p(strong("Seleccione los parámetros del modelo"),
+            style = "
             font-size: 1.05em;
             line-height: 1.6;
             color: #B985A9;
             margin-bottom: 35px;",
-          class = "animate-left"),
-        
-        tags$div(
-          style = "overflow-y: auto; height: 80%; width: 100% !important;",
-          div(
-            id = "inputContainer",
-            pickerInput(
-              inputId = "country",
-              label = "Selecciona un País:",
-              choices = names(paises_con_banderas),
-              selected = "AR", # Argentina por defecto
-              choicesOpt = list(
-                content = unname(paises_con_banderas) # Le pasamos el vector de HTML
-              ),
-              options = list(
-                style = "btn-info", # Estilo elegante (bootstrap)
-                liveSearch = TRUE,  # Permite buscar
-                size = 5           # Muestra 5 elementos antes de scroll
+            class = "animate-left"),
+          
+          tags$div(
+            style = "overflow-y: auto; height: 80%; width: 100% !important;",
+            div(
+              id = "inputContainer",
+              pickerInput(
+                inputId = "country",
+                label = "Selecciona un País:",
+                choices = names(paises_con_banderas),
+                selected = "AR", # Argentina por defecto
+                choicesOpt = list(
+                  content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+                ),
+                options = list(
+                  style = "btn-info", # Estilo elegante (bootstrap)
+                  liveSearch = TRUE,  # Permite buscar
+                  size = 5           # Muestra 5 elementos antes de scroll
+                )
               )
+              ,
+              uiOutput("inputs_hearts")
             )
-            ,
-            uiOutput("inputs_hearts")
           )
-        )
-        
+          
+          
+        ),
+        data.step = 4,
+        data.intro = ""
         
       )
+      
     ),
     
     # PANEL DERECHO (70%) - Fondo limpio y profesional
@@ -463,53 +422,57 @@ hearts_page <- div(
       
     )
   ),
-  div(
-    style = "
-    background: linear-gradient(135deg, #2C5F8B 0%, #1a3a5c 100%);
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-    margin-top: 0;
-    font-size: 0.65em;
-    width: 100%;", # Asegura que el footer se extienda a lo ancho
-    tags$p(
-      
-      as.character(format(Sys.Date(), "%Y")), # Obtiene el año actual dinámicamente
-      " IECS. Todos los derechos reservados.",
-      style = "margin: 0;"
-    )
-  ),
+  getFooter(landing=F),
   
   # Contenedor de botones flotantes (AÑADIDO)
-  div(
-    class = "floating-buttons-container",
-    
-    # Botón 1: Guardar Escenario (Encima del de Crear)
-    actionButton(
-      inputId = "save_scenario_btn_hearts",
-      label = NULL,
-      icon = icon("save"), # Icono de disquete (save)
-      class = "floating-btn",
-      title = "Guardar Escenario en Pantalla"
-    ),
-    
-    # Botón 2: Nuevo Escenario
-    actionButton(
-      inputId = "new_scenario_btn_hearts",
-      label = NULL,
-      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
-      class = "floating-btn",
-      title = "Crear Nuevo Escenario"
-    ),
-    
-    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
-    # Usaré un icono de descarga y un ID genérico para este.
-    actionButton(
-      inputId = "fixed_original_btn",
-      label = NULL,
-      icon = icon("download"),
-      class = "floating-btn",
-      title = "Descargar Resultados"
+  
+  
+    div(
+      class = "floating-buttons-container",
+      
+      # Botón 1: Guardar Escenario (Encima del de Crear)
+      introBox(  
+      actionButton(
+        inputId = "save_scenario_btn_hearts",
+        label = NULL,
+        icon = icon("save"), # Icono de disquete (save)
+        class = "floating-btn",
+        title = "Guardar Escenario en Pantalla",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón 2: Nuevo Escenario
+      actionButton(
+        inputId = "new_scenario_btn_hearts",
+        label = NULL,
+        icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+        class = "floating-btn",
+        title = "Crear Nuevo Escenario",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+      # Usaré un icono de descarga y un ID genérico para este.
+      actionButton(
+        inputId = "fixed_original_btn",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        title = "Descargar Resultados",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      
+      actionButton(
+        inputId = "help",
+        label = NULL,
+        icon = icon("question"),
+        class = "floating-btn",
+        title = "Ayuda de navegación",
+        style = "margin-bottom: 6px;"
+      ),
+      data.step = 6,
+      data.intro = ""
     )
   ),
   

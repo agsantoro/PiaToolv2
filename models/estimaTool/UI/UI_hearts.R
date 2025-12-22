@@ -158,9 +158,14 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
         tags$div(
           
           column(12,
-                 actionButton(
-                   "hearts_go",
-                   icon("play")),
+                 introBox(
+                   actionButton(
+                     "hearts_go",
+                     icon("play")),
+                   data.step = 5,
+                   data.intro = ""
+                 )
+                 ,
                  align = "right")
           
         )

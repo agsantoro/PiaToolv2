@@ -196,7 +196,15 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
                  icon("play")),
                align = "right")
         
-      )
+      ),
+      tags$script(HTML("
+    $('#collapseInputs_hpv').on('show.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-down').addClass('fa-caret-up');
+    });
+    $('#collapseInputs').on('hide.bs.collapse', function () {
+      $('[data-target=\"#collapseInputs_hpv\"] span i').removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+  "))
       )
       
       

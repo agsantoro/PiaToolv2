@@ -1,5 +1,31 @@
 landing_page <- div(
-  
+  tags$script(HTML("
+  // ========================
+  // Cerrar IntroJS al click fuera
+  // ========================
+  document.addEventListener('click', function(e) {
+    // Si el click ocurre dentro del tooltip, no cerrar
+    if (e.target.closest && e.target.closest('.introjs-tooltip')) return;
+
+    // Si el click ocurre en el overlay, cerrar el tour
+    if (e.target.classList.contains('introjs-overlay') ||
+        (e.target.closest && e.target.closest('.introjs-overlay'))) {
+
+      if (window.introJs) {
+        window.introJs().exit();
+      }
+    }
+  });
+
+  // ========================
+  // Cerrar con tecla ESC
+  // ========================
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && window.introJs) {
+      window.introJs().exit();
+    }
+  });
+")),
   tags$style(
     "
     body {
@@ -7,7 +33,7 @@ landing_page <- div(
     }
     
     html {
-  overflow:   scroll
+  overflow:   scroll;
   margin: 0;
   padding;0;
     } 
@@ -43,23 +69,85 @@ landing_page <- div(
     }
     
     /* Estilos para el header fijo */
-    .fixed-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(16, 51, 98, 0.1);
-      z-index: 1020;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-sizing: border-box;
-    }
-    
+   .fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
+  z-index: 2000; /* Suficientemente alto, pero no rompe IntroJS */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+   }
+.introjs-hint {
+visibility: hidden;
+}
+
+.introjs-helperLayer,
+.introjs-tooltipReferenceLayer,
+.introjs-showElement {
+  z-index: 3000 !important;  /* mayor que el header */
+  
+}
+
+.introjs-tooltip {
+
+  color: #2c3e50 !important;
+  padding: 25px 30px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+  max-width: 420px !important;
+  font-family: 'Roboto', sans-serif !important;
+  border: 1px solid rgba(16,51,98,0.1) !important;
+}
+
+.introjs-overlay {
+    pointer-events: auto !important;
+    z-index: 4000 !important;
+    cursor: pointer !important;
+  }
+  
+  /* Bloquear todos los enlaces durante el tour */
+  body:has(.introjs-overlay) a:not(.introjs-tooltip a) {
+    pointer-events: none !important;
+    cursor: default !important;
+    opacity: 0.7;
+  }
+  
+  /* Permitir clicks solo en el elemento destacado */
+  .introjs-showElement a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+  }
+
+/* Capa que resalta el elemento (highlight) */
+.introjs-helperLayer {
+  z-index: 5000 !important;
+  box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px,
+              rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
+}
+
+/* Elemento destacado */
+.introjs-showElement {
+  z-index: 6000 !important;
+}
+
+/* Capa base del tooltip */
+.introjs-tooltipReferenceLayer {
+  z-index: 7000 !important;
+}
+
+/* Tooltip de IntroJS – SIEMPRE arriba de todo */
+.introjs-tooltip {
+  z-index: 8000 !important;
+}    
     .header-logo {
       height: 50px;
       width: auto;
@@ -102,58 +190,57 @@ landing_page <- div(
     .main-content {
       margin-top: 80px; /* Espacio para el header fijo */
     }
+    
+    
+    .floating-btn {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    #help.floating-btn  {
+      /* Estilo general para todos los botones flotantes */
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%; /* Botón circular */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    
+    .floating-btn:hover {
+      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Para el botón principal que no tiene el texto del icono */
+    .floating-btn .fa {
+      margin: 0 !important;
+    }
     "
   ),
   
-  div(
-    class = "fixed-header",
-    
-    # Imagen izquierda
-    img(
-      src = "ops.png",  # Reemplaza con la ruta de tu imagen
-      alt = "Logo izquierdo",
-      class = "header-logo"
-    ),
-    
-    # Contenedor del título con icono home
-    div(
-      class = "header-title-container",
-      
-      # Título centrado
-      h1("Programme Impact Assessment Tool", class = "header-title"),
-      
-      # Icono home con link a landing page
-      # tags$a(
-      #   href = "?page=landing",  # Ajusta según tu sistema de navegación
-      #   onclick = "Shiny.setInputValue('goto_landing', Math.random(), {priority: 'event'});",
-      #   icon("home", class = "home-icon"),
-      #   title = "Ir al inicio",
-      #   style = "text-decoration: none;"
-      # )
-    ),
-    
-    # Imagen derecha
-    tags$div(
-      class = "p-2", 
-      # NOTA: El HTML original tenía id="class"="p-2", lo cual es inválido. 
-      # Asumo que la intención era class="p-2" o id="p-2". He usado class="p-2".
-      
-      tags$div(
-        class = "text-right text-lg",
-        tags$a(href = "", "Español"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Inglés"),
-        " | ", # El separador de texto simple
-        tags$a(href = "", "Portugués")
-      ),
-      data.step = 2,
-      data.intro = "This is a slider",
-      data.hint = "You can slide me"
-      
-      
-    )
-    
-  ),
+  getHeader(homeButton = F),
   
   # Contenido principal con margen superior
   div(
@@ -178,20 +265,30 @@ landing_page <- div(
          class = "animate-left",
          style = "margin-bottom: 40px; 
                   opacity: 0.9;width: 60%; 
-                  margin-top: 0; 
+                  margin-top: 20px; 
                   margin-left: auto;
             margin-right: auto;"),
-      data.step = 2,
-      data.intro = "dsda",
-      data.hint = "ffff"
+      data.step = 1,
+      data.intro = ""
+      
     ),    
     
-    introBox(
-      actionButton("help", "Press for instructions"),
-      data.step = 4,
-      data.intro = "This is a button",
-      data.hint = "You can press me"
-    ),
+    div(
+      class = "floating-buttons-container",
+      introBox(
+        
+        actionButton(
+          inputId = "help",
+          label = NULL,
+          icon = icon("question"),
+          class = "floating-btn",
+          title = "Ayuda de navegación"
+        ),
+        data.step = 3,
+        data.intro = ""
+      )
+      ),
+    
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
     introBox(
       div(
@@ -230,24 +327,39 @@ landing_page <- div(
         ),
         menuBox(
           title = "Tratamiento para la hepatitis C crónica",
-          text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica. Mediante la modificación de parámetros como la efectividad del tratamiento antiviral y los costos del mismo, podrá calcular indicadores como la cantidad de cirrosis, de carcinomas hepatocelulares y de muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica.",
           iconType = "virus",
           iconColor = "#2C5F8B",
           linkTo = "hepC"
         ),
         menuBox(
           title = "Uso de oxitocina para la prevención de la hemorragia post parto",
-          text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma. Con este modelo podrá calcular indicadores como la cantidad de hemorragias postparto evitadas, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma.",
           iconType = "baby",
           iconColor = "#2C5F8B",
           linkTo = "hpp"
         ),
         menuBox(
           title = "Profilaxis pre exposición (PrEP) para VIH",
-          text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP. Con este modelo podrá obtener indicadores como la cantidad de casos de VIH evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP.",
           iconType = "pills",
           iconColor = "#2C5F8B",
           linkTo = "prep"
+        ),
+        menuBox(
+          title = "Tests rápidos en punto de cuidado para sífilis gestacional",
+          text = "Este modelo permite evaluar el impacto de la incorporación de test rápidos en el proceso de diagnóstico y tratamiento oportuno de la sífilis en gestantes. El modelo contrasta un escenario basal (pruebas convencionales) con un escenario alternativo (test rápidos) para estimar las variaciones en los resultados de salud adversos en el producto de la gestación, así como en los años de vida ajustados por discapacidad y los costos en salud asociados.",
+          iconType = "vial",
+          iconColor = "#2C5F8B",
+          linkTo = "sifilis"
+        ),
+        
+        menuBox(
+          title = "Pruebas de amplificación de ácidos nucleicos (NAAT) para diagnóstico de Tuberculosis Pulmonar",
+          text = "Este modelo de cohorte estático simula el proceso diagnóstico y terapéutico de la tuberculosis para evaluar el impacto de la incorporación de las pruebas de amplificación de ácidos nucleicos (NAAT). Lo anterior se logra modificando parámetros clave, como la reducción del retraso diagnóstico y la capacidad de detección temprana de resistencia a fármacos que ofrecen las NAAT.",
+          iconType = "lungs-virus",
+          iconColor = "#2C5F8B",
+          linkTo = "naat"
         )
         
         # menuBox(
@@ -260,123 +372,18 @@ landing_page <- div(
         # ),
         
         
+        
       ),
-      data.step = 1,
-      data.intro = "Acá se seleccionan los modelos",
-      data.hint = "fff"
+      data.step = 2,
+      data.intro = ""
+      
     )
+      
     
   ),
   
   # FOOTER INSTITUCIONAL CIIPS
-  div(
-    style = "
-      background: linear-gradient(135deg, #2C5F8B 0%, #1a3a5c 100%);
-      color: white;
-      padding: 40px 0;
-      margin-top: 0;",
-    
-    div(
-      style = "max-width: 1200px; margin: 0 auto; padding: 0 30px;",
-      
-      # Contenido del footer en grid
-      div(
-        style = "
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 40px;
-          margin-bottom: 30px;",
-        
-        # Columna 1: Logo y descripción
-        div(
-          style = "text-align: left;",
-          
-          h4("Instituto de Efectividad Clínica y Sanitaria", 
-             style = "color: white; font-size: 1.1em; font-weight: 500; margin-bottom: 10px; line-height: 1.3;"),
-          p("Desarrollamos proyectos de investigación y cooperación técnica para mejorar la equidad, accesibilidad y calidad del sistema de salud.",
-            style = "color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.5; margin: 0;")
-        ),
-        
-        # Columna 2: Contacto
-        div(
-          style = "text-align: left;",
-          h4("Contacto", 
-             style = "color: white; font-size: 1.1em; font-weight: 500; margin-bottom: 15px;"),
-          div(
-            style = "color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.8;",
-            p(style = "margin: 5px 0;", icon("envelope", style = "margin-right: 8px;"), "info@iecs.org.ar"),
-            p(style = "margin: 5px 0;", icon("phone", style = "margin-right: 8px;"), "+54 11 4777-8767"),
-            p(style = "margin: 5px 0;", icon("map-marker-alt", style = "margin-right: 8px;"), "Dr. Emilio Ravignani 2024, CABA")
-          )
-        ),
-        
-        # Columna 3: Enlaces institucionales
-        div(
-          style = "text-align: left;",
-          h4("Enlaces", 
-             style = "color: white; font-size: 1.1em; font-weight: 500; margin-bottom: 15px;"),
-          div(
-            style = "color: rgba(255,255,255,0.8); font-size: 0.9em; line-height: 1.8;",
-            tags$a(
-              p(style = "margin: 5px 0; cursor: pointer;", icon("external-link-alt", style = "margin-right: 8px;"), "IECS Argentina"),
-              href = "https://iecs.org.ar",
-              target = "_blank",
-              class = "footer-link",
-              style = "color: rgba(255,255,255,0.8) !important; transition: color 0.2s ease;"
-            ),
-            tags$a(
-              p(style = "margin: 5px 0; cursor: pointer;", icon("external-link-alt", style = "margin-right: 8px;"), "CIIPS"),
-              href = "https://iecs.org.ar/home-organizacion/centros/ciips/",
-              target = "_blank", 
-              class = "footer-link",
-              style = "color: rgba(255,255,255,0.8) !important; transition: color 0.2s ease;"
-            ),
-            p(style = "margin: 5px 0;", icon("database", style = "margin-right: 8px;"), "Metodología")
-          )
-        )
-      ),
-      
-      # Separador
-      div(style = "height: 1px; background: rgba(255,255,255,0.2); margin: 30px 0;"),
-      
-      # Copyright y créditos
-      div(
-        style = "
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 20px;",
-        
-        div(
-          style = "color: rgba(255,255,255,0.7); font-size: 0.85em;",
-          "© 2025 IECS. Programme Impact Assessment Tool."
-        ),
-        
-        div(
-          style = "display: flex; gap: 15px;",
-          tags$a(
-            icon("twitter", style = "font-size: 1.2em; color: rgba(255,255,255,0.7);"),
-            href = "#",
-            class = "footer-social",
-            style = "transition: all 0.2s ease;"
-          ),
-          tags$a(
-            icon("linkedin", style = "font-size: 1.2em; color: rgba(255,255,255,0.7);"),
-            href = "#",
-            class = "footer-social", 
-            style = "transition: all 0.2s ease;"
-          ),
-          tags$a(
-            icon("envelope", style = "font-size: 1.2em; color: rgba(255,255,255,0.7);"),
-            href = "mailto:info@iecs.org.ar",
-            class = "footer-social",
-            style = "transition: all 0.2s ease;"
-          )
-        )
-      )
-    )
-  ),
+  getFooter(landing=T),
   
   # CSS adicional para efectos hover específicos de landing
   tags$style(HTML("

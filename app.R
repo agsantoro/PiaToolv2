@@ -36,18 +36,16 @@ source("models/hpp/funciones/funciones.R")
 source("models/prep/UI/UI_prep.R")
 source("models/prep/fn_prep4.R")
 
+source("models/sifilis/UI/UI_sifilis.R")
+source("models/sifilis/SifilisModel.R")
+
 source("functions/graf_esc.R")
 
-source("visualization functions/indicatorsList.R")
+
+source("visualization functions/getHeader.R")
+source("visualization functions/getFooter.R")
+source("visualization functions/getHelp.R")
 source("visualization functions/menuBox.R")
-source("visualization functions/plotBox.R")
-source("visualization functions/comparisonChart.R")
-source("visualization functions/getPalette.R")
-source("visualization functions/gapsChart.R")
-source("visualization functions/ratesRatio.R")
-source("visualization functions/ratesDifferences.R")
-source("visualization functions/rmsCalculate.R")
-source("visualization functions/modalText.R")
 
 source("functions/getStyle.R")
 
@@ -58,6 +56,8 @@ source("pages/tbc_page.R")
 source("pages/hepC_page.R")
 source("pages/hpp_page.R")
 source("pages/prep_page.R")
+source("pages/sifilis_page.R")
+source("pages/naat_page.R")
 
 # Definir las páginas
 
@@ -80,7 +80,6 @@ ui <- fluidPage(
     
     "
     
-    
     body {font-family: 'Roboto', sans-serif !important;}
     
     .shiny-input-number {
@@ -100,68 +99,70 @@ ui <- fluidPage(
       opacity: 1;
     }
   }
-  .introjs-hint {
-  visibility: hidden !important;
-  }
-  
-  .introjs-showElement {
-  z-index: 10 !important;
-  }
-  
-  .introjs-tooltipReferenceLayer {
-  z-index: 10 !important;
-  }
   
   
   .animate-left {
     animation: slideInLeft 1s ease-out;
   }
   
-  .introjs-tooltiptext {
-    background-color: red;
   
   
-  }
+  /* --- HEADER --- */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
+  z-index: 999999999 !important;  /* siempre arriba */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+  pointer-events: auto !important;
+}
+
+/* --- INTROJS FIX PARA NO TAPAR EL HEADER --- */
+
+/* El overlay oscuro debe permitir clicks */
+.introjs-overlay {
+  z-index: 999999990 !important;
+  pointer-events: auto !important;  /* Asegura que pueda recibir clicks */
+  cursor: pointer !important;
+}
+
+/* Asegura que el header no interfiera con los clicks del overlay */
+.fixed-header {
+  pointer-events: auto !important;
+}
+
+/* La capa que resalta el elemento tampoco debe tapar al header */
+.introjs-helperLayer {
+  z-index: 999999991 !important;
+}
+
+/* La referencia del tooltip tampoco */
+.introjs-tooltipReferenceLayer {
+  z-index: 999999992 !important;
+}
+
+/* El elemento enfocado */
+.introjs-showElement {
+  z-index: 999999993 !important;
+}
+
+/* El tooltip SÍ debe aparecer arriba del header */
+.introjs-tooltip {
+  z-index: 999999999 !important;
   
-  
-  .introjs-helperLayer {
-     box-shadow: rgba(33, 33, 33, 0.8) 0px 0px 0px 0px, rgba(33, 33, 33, 0.5) 0px 0px 0px 5000px !important;
-    width: 831.6px;
-    height: 685.7px;
-    top: 314px;
-    left: -5px;
-    opacity: 1;
-    z-index: 10 !important;
-  }
-  
-  
-  
-  /* Ícono fijo abajo a la derecha */
-      .fixed-icon {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background: rgba(70, 130, 180, 0.7);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        z-index: 100000;
-      }
-      
-      .fixed-icon:hover {
-        background: rgba(70, 130, 180, 0.9);
-      }
-      
-      .fixed-icon i {
-        color: white;
-        font-size: 28px;
-      }
-      
+}
+
+
+
       /* Modal elegante */
 .elegant-modal {
   display: none;
@@ -256,6 +257,8 @@ ui <- fluidPage(
     });
   ")),
   
+  
+  
   # Contenido principal sin margen adicional para páginas completas
   router_ui(
     route("/", landing_page),
@@ -264,23 +267,27 @@ ui <- fluidPage(
     route("tbc", tbc_page),
     route("hepC", hepC_page),
     route("hpp", hpp_page),
-    route("prep", prep_page)
+    route("prep", prep_page),
+    route("sifilis", sifilis_page),
+    route("naat", naat_page)
+    
   )
 )
 
 server <- function(input, output, session) {
   router_server()
   
-  
-  
-  observeEvent(input$help,
-               introjs(session, options = list("nextLabel"="Siguiente"
-                                               ),
-                       events = list("oncomplete"=I('alert("Glad that is over")')))
-  )
-  
   hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
+  
+  observeEvent(input$help, {
+    pagina_actual <- isolate(get_page())
+    getHelp(pagina_actual, session)
+  })
+  
+
+  
+  
   
   hearts_map_inputs = reactiveVal()
   hpv_map_inputs = reactiveVal()
@@ -288,113 +295,10 @@ server <- function(input, output, session) {
   hepC_map_inputs = reactiveVal()
   hpp_map_inputs = reactiveVal()
   prep_map_inputs = reactiveVal()
+  sifilis_map_inputs = reactiveVal()
   
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
-  
-  output$modalContent = renderUI({
-    current_page = get_page()
-    modalText(current_page)$content
-    
-  })
-  
-  output$modalTitle = renderUI({
-    current_page = get_page()
-    modalText(current_page)$title
-    
-  })
-  
-  outputOptions(output, "modalContent", suspendWhenHidden = FALSE)
-  outputOptions(output, "modalTitle", suspendWhenHidden = FALSE)
-  
-  
-  
-  observeEvent(input$geo, {
-    if (input$geo == "Jurisdicciones") {
-      updateSelectInput(session,"area",choices = labels_provincia, selected = "01")
-    } else {
-      updateSelectInput(session,"area",choices = labels_region, selected = labels_region[1])
-    }
-  })
-  
-  
-  # datosFiltrados = reactive({
-  #   
-  #   causaSeleccionada = input$causas
-  #   
-  #   if (input$geo == "Jurisdicciones") {
-  #     dataset = dataMortProv
-  #     area = "provincia"
-  #   } else {
-  #     area = "region"
-  #     dataset = dataMortReg
-  #   }
-  #   
-  #   if (length(causaSeleccionada)>0){
-  #     data = dataset %>% dplyr::filter(causa == causaSeleccionada)
-  #   } else {data=data.frame()}
-  #   
-  #   data
-  #   
-  # })
-  
-  output$comparisonChart = renderApexchart({
-    comparisonChart()
-  })
-  
-  output$map = renderLeaflet({
-    leaflet() %>% addTiles() %>% 
-      setView(lng = 144, lat = -37, zoom = 09)
-  })
-  
-  
-  output$grafico = renderUI({
-    
-    if (get_page(session = shiny::getDefaultReactiveDomain()) == "chart") {
-      comparisonChart(
-        input,
-        output,
-        datosFiltrados,
-        indicatorsList,
-        labels_provincia,
-        labels_region,
-        labels_sexo, 
-        diferenciaTasas)
-      
-    }
-  })
-  
-  output$gaps = renderUI({
-    if (length(input$causas)>0) {
-      gapsChart(
-        input,
-        output,
-        session,
-        datosFiltrados,
-        labels_provincia,
-        labels_region,
-        labels_sexo, 
-        ratesRatio, 
-        ratesDifferences,
-        firstTimeGaps
-      )
-    } else {
-      HTML("<strong>Advertencia: </strong><br>Debe seleccionar al menos un grupo de causas de muerte")
-    }
-    
-  })
-  
-  output$mapa = renderLeaflet({
-    
-    if (length(input$causas)>0) {
-      trienio = input$trienio
-      causa = input$causas
-      map = rmsCalculate(input,trienio, causa, "cuartiles")
-      map 
-    } else {
-      return()
-    }
-    })
   
   
   ##### HEARTS #####
@@ -433,12 +337,11 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
   })
-  
   
   ##### HPV #####
   
@@ -499,13 +402,11 @@ server <- function(input, output, session) {
       
     })
     
-    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
   })
-  
-  
   
   ##### TBC #####
   
@@ -563,14 +464,11 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
       disable(i)
       
     })
   })
-  
-  
-  
   
   ##### HEPATITIS C #####
   
@@ -614,7 +512,6 @@ server <- function(input, output, session) {
     
   })
   
-  
   ##### outputs hep c #####
   
   output$inputs_hepC = renderUI({
@@ -630,12 +527,10 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
-  
-  
   
   ##### HPP #####
   
@@ -666,8 +561,6 @@ server <- function(input, output, session) {
     
   })
   
-  
-  
   ##### outputs hpp #####
   
   output$inputs_hpp = renderUI({
@@ -683,16 +576,10 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
-  
-  
-  
-  
-  
-  
   
   ##### PREP #####
   
@@ -710,7 +597,6 @@ server <- function(input, output, session) {
     }
   })
   
-  
   ##### outputs prep #####
   
   output$inputs_prep = renderUI({
@@ -726,22 +612,62 @@ server <- function(input, output, session) {
     })
 
 
-    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
       disable(i)
     })
   })
-
-
+  
+  ##### SIFILIS #####
+  
+  sifilis_run = reactive({
+    if (is.null(input$country) == F) {
+      
+      
+      
+      params = cargar(input$country)
+      inputsCountry = sifilisInputList()
+      
+      paramsRunSifilis <- lapply(inputsCountry$var, function(i) {
+        if (inputsCountry$tipo[inputsCountry$var == i] %in% c("Avanzado", "Basico")) {
+          input[[i]]
+        } else {
+          params[[i]]
+        }
+      })
+      
+      names(paramsRunSifilis) = inputsCountry$var
+      correrModelo(paramsRunSifilis)
+      
+    }
+  })
 
   
+  ##### outputs prep #####
   
+  output$inputs_sifilis = renderUI({
+    UI_sifilis(input, sifilis_map_inputs)
+  })
+  
+  observeEvent(input$sifilis_go, {
+   
+  toggle("resultados_sifilis")
+   output$resultados_sifilis = renderUI({
+     tagList(
+       ui_resultados_sifilis(input, output, sifilis_run())
+     )
+   })
+  
+   lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
+     disable(i)
+   })
+  })
   
   ##### ONCLICK #####
   
   # hearts
   onclick("new_scenario_btn_hearts", {
     hide("resultados_hearts")
-    lapply(c("inputContainer",hearts_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -749,7 +675,7 @@ server <- function(input, output, session) {
   # hpv
   onclick("new_scenario_btn_hpv", {
     hide("resultados_hpv")
-    lapply(c("inputContainer",hpv_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -757,7 +683,7 @@ server <- function(input, output, session) {
   # tbc
   onclick("new_scenario_btn_tbc", {
     hide("resultados_tbc")
-    lapply(c("inputContainer",tbc_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -765,7 +691,7 @@ server <- function(input, output, session) {
   # hepC
   onclick("new_scenario_btn_hepC", {
     hide("resultados_hepC")
-    lapply(c("inputContainer",hepC_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -773,7 +699,7 @@ server <- function(input, output, session) {
   # hpp
   onclick("new_scenario_btn_hpp", {
     hide("resultados_hpp")
-    lapply(c("inputContainer",hpp_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
@@ -781,7 +707,15 @@ server <- function(input, output, session) {
   # prep
   onclick("new_scenario_btn_prep", {
     hide("resultados_prep")
-    lapply(c("inputContainer",prep_map_inputs()$i_names), function (i) {
+    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
+      enable(i)
+    })
+  })
+  
+  # sifilis
+  onclick("new_scenario_btn_sifilis", {
+    hide("resultados_sifilis")
+    lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
       enable(i)
     })
   })
