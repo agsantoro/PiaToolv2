@@ -1,4 +1,3 @@
-
 ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
   inputs_names = c(
     'Porcentaje de cobertura objetivo (esquema completo) (%)',
@@ -37,7 +36,6 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     #'PIB per capita'
     
   )
-  
   
   if (is.null(input$country) == F) {
     parametersReactive <- function () {
