@@ -1,6 +1,6 @@
 options(scipen=999)
 source("models/prep/FUNCIONES.R")
-input_prep <- readxl::read_excel("models/prep/data/inputs_prep.xlsx")
+input_prep <- readxl::read_excel("models/prep/data/inputs_prep.xlsx", col_types = c("text","text","text","numeric","skip","skip","skip","skip"))
 
 funcionPrincipal <- function(linea,paisCol, parametro){
   #[LEAN2]
@@ -21,7 +21,7 @@ funcionPrincipal <- function(linea,paisCol, parametro){
 # Usando list2env para crear variables en el entorno global
 list2env(parametro, envir = .GlobalEnv)
 
-input_prep <- readxl::read_excel("models/prep/data/inputs_prep.xlsx")
+input_prep <- readxl::read_excel("models/prep/data/inputs_prep.xlsx", col_types = c("text","text","text","numeric","skip","skip","skip","skip"))
 # datos_paises <- readxl::read_excel("prep/data/Datos_paises.xlsx")
 # utilidades <- readxl::read_excel("prep/data/utilidades.xlsx")
 # utilidades2 <- readxl::read_excel("prep/data/utilidades.xlsx", sheet = "Hoja2")

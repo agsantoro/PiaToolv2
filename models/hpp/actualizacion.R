@@ -22,7 +22,7 @@ hpp = function (pais,
   # Carga información de países
   # load("hpp/data/datosPais.RData")
   # write.xlsx(datosPais,file="hpp/data/datosPais.xlsx")
-  datosPais = read_xlsx("hpp/data/datosPais.xlsx")
+  datosPais = read_xlsx("hpp/data/datosPais.xlsx", col_types = c("text","text","numeric","text","text","text"))
   
   # filtra por país seleccionado
   datosPais = datosPais[datosPais$pais==pais,]

@@ -1,6 +1,6 @@
 ui_hpp = function (input, hpp_map_inputs) {
   renderUI({
-    datosPais = readxl::read_xlsx("models/hpp/data/datosPais.xlsx")
+    datosPais = readxl::read_xlsx("models/hpp/data/datosPais.xlsx", col_types = c("text","text","numeric","text","text","text"))
     country = str_to_title(input$country)
     datosPais = datosPais %>% dplyr::filter(pais==country)
     
@@ -65,7 +65,6 @@ ui_hpp = function (input, hpp_map_inputs) {
       'Costo de hemorragia post parto severa (≥1000 ml) en el país para julio 2023'
     )
     
-    datosPais = read_xlsx("models/hpp/data/datosPais.xlsx")
     datosPais = datosPais[datosPais$pais==str_to_title(input$country),]
     
     input_values = c(
@@ -203,7 +202,7 @@ ui_hpp = function (input, hpp_map_inputs) {
 }
 
 
-ui_resultados_hpp = function(input,output,resultados) {
+ui_resultados_hpp = function(input,output,resultados, hpp_map_outputs) {
   hpp_run = resultados()
   
   
@@ -241,6 +240,9 @@ ui_resultados_hpp = function(input,output,resultados) {
       table$cat=""
       table$cat[cat_epi] = "Resultados epidemiológicos"
       table$cat[cat_costos] = "Resultados económicos"
+      
+      hpp_map_outputs(table %>% dplyr::select(cat,indicador,valor))
+      
       reactable(
         table,
         groupBy = "cat",

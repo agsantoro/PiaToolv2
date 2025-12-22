@@ -191,7 +191,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
   })
 }
 
-ui_resultados_hearts = function(input,output,resultados) {
+ui_resultados_hearts = function(input,output,resultados, hearts_map_outputs) {
   country_sel = str_to_title(isolate(input$country))
   
   if (is.null(input$hearts_input_1)==F) {
@@ -530,7 +530,7 @@ ui_resultados_hearts = function(input,output,resultados) {
         rownames(table) = NULL
         table$Valor = format(round(table$Valor,1), big.mark=".", small.mark=",")
         
-        reactable(
+        tableShow = reactable(
           table,
           groupBy = "cat",
           defaultExpanded = T,
@@ -548,6 +548,8 @@ ui_resultados_hearts = function(input,output,resultados) {
           highlight = TRUE
         )
         
+        hearts_map_outputs(table %>% dplyr::select("cat","Indicador","Valor"))
+        tableShow
         
       }
       

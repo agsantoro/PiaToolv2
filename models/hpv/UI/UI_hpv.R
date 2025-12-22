@@ -249,7 +249,7 @@ ui_grafico_hpv = function (run_hpv, input) {
 
 
 
-ui_tabla_hpv = function (run_hpv, input) {
+ui_tabla_hpv = function (run_hpv, input, hpv_map_outputs) {
   if (length(input$coverageBase)>0) {
     table = run_hpv$outcomes
     table$disc = format(round(table$disc,1), nsmall = 1,big.mark = ".", decimal.mark = ",", scientific = FALSE)
@@ -271,6 +271,7 @@ ui_tabla_hpv = function (run_hpv, input) {
     )
     
     table = table[,c("cat", "Outcomes","Undiscounted")]
+    hpv_map_outputs(table)
     
     reactable(
       table,

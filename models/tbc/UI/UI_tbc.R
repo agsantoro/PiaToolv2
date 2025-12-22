@@ -1,5 +1,6 @@
 ui_tbc = function (input, tbc_map_inputs) {
   renderUI({
+    
     if (is.null(input$country) == F) {
       addData = data.frame(
         intervencion = "VDOT Tuberculosis",
@@ -29,6 +30,7 @@ ui_tbc = function (input, tbc_map_inputs) {
       
       
       lapply(bsc, function(i) {
+        
         if (i %in% porcentajes) {
           sliderInput(tbc_map_inputs()$i_names[i],
                       tags$div(
@@ -116,7 +118,7 @@ ui_tbc = function (input, tbc_map_inputs) {
 }
 
 
-ui_resultados_tbc = function(input,output,resultados) {
+ui_resultados_tbc = function(input,output,resultados, tbc_map_outputs) {
   
   tbc_run = resultados()[,c(1,4)]
   
@@ -152,6 +154,9 @@ ui_resultados_tbc = function(input,output,resultados) {
       table$cat=""
       table$cat[cat_epi] = "Resultados epidemiológicos"
       table$cat[cat_costos] = "Resultados económicos"
+      
+      tbc_map_outputs(table %>% dplyr::select(cat, Parametro, vDOT))
+      
       reactable(
         table,
         groupBy = "cat",

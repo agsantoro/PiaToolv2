@@ -539,7 +539,7 @@ correrModelo <- function(parametros) {
 #cargarDatos()
 #print("Datos cargados.")
 cargar <- function(country) {
-  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "parametros")
+  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "parametros", col_types = c("text","text","text","text","numeric","skip","skip","skip","skip","skip"))
   datafiltrada <- data[data$Pais %in% c(country, "GLOBAL"), ]
   PARAMETROS <- as.list(datafiltrada$Valor)
   names(PARAMETROS) <- datafiltrada$Parametro  
@@ -550,7 +550,7 @@ cargar <- function(country) {
 ##### para shiny #####
 
 sifilisInputList = function() {
-  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "Clasificacion Parametros", col_names = F)
+  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "Clasificacion Parametros", col_names = F, )
   colnames(data) = c("grupo","var","label","tipo")
   data$porc = F
   data$porc[substring(data$var,1,1) == "p"] = T

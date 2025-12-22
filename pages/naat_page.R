@@ -438,7 +438,7 @@ naat_page <- div(
       # Botón 1: Guardar Escenario (Encima del de Crear)
       introBox(  
       actionButton(
-        inputId = "save_scenario_btn_hearts",
+        inputId = "save_scenario_btn",
         label = NULL,
         icon = icon("save"), # Icono de disquete (save)
         class = "floating-btn",
@@ -448,7 +448,7 @@ naat_page <- div(
       
       # Botón 2: Nuevo Escenario
       actionButton(
-        inputId = "new_scenario_btn_hearts",
+        inputId = "new_scenario_btn",
         label = NULL,
         icon = icon("rocket"), # Icono de cohete (nuevo escenario)
         class = "floating-btn",

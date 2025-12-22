@@ -133,7 +133,7 @@ UI_sifilis = function (input, sifilis_map_inputs) {
 }
 
 
-ui_resultados_sifilis = function(input,output,resultados) {
+ui_resultados_sifilis = function(input,output,resultados, sifilis_map_outputs) {
   
   output$sifilis_summaryTable = renderReactable({
     if (length(resultados)>1) {
@@ -145,6 +145,9 @@ ui_resultados_sifilis = function(input,output,resultados) {
       table$cat=""
       table$cat[cat_epi] = "Resultados epidemiológicos"
       table$cat[cat_costos] = "Resultados económicos"
+      
+      sifilis_map_outputs(table %>% dplyr::select(cat, Indicador, Valor))
+      
       reactable(
         table,
         groupBy = "cat",

@@ -1,94 +1,94 @@
 library(shiny)
 library(htmltools)
 
-paises_info <- list(
-  # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
-  "ARGENTINA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
-      alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Argentina")
-  ),
-  "BRAZIL" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
-      alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Brazil")
-  ),
-  "CHILE" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
-      alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Chile")
-  ),
-  "COLOMBIA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
-      alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Colombia")
-  ),
-  "COSTA RICA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
-      alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Costa Rica")
-  ),
-  "JAMAICA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
-      alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Jamaica")
-  ),
-  "MEXICO" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
-      alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Mexico")
-  ),
-  "PERU" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
-      alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Peru")
-  ),
-  "REPÚBLICA DOMINICANA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
-      alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("República Dominicana")
-  ),
-  "URUGUAY" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
-      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Uruguay")
-  )
-  
-)
-
-options_con_html <- lapply(names(paises_info), function(cod) {
-  list(value = cod, content = as.character(paises_info[[cod]]))
-})
+# paises_info <- list(
+#   # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
+#   "ARGENTINA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
+#       alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Argentina")
+#   ),
+#   "BRAZIL" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
+#       alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Brazil")
+#   ),
+#   "CHILE" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
+#       alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Chile")
+#   ),
+#   "COLOMBIA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
+#       alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Colombia")
+#   ),
+#   "COSTA RICA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
+#       alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Costa Rica")
+#   ),
+#   "JAMAICA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
+#       alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Jamaica")
+#   ),
+#   "MEXICO" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
+#       alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Mexico")
+#   ),
+#   "PERU" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
+#       alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Peru")
+#   ),
+#   "REPÚBLICA DOMINICANA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
+#       alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("República Dominicana")
+#   ),
+#   "URUGUAY" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
+#       alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Uruguay")
+#   )
+#   
+# )
+# 
+# options_con_html <- lapply(names(paises_info), function(cod) {
+#   list(value = cod, content = as.character(paises_info[[cod]]))
+# })
 
 # Le damos formato de lista con nombres para usar en el argumento 'choices'
 paises_con_banderas <- setNames(
@@ -423,34 +423,59 @@ hpv_page <- div(
   # Contenedor de botones flotantes (AÑADIDO)
   div(
     class = "floating-buttons-container",
-    
-    # Botón 1: Guardar Escenario (Encima del de Crear)
-    actionButton(
-      inputId = "save_scenario_btn_hpv",
-      label = NULL,
-      icon = icon("save"), # Icono de disquete (save)
-      class = "floating-btn",
-      title = "Guardar Escenario en Pantalla"
-    ),
-    
-    # Botón 2: Nuevo Escenario
-    actionButton(
-      inputId = "new_scenario_btn_hpv",
-      label = NULL,
-      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
-      class = "floating-btn",
-      title = "Crear Nuevo Escenario"
-    ),
-    
-    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
-    # Usaré un icono de descarga y un ID genérico para este.
-    actionButton(
-      inputId = "fixed_original_btn",
-      label = NULL,
-      icon = icon("download"),
-      class = "floating-btn",
-      title = "Descargar Resultados"
+    introBox(
+      tags$a(
+        actionButton(
+          inputId = "show_comparisson_btn_hpv",
+          label = NULL,
+          icon = icon("table"),
+          class = "floating-btn",
+          title = "Mostrar comparación de escenarios",
+          style = "margin-bottom: 6px;"
+        ),
+        href = route_link("comparisson")
+      ),
+      
+      # Botón 1: Guardar Escenario (Encima del de Crear)
+      actionButton(
+        inputId = "save_scenario_btn_hpv",
+        label = NULL,
+        icon = icon("save"), # Icono de disquete (save)
+        class = "floating-btn",
+        title = "Guardar Escenario en Pantalla",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón 2: Nuevo Escenario
+      actionButton(
+        inputId = "new_scenario_btn_hpv",
+        label = NULL,
+        icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+        class = "floating-btn",
+        title = "Crear Nuevo Escenario",
+        style = "margin-bottom: 6px;"
+      ),
+      
+      # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+      # Usaré un icono de descarga y un ID genérico para este.
+      actionButton(
+        inputId = "download_scenario_btn_hpv",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        title = "Descargar Resultados",
+        style = "margin-bottom: 6px;"
+      ),
+      actionButton(
+        inputId = "help",
+        label = NULL,
+        icon = icon("question"),
+        class = "floating-btn",
+        title = "Ayuda de navegación",
+        style = "margin-bottom: 6px;"
+      )
     )
+    
   ),
   
   # CSS adicional para estilo institucional sobrio

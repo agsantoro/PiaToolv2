@@ -1,5 +1,9 @@
 menuBox = function (title, text, iconType, iconColor, linkTo) {
+  
+  htmlId = linkTo
+  
   tags$a(
+    id = glue("menuBox_{htmlId}"),
     div(
       class = "grid-item",
       style = "background: rgba(170, 202, 228, 0.3);

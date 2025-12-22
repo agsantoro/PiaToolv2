@@ -111,7 +111,7 @@ ui_grafico_nuevo_prep = function(input,output,resultados) {
 }
 
 
-ui_resultados_prep = function(input,output,resultados) {
+ui_resultados_prep = function(input,output,resultados, prep_map_outputs) {
   
   prep_run = resultados()
   
@@ -132,6 +132,8 @@ ui_resultados_prep = function(input,output,resultados) {
       
       # ocultamos descontados
       table = table[c(1,2,3,5,7,9,11,13,15,17,19),]
+      
+      prep_map_outputs(table %>% dplyr::select(cat, Parametro, Valor))
       
       reactable(
         table,

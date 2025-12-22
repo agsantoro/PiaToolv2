@@ -232,7 +232,7 @@ ui_grafico_nuevo_hepC = function(input,output,resultados) {
 }
 
 
-ui_resultados_hepC = function(input,output,resultados) {
+ui_resultados_hepC = function(input,output,resultados, hepC_map_outputs) {
   hepC_run = resultados()
   
   output$hepC_summaryTable = renderReactable({
@@ -245,6 +245,8 @@ ui_resultados_hepC = function(input,output,resultados) {
       table$cat=""
       table$cat[cat_epi] = "Resultados epidemiológicos"
       table$cat[cat_costos] = "Resultados económicos"
+      
+      hepC_map_outputs(table %>% dplyr::select(cat, Indicador, Valor))
       
       reactable(
         table,

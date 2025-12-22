@@ -19,6 +19,7 @@ library(shinyWidgets)
 library(shinycssloaders)
 library(rintrojs)
 
+
 source("modules/toggle_advanced_inputs.R")
 source("models/estimaTool/UI/UI_hearts.R")
 source("models/estimaTool/estimaTool.R")
@@ -39,6 +40,8 @@ source("models/prep/fn_prep4.R")
 source("models/sifilis/UI/UI_sifilis.R")
 source("models/sifilis/SifilisModel.R")
 
+source("comparisson/UI/UI_comparisson.R")
+
 source("functions/graf_esc.R")
 
 
@@ -46,6 +49,8 @@ source("visualization functions/getHeader.R")
 source("visualization functions/getFooter.R")
 source("visualization functions/getHelp.R")
 source("visualization functions/menuBox.R")
+source("visualization functions/btnSequence.R")
+source("visualization functions/getCountryCode.R")
 
 source("functions/getStyle.R")
 
@@ -58,6 +63,7 @@ source("pages/hpp_page.R")
 source("pages/prep_page.R")
 source("pages/sifilis_page.R")
 source("pages/naat_page.R")
+source("pages/comparisson_page.R")
 
 # Definir las páginas
 
@@ -257,7 +263,16 @@ ui <- fluidPage(
     });
   ")),
   
-  
+  div(class = "elegant-modal", id = "saveScenarioModal",
+      span(class = "close-btn", id = "closeSaveBtn", "×"), # Botón de cerrar
+      div(class = "modal-header", "💾 Guardar Escenario"),
+      div(class = "modal-content-text",
+          # Input de texto para el nombre del escenario
+          shiny::textInput("scenario_name", label = "Nombre del Escenario:", value = ""),
+          # Botón para confirmar el guardado
+          actionButton("confirm_save", "Guardar", class = "btn-primary")
+      )
+  ),
   
   # Contenido principal sin margen adicional para páginas completas
   router_ui(
@@ -269,12 +284,14 @@ ui <- fluidPage(
     route("hpp", hpp_page),
     route("prep", prep_page),
     route("sifilis", sifilis_page),
-    route("naat", naat_page)
+    route("naat", naat_page),
+    route("comparisson", comparisson_page)
     
   )
 )
 
 server <- function(input, output, session) {
+  
   router_server()
   
   hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
@@ -297,6 +314,19 @@ server <- function(input, output, session) {
   prep_map_inputs = reactiveVal()
   sifilis_map_inputs = reactiveVal()
   
+  hearts_map_outputs = reactiveVal()
+  hpv_map_outputs = reactiveVal()
+  tbc_map_outputs = reactiveVal()
+  hepC_map_outputs = reactiveVal()
+  hpp_map_outputs = reactiveVal()
+  prep_map_outputs = reactiveVal()
+  sifilis_map_outputs = reactiveVal()
+  
+  saved_scenarios = reactiveVal()
+  
+  model_comp = reactiveVal()
+  
+  back_btn_clicked_comp = reactiveVal(F)
   # mostrar parámetros avanzados
   toggle_advanced_inputs(input, output, session)
   
@@ -333,7 +363,7 @@ server <- function(input, output, session) {
     
     toggle("resultados_hearts")
     output$resultados_hearts = renderUI({
-       ui_resultados_hearts(input,output,run_hearts)
+       ui_resultados_hearts(input,output,run_hearts, hearts_map_outputs)
     })
     
     
@@ -397,7 +427,7 @@ server <- function(input, output, session) {
       tagList(
         #ui_grafico_nuevo_hpv(run_hpv(), input, output),
         ui_grafico_hpv(run_hpv(), input),
-        ui_tabla_hpv(run_hpv(), input)
+        ui_tabla_hpv(run_hpv(), input, hpv_map_outputs)
       )
       
     })
@@ -460,7 +490,7 @@ server <- function(input, output, session) {
   observeEvent(input$tbc_go, {
     toggle("resultados_tbc")
     output$resultados_tbc = renderUI({
-      ui_resultados_tbc(input,output,tbc_run)
+      ui_resultados_tbc(input,output,tbc_run, tbc_map_outputs)
     })
     
     
@@ -522,7 +552,7 @@ server <- function(input, output, session) {
     toggle("resultados_hepC")
     output$resultados_hepC = renderUI({
       tagList(
-        ui_resultados_hepC(input,output,hepC_run)
+        ui_resultados_hepC(input,output,hepC_run, hepC_map_outputs)
       )
     })
     
@@ -571,7 +601,7 @@ server <- function(input, output, session) {
     toggle("resultados_hpp")
     output$resultados_hpp = renderUI({
       tagList(
-        ui_resultados_hpp(input, output, hpp_run)
+        ui_resultados_hpp(input, output, hpp_run, hpp_map_outputs)
       )
     })
     
@@ -607,7 +637,7 @@ server <- function(input, output, session) {
     toggle("resultados_prep")
     output$resultados_prep = renderUI({
       tagList(
-        ui_resultados_prep(input, output, prep_run)
+        ui_resultados_prep(input, output, prep_run, prep_map_outputs)
       )
     })
 
@@ -642,7 +672,7 @@ server <- function(input, output, session) {
   })
 
   
-  ##### outputs prep #####
+  ##### outputs sifilis #####
   
   output$inputs_sifilis = renderUI({
     UI_sifilis(input, sifilis_map_inputs)
@@ -653,7 +683,7 @@ server <- function(input, output, session) {
   toggle("resultados_sifilis")
    output$resultados_sifilis = renderUI({
      tagList(
-       ui_resultados_sifilis(input, output, sifilis_run())
+       ui_resultados_sifilis(input, output, sifilis_run(), sifilis_map_outputs)
      )
    })
   
@@ -663,62 +693,57 @@ server <- function(input, output, session) {
   })
   
   ##### ONCLICK #####
+  #interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
   
-  # hearts
-  onclick("new_scenario_btn_hearts", {
-    hide("resultados_hearts")
-    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
+  observeEvent(get_page(), {
+    currentPage = isolate(get_page())
+    
+    btnSequence(
+      currentPage, 
+      input, 
+      output, 
+      session, 
+      eval(parse(text=glue("{currentPage}_map_inputs"))), 
+      eval(parse(text=glue("{currentPage}_map_outputs"))), 
+      saved_scenarios,
+      model_comp,
+      getCountryCode,
+      back_btn_clicked_comp)
+    
   })
   
-  # hpv
-  onclick("new_scenario_btn_hpv", {
-    hide("resultados_hpv")
-    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
+  # onclick("backComp", {
+  #   backTo = model_comp()
+  #   click(glue("menuBox_{backTo}"))
+  #   
+  # })
+  
+  output$back_btn_comp = renderUI({
+    
+    if (is.null(model_comp())) {return()}
+    
+    tagList(
+      tags$a(
+        id = "backComp",
+        div(
+          class = "floating-back-container",
+          tags$button(
+            id = "btn_back_hearts",
+            class = "back-btn",
+            title = "Volver",
+            # JavaScript para cambiar de pestaña/página en Shiny
+            icon("arrow-left")
+          )
+        ),
+        href = route_link(model_comp())
+      )
+    )
+  })
+    
+  onclick("backComp", {
+    back_btn_clicked_comp(T)
   })
   
-  # tbc
-  onclick("new_scenario_btn_tbc", {
-    hide("resultados_tbc")
-    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
-  })
-  
-  # hepC
-  onclick("new_scenario_btn_hepC", {
-    hide("resultados_hepC")
-    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
-  })
-  
-  # hpp
-  onclick("new_scenario_btn_hpp", {
-    hide("resultados_hpp")
-    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
-  })
-  
-  # prep
-  onclick("new_scenario_btn_prep", {
-    hide("resultados_prep")
-    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
-  })
-  
-  # sifilis
-  onclick("new_scenario_btn_sifilis", {
-    hide("resultados_sifilis")
-    lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
-      enable(i)
-    })
-  })
 }
 
 shinyApp(ui, server)

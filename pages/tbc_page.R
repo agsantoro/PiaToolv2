@@ -425,6 +425,17 @@ tbc_page <- div(
   div(
     class = "floating-buttons-container",
     
+    tags$a(
+      actionButton(
+        inputId = "show_comparisson_btn_tbc",
+        label = NULL,
+        icon = icon("table"),
+        class = "floating-btn",
+        title = "Mostrar comparación de escenarios",
+        style = "margin-bottom: 6px;"
+      ),
+      href = route_link("comparisson")
+    ),
     # Botón 1: Guardar Escenario (Encima del de Crear)
     actionButton(
       inputId = "save_scenario_btn_tbc",
@@ -446,7 +457,7 @@ tbc_page <- div(
     # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
     # Usaré un icono de descarga y un ID genérico para este.
     actionButton(
-      inputId = "fixed_original_btn",
+      inputId = "download_scenario_btn_tbc",
       label = NULL,
       icon = icon("download"),
       class = "floating-btn",
