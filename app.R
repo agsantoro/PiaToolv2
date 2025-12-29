@@ -52,6 +52,7 @@ source("visualization functions/menuBox.R")
 source("visualization functions/btnSequence.R")
 source("visualization functions/getCountryCode.R")
 source("visualization functions/tempHideInputs.R")
+source("visualization functions/getStartModal.R")
 
 source("functions/getStyle.R")
 
@@ -88,6 +89,24 @@ ui <- fluidPage(
     "
     
     body {font-family: 'Roboto', sans-serif !important;}
+    
+    
+    .modal-dialog { 
+        width: 80% !important; 
+        max-width: 80% !important; 
+        margin-top: 100px !important; 
+      }
+      
+      
+      .modal { 
+        z-index: 99999 !important; 
+      }
+      .modal-backdrop { 
+        z-index: 99998 !important; 
+      }
+      
+      .modal-footer{ display:none}
+    
     
     .shiny-input-number {
     text-align: center;
@@ -294,6 +313,20 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   router_server()
+  
+  observeEvent(TRUE, {
+    showModal(modalDialog(
+      title = NULL,
+      # Usamos HTML() para que reconozca la etiqueta <strong>
+      HTML(getStartModal()), 
+      footer = modalButton("Ingresar"),
+      easyClose = TRUE
+    ))
+  }, once = TRUE) # Se ejecuta solo una vez
+  
+  onclick("boton_ingresar", {
+    removeModal()
+  })
   
   hintjs(session, options = list("hintButtonLabel"="Hope this hint was helpful"),
          events = list("onhintclose"=I('alert("Wasn\'t that hint helpful")')))
