@@ -26,7 +26,13 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
     
     lapply(c("inputContainer","country",do::exec(glue("map_inputs()$i_names"))), 
            function (i) {
-             enable(i)
+             if (i == "country") {
+               enable(selector = ".country-input-class") 
+             } else {
+               enable(i) 
+             }
+             
+             
            })
     
   })

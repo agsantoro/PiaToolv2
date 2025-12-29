@@ -312,20 +312,24 @@ naat_page <- div(
             style = "overflow-y: auto; height: 80%; width: 100% !important;",
             div(
               id = "inputContainer",
-              pickerInput(
-                inputId = "country",
-                label = "Selecciona un País:",
-                choices = names(paises_con_banderas),
-                selected = "AR", # Argentina por defecto
-                choicesOpt = list(
-                  content = unname(paises_con_banderas) # Le pasamos el vector de HTML
-                ),
-                options = list(
-                  style = "btn-info", # Estilo elegante (bootstrap)
-                  liveSearch = TRUE,  # Permite buscar
-                  size = 5           # Muestra 5 elementos antes de scroll
+              div(
+                id = "wrapper_country", class = "country-input-class",
+                pickerInput(
+                  inputId = "country",
+                  label = "Selecciona un País:",
+                  choices = names(paises_con_banderas),
+                  selected = "AR", # Argentina por defecto
+                  choicesOpt = list(
+                    content = unname(paises_con_banderas) # Le pasamos el vector de HTML
+                  ),
+                  options = list(
+                    style = "btn-info", # Estilo elegante (bootstrap)
+                    liveSearch = TRUE,  # Permite buscar
+                    size = 5           # Muestra 5 elementos antes de scroll
+                  )
                 )
-              )
+              ),
+              
               #,
               #uiOutput("inputs_hearts")
             )

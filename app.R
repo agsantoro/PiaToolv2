@@ -51,6 +51,7 @@ source("visualization functions/getHelp.R")
 source("visualization functions/menuBox.R")
 source("visualization functions/btnSequence.R")
 source("visualization functions/getCountryCode.R")
+source("visualization functions/tempHideInputs.R")
 
 source("functions/getStyle.R")
 
@@ -367,10 +368,8 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer","country",hearts_map_inputs()$i_names), function (i) {
-      disable(i)
+    tempHideInputs("hearts", input, hearts_map_inputs())
       
-    })
   })
   
   ##### HPV #####
@@ -432,10 +431,7 @@ server <- function(input, output, session) {
       
     })
     
-    lapply(c("inputContainer","country",hpv_map_inputs()$i_names), function (i) {
-      disable(i)
-      
-    })
+    tempHideInputs("hpv", input, hpv_map_inputs())
   })
   
   ##### TBC #####
@@ -494,10 +490,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer","country",tbc_map_inputs()$i_names), function (i) {
-      disable(i)
-      
-    })
+    tempHideInputs("tbc", input, tbc_map_inputs())
   })
   
   ##### HEPATITIS C #####
@@ -557,9 +550,7 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer","country",hepC_map_inputs()$i_names), function (i) {
-      disable(i)
-    })
+    tempHideInputs("hepC", input, hepC_map_inputs())
   })
   
   ##### HPP #####
@@ -606,9 +597,8 @@ server <- function(input, output, session) {
     })
     
     
-    lapply(c("inputContainer","country",hpp_map_inputs()$i_names), function (i) {
-      disable(i)
-    })
+    tempHideInputs("hpp", input, hpp_map_inputs())
+    
   })
   
   ##### PREP #####
@@ -642,9 +632,7 @@ server <- function(input, output, session) {
     })
 
 
-    lapply(c("inputContainer","country",prep_map_inputs()$i_names), function (i) {
-      disable(i)
-    })
+    tempHideInputs("prep", input, prep_map_inputs())
   })
   
   ##### SIFILIS #####
@@ -687,9 +675,7 @@ server <- function(input, output, session) {
      )
    })
   
-   lapply(c("inputContainer","country",sifilis_map_inputs()$i_names), function (i) {
-     disable(i)
-   })
+   tempHideInputs("sifilis", input, sifilis_map_inputs())
   })
   
   ##### ONCLICK #####
