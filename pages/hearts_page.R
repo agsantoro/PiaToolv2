@@ -480,7 +480,7 @@ hearts_page <- div(
       
       
       actionButton(
-        inputId = "help",
+        inputId = "help_hearts",
         label = NULL,
         icon = icon("question"),
         class = "floating-btn",

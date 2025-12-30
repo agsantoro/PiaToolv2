@@ -464,6 +464,14 @@ prep_page <- div(
       icon = icon("download"),
       class = "floating-btn",
       title = "Descargar Resultados"
+    ),
+    actionButton(
+      inputId = "help_prep",
+      label = NULL,
+      icon = icon("question"),
+      class = "floating-btn",
+      title = "Ayuda de navegación",
+      style = "margin-bottom: 6px;"
     )
   ),
   

@@ -604,3 +604,13 @@ cargar <- function(country) {
   names(PARAMETROS) <- datafiltrada$Parametro  
   return(PARAMETROS)
 }
+
+##### para shiny #####
+
+sifilisInputList = function() {
+  data <- read_excel("models/sifilis/data/lparametros.xlsx", sheet = "Clasificacion Parametros", col_names = F, )
+  colnames(data) = c("grupo","var","label","tipo")
+  data$porc = F
+  data$porc[substring(data$var,1,1) == "p"] = T
+  data
+}

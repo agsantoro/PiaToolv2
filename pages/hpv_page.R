@@ -470,7 +470,7 @@ hpv_page <- div(
         style = "margin-bottom: 6px;"
       ),
       actionButton(
-        inputId = "help",
+        inputId = "help_hpv",
         label = NULL,
         icon = icon("question"),
         class = "floating-btn",

@@ -473,7 +473,7 @@ naat_page <- div(
       
       
       actionButton(
-        inputId = "help",
+        inputId = "help_naat",
         label = NULL,
         icon = icon("question"),
         class = "floating-btn",

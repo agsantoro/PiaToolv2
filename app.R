@@ -53,6 +53,7 @@ source("visualization functions/btnSequence.R")
 source("visualization functions/getCountryCode.R")
 source("visualization functions/tempHideInputs.R")
 source("visualization functions/getStartModal.R")
+source("visualization functions/getHelpModalText.R")
 
 source("functions/getStyle.R")
 
@@ -66,6 +67,8 @@ source("pages/prep_page.R")
 source("pages/sifilis_page.R")
 source("pages/naat_page.R")
 source("pages/comparisson_page.R")
+
+firstTime = T
 
 # Definir las páginas
 
@@ -315,14 +318,17 @@ server <- function(input, output, session) {
   router_server()
   
   observeEvent(TRUE, {
-    showModal(modalDialog(
-      title = NULL,
-      # Usamos HTML() para que reconozca la etiqueta <strong>
-      HTML(getStartModal()), 
-      footer = modalButton("Ingresar"),
-      easyClose = TRUE
-    ))
-  }, once = TRUE) # Se ejecuta solo una vez
+    if (firstTime) {
+      showModal(modalDialog(
+        title = NULL,
+        # Usamos HTML() para que reconozca la etiqueta <strong>
+        HTML(getStartModal()), 
+        footer = modalButton("Ingresar"),
+        easyClose = TRUE
+      ))
+    }
+    firstTime <<- F
+  }) # Se ejecuta solo una vez
   
   onclick("boton_ingresar", {
     removeModal()
@@ -712,7 +718,20 @@ server <- function(input, output, session) {
   })
   
   ##### ONCLICK #####
-  #interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
+  interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
+  
+  lapply(interventions, function(i) {
+    observeEvent(input[[glue("help_{i}")]], {
+      showModal(modalDialog(
+        title = NULL,
+        HTML(getHelpModalText(i)), 
+        easyClose = TRUE
+      ))
+    })
+  })
+  
+  
+  
   
   observeEvent(get_page(), {
     currentPage = isolate(get_page())

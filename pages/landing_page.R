@@ -275,7 +275,7 @@ visibility: hidden;
     
     div(
       class = "floating-buttons-container",
-      introBox(
+      
         
         actionButton(
           inputId = "help",
@@ -283,10 +283,8 @@ visibility: hidden;
           icon = icon("question"),
           class = "floating-btn",
           title = "Ayuda de navegación"
-        ),
-        data.step = 3,
-        data.intro = ""
-      )
+        )
+      
       ),
     
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
