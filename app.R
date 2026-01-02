@@ -40,6 +40,10 @@ source("models/prep/fn_prep4.R")
 source("models/sifilis/UI/UI_sifilis.R")
 source("models/sifilis/SifilisModel.R")
 
+source("multiComp/UI/UI_multiComp.R")
+
+
+
 source("comparisson/UI/UI_comparisson.R")
 
 source("functions/graf_esc.R")
@@ -67,6 +71,7 @@ source("pages/prep_page.R")
 source("pages/sifilis_page.R")
 source("pages/naat_page.R")
 source("pages/comparisson_page.R")
+source("pages/multiComp_page.R")
 
 firstTime = T
 
@@ -308,7 +313,8 @@ ui <- fluidPage(
     route("prep", prep_page),
     route("sifilis", sifilis_page),
     route("naat", naat_page),
-    route("comparisson", comparisson_page)
+    route("comparisson", comparisson_page),
+    route("multiComp", multiComp_page)
     
   )
 )
@@ -362,7 +368,7 @@ server <- function(input, output, session) {
   prep_map_outputs = reactiveVal()
   sifilis_map_outputs = reactiveVal()
   
-  saved_scenarios = reactiveVal()
+  session$userData$saved_scenarios <- reactiveVal(list())
   
   model_comp = reactiveVal()
   
@@ -717,6 +723,36 @@ server <- function(input, output, session) {
    tempHideInputs("sifilis", input, sifilis_map_inputs())
   })
   
+  
+  
+  
+  
+  
+  
+  
+  ##### MULTICOMP #####
+  
+  ##### outputs multicomp #####
+  
+  # output$inputs_multicomp = renderUI({
+  #   browser()
+  #   escenarios = isolate(saved_scenarios())
+  #   ui_inputs_multiComp(input, escenarios, get_page(), getCountryCode)
+  # })
+  # 
+  # observeEvent(input$multiComp_go, {
+  #   
+  #   toggle("resultados_multiComp")
+  #   output$resultados_multiComp = renderUI({
+  #     tagList(
+  #       ui_resultados_sifilis(input,output,session,current_page())
+  #     )
+  #   })
+  #   
+  #   
+  # })
+  # 
+  
   ##### ONCLICK #####
   interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
   
@@ -780,6 +816,10 @@ server <- function(input, output, session) {
     
   onclick("backComp", {
     back_btn_clicked_comp(T)
+  })
+  
+  observeEvent(saved_scenarios(), {
+    print(saved_scenarios())
   })
   
 }

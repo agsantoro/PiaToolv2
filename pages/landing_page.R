@@ -358,6 +358,13 @@ visibility: hidden;
           iconType = "lungs-virus",
           iconColor = "#2C5F8B",
           linkTo = "naat"
+        ),
+        menuBox(
+          title = "Comparación de escenarios de múltiples intervenciones",
+          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          iconType = "project-diagram",
+          iconColor = "#2C5F8B",
+          linkTo = "multiComp"
         )
         
         # menuBox(
