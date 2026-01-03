@@ -58,6 +58,7 @@ source("visualization functions/getCountryCode.R")
 source("visualization functions/tempHideInputs.R")
 source("visualization functions/getStartModal.R")
 source("visualization functions/getHelpModalText.R")
+source("visualization functions/dragDropInput.R")
 
 source("functions/getStyle.R")
 
@@ -74,6 +75,9 @@ source("pages/comparisson_page.R")
 source("pages/multiComp_page.R")
 
 firstTime = T
+
+saved_scenarios <- reactiveVal(list())
+model_comp = reactiveVal()
 
 # Definir las páginas
 
@@ -368,9 +372,9 @@ server <- function(input, output, session) {
   prep_map_outputs = reactiveVal()
   sifilis_map_outputs = reactiveVal()
   
-  session$userData$saved_scenarios <- reactiveVal(list())
   
-  model_comp = reactiveVal()
+  
+  
   
   back_btn_clicked_comp = reactiveVal(F)
   # mostrar parámetros avanzados
@@ -734,25 +738,23 @@ server <- function(input, output, session) {
   
   ##### outputs multicomp #####
   
-  # output$inputs_multicomp = renderUI({
-  #   browser()
-  #   escenarios = isolate(saved_scenarios())
-  #   ui_inputs_multiComp(input, escenarios, get_page(), getCountryCode)
-  # })
-  # 
-  # observeEvent(input$multiComp_go, {
-  #   
-  #   toggle("resultados_multiComp")
-  #   output$resultados_multiComp = renderUI({
-  #     tagList(
-  #       ui_resultados_sifilis(input,output,session,current_page())
-  #     )
-  #   })
-  #   
-  #   
-  # })
-  # 
+  output$inputs_multicomp = renderUI({
+    escenarios = isolate(saved_scenarios())
+    ui_inputs_multiComp(input, escenarios, get_page(), getCountryCode)
+  })
   
+  output$resultados_multiComp = renderUI({
+    tagList(
+      ui_resultados_multiComp(input,output,session,current_page(), saved_scenarios(), input$selectScenariosMulti)
+    )
+    
+    
+  })
+
+
+  
+
+
   ##### ONCLICK #####
   interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
   
@@ -818,8 +820,8 @@ server <- function(input, output, session) {
     back_btn_clicked_comp(T)
   })
   
-  observeEvent(saved_scenarios(), {
-    print(saved_scenarios())
+  observeEvent(input$selectScenariosMulti, {
+    print(input$selectScenariosMulti)
   })
   
 }

@@ -1,5 +1,5 @@
 btnSequence = function (page, input, output, session, map_inputs, map_outputs, saved_scenarios, model_comp, getCountryCode, back_btn_clicked_comp) {
-  
+  if (page == "/") return()
   # aplica lógica de activar y desactivar botones para todas las páginas
   observeEvent(input[[glue("save_scenario_btn_{page}")]], {
     paste(map_outputs())
@@ -103,19 +103,21 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
       updateTextInput(session,"scenario_name", value = "")
     })
     
-    observeEvent(saved_scenarios(),{
-      if (length(saved_scenarios())>1) {
-        enable(glue("show_comparisson_btn_{page}"))
-      } else {
-        disable("show_comparisson_btn_{page}")
-      }
-    })
+    
     
     onclick(glue("show_comparisson_btn_{page}"), {
       model_comp(get_page())
     })
   })
   
+  observeEvent(saved_scenarios(),{
+    nCurrentModelScenarios = length(Filter(function(i) {i$model == get_page()}, isolate(saved_scenarios())))
+    if (nCurrentModelScenarios>1) {
+      enable(glue("show_comparisson_btn_{page}"))
+    } else {
+      disable("show_comparisson_btn_{page}")
+    }
+  })
   
   output$inputs_comparisson = renderUI({
     dataComp = saved_scenarios()

@@ -1,4 +1,4 @@
-# Función para crear el input con drag and drop
+# Función para crear el input con drag and drop (CON SOPORTE PARA HTML)
 dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%", 
                           height_cuadros = "200px", height_final = "150px") {
   
@@ -28,12 +28,13 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
         id = cuadro_ids[i],
         class = "drag-source-box",
         style = sprintf("height: %s; overflow-y: auto;", height_cuadros),
-        lapply(cuadro_choices, function(choice) {
+        lapply(names(cuadro_choices), function(label_html) {
+          value <- cuadro_choices[[label_html]]
           tags$div(
             class = "drag-item",
             draggable = "true",
-            `data-value` = choice,
-            choice
+            `data-value` = value,
+            HTML(label_html)  # CAMBIO CLAVE: Usar HTML() para el label
           )
         })
       )
@@ -60,7 +61,7 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
     )
   )
   
-  # CSS
+  # CSS (AGREGADO: estilos para imágenes)
   css <- tags$head(tags$style(HTML(sprintf("
     #%s-container {
       width: %s;
@@ -108,10 +109,17 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
       padding: 8px 12px;
       border-radius: 20px;
       cursor: move;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       margin: 4px;
       user-select: none;
       transition: all 0.2s;
+    }
+    
+    .drag-item img {
+      display: inline-block !important;
+      vertical-align: middle !important;
+      margin-right: 8px;
     }
     
     .drag-item:hover {
@@ -142,7 +150,7 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
     }
   ", inputId, width))))
   
-  # JavaScript
+  # JavaScript (MODIFICADO para soportar HTML)
   js <- tags$script(HTML(sprintf("
     $(document).ready(function() {
       var finalId = '%s';
@@ -162,23 +170,21 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
       
       // Función para reiniciar al estado inicial
       function resetToInitial() {
-        // Limpiar el cuadro final
         $('#' + finalId).empty();
         
-        // Restaurar todos los cuadros fuente a su estado inicial
         initialState.forEach(function(cuadro) {
           var boxId = cuadro.id;
-          var choices = cuadro.choices;
+          var items = cuadro.items;
           
           $('#' + boxId).empty();
           
-          choices.forEach(function(choice) {
-            var item = $('<div>')
+          items.forEach(function(item) {
+            var div = $('<div>')
               .addClass('drag-item')
               .attr('draggable', 'true')
-              .attr('data-value', choice)
-              .text(choice);
-            $('#' + boxId).append(item);
+              .attr('data-value', item.value)
+              .html(item.label);  // CAMBIO: usar .html() en lugar de .text()
+            $('#' + boxId).append(div);
           });
         });
         
@@ -196,17 +202,15 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
         e.originalEvent.dataTransfer.effectAllowed = 'move';
         e.originalEvent.dataTransfer.setData('text/html', $(this).attr('data-value'));
         
-        // Guardar el ID del cuadro de origen
         var sourceBox = $(this).closest('.drag-source-box, .drag-final-box');
         $(this).attr('data-source-id', sourceBox.attr('id'));
+        $(this).attr('data-html-content', $(this).html());  // NUEVO: guardar HTML
       });
       
-      // Manejar el fin del drag
       $(document).on('dragend', '.drag-item', function(e) {
         $(this).removeClass('dragging');
       });
       
-      // Permitir drop en el cuadro final
       $('#' + finalId).on('dragover', function(e) {
         e.preventDefault();
         e.originalEvent.dataTransfer.dropEffect = 'move';
@@ -223,25 +227,20 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
         
         var draggedItem = $('.drag-item.dragging');
         if (draggedItem.length && draggedItem.closest('.drag-source-box').length) {
-          // Solo permitir desde cuadros fuente
           var clone = draggedItem.clone();
           clone.removeClass('dragging');
+          clone.html(draggedItem.attr('data-html-content'));  // CAMBIO: restaurar HTML
           $(this).append(clone);
-          
-          // Eliminar el original de su cuadro fuente
           draggedItem.remove();
-          
           updateShinyValue();
         }
       });
       
-      // Permitir drag de vuelta SOLO al cuadro de origen
       $('.drag-source-box').on('dragover', function(e) {
         var draggedItem = $('.drag-item.dragging');
         var targetBoxId = $(this).attr('id');
         var sourceBoxId = draggedItem.attr('data-source-id');
         
-        // Solo permitir si el elemento viene del cuadro final Y este es su cuadro de origen
         if (draggedItem.length && 
             draggedItem.closest('.drag-final-box').length && 
             sourceBoxId === targetBoxId) {
@@ -260,7 +259,6 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
         var targetBoxId = $(this).attr('id');
         var sourceBoxId = draggedItem.attr('data-source-id');
         
-        // Solo permitir si es el cuadro de origen
         if (draggedItem.length && 
             draggedItem.closest('.drag-final-box').length && 
             sourceBoxId === targetBoxId) {
@@ -269,20 +267,27 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
           
           var clone = draggedItem.clone();
           clone.removeClass('dragging');
+          clone.html(draggedItem.attr('data-html-content'));  // CAMBIO: restaurar HTML
           $(this).append(clone);
           draggedItem.remove();
-          
           updateShinyValue();
         }
       });
       
-      // Inicializar valor vacío
       updateShinyValue();
     });
   ", final_id, inputId, paste0(inputId, "_clear"), 
                                  jsonlite::toJSON(lapply(seq_len(n_cuadros), function(i) {
-                                   list(id = cuadro_ids[i], choices = unname(choices[[i]]))
-                                 }), auto_unbox = FALSE))))
+                                   list(
+                                     id = cuadro_ids[i], 
+                                     items = lapply(names(choices[[i]]), function(label_html) {
+                                       list(
+                                         value = choices[[i]][[label_html]],
+                                         label = label_html  # Guardar el HTML como label
+                                       )
+                                     })
+                                   )
+                                 }), auto_unbox = TRUE))))
   
   # Estructura completa
   tags$div(
@@ -297,38 +302,3 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
     js
   )
 }
-
-# Ejemplo de uso en una app Shiny
-# library(shiny)
-# 
-# ui <- fluidPage(
-#   titlePanel("Ejemplo de Drag and Drop"),
-#   
-#   dragDropInput(
-#     inputId = "mi_seleccion",
-#     label = "Arrastra las opciones al cuadro de destino:",
-#     n_cuadros = 3,
-#     choices = list(
-#       "Frutas" = c("Manzana", "Banana", "Naranja", "Fresa"),
-#       "Verduras" = c("Zanahoria", "Lechuga", "Tomate"),
-#       "Colores" = c("Rojo", "Azul", "Verde", "Amarillo", "Morado")
-#     ),
-#     height_cuadros = "180px",
-#     height_final = "120px"
-#   ),
-#   
-#   br(),
-#   
-#   verbatimTextOutput("resultado")
-# )
-# 
-# server <- function(input, output, session) {
-#   output$resultado <- renderPrint({
-#     cat("Elementos seleccionados:\n")
-#     print(input$mi_seleccion)
-#     cat("\nClase:", class(input$mi_seleccion), "\n")
-#     cat("Longitud:", length(input$mi_seleccion))
-#   })
-# }
-# 
-# shinyApp(ui, server)

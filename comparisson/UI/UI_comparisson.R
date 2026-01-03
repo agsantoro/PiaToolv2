@@ -1,21 +1,19 @@
 ui_comparisson = function (input, saved_scenarios, current_page, getCountryCode) {
   
   if (length(saved_scenarios)>1 & length(current_page)>0) {
+    
     scenarios = saved_scenarios[sapply(saved_scenarios, function(i) i$model == current_page)]
     renderUI({
       
-      nombres_originales = names(saved_scenarios)
+      nombres_originales = names(scenarios)
       
       opciones_con_bandera <- setNames(
-        nombres_originales, 
-        lapply(nombres_originales, function(x) {
-          # Aquí puedes definir qué bandera corresponde a cada nombre
-          
+        nombres_originales,  # <- Estos son los VALUES que devolverá el input
+        lapply(nombres_originales, function(x) {  # <- Este es el HTML que se MUESTRA
           countryCode = getCountryCode(scenarios[[x]]$country)
-          bandera_url <- glue("https://flagcdn.com/w20/{countryCode}.png") # Ejemplo para Argentina
-          
-          HTML(paste(
-            tags$img(src = bandera_url, width = "20px", style = "margin-right: 10px;"),
+          bandera_url <- glue("https://flagcdn.com/w20/{countryCode}.png")
+          as.character(tags$span(
+            tags$img(src = bandera_url, width = "20px", style = "margin-right: 10px;"), 
             x
           ))
         })
@@ -25,10 +23,9 @@ ui_comparisson = function (input, saved_scenarios, current_page, getCountryCode)
         checkboxGroupButtons(
           inputId = "compScenariosNames",
           label = "Escenarios a comparar",
-          choices = opciones_con_bandera, # La lista con HTML
+          choices = opciones_con_bandera,
           selected = nombres_originales
         )
-        
       )
       
       
@@ -51,7 +48,6 @@ ui_resultados_comparisson = function(input,output,session,resultados, current_pa
   resultados = resultados[sapply(resultados, function(i) i$model == current_page)]
   
   resultados = resultados[input$compScenariosNames]
-  
   all_outputs = purrr::map_dfr(resultados, "outputs", .id = "scenarioName")
   
   if (nrow(all_outputs)==0) {return()}
