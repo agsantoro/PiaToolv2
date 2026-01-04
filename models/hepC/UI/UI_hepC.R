@@ -239,7 +239,7 @@ ui_resultados_hepC = function(input,output,resultados, hepC_map_outputs) {
     
     if (length(hepC_run)>1) {
       table = hepC_run
-      table$Valor = format(round(table$Valor,1),big.mark = ".",decimal.mark = ",")
+      table$Valor = format(round(table$Valor,1),big.mark = ".",decimal.mark = ",", nsmall = 2)
       cat_epi = 1:4
       cat_costos = 5:nrow(table)
       table$cat=""

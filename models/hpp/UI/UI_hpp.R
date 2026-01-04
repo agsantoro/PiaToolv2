@@ -228,9 +228,9 @@ ui_resultados_hpp = function(input,output,resultados, hpp_map_outputs) {
       table = hpp_run
       rownames(table) = 1:nrow(table)
       
-      table$valor = format(round(as.numeric(table$valor),1),big.mark = ".",decimal.mark = ",")
+      table$valor = format(round(as.numeric(table$valor),1),big.mark = ".",decimal.mark = ",", nsmall = 2)
       
-      table$valor_desc[is.na(table$valor_desc)==F] = format(round(as.numeric(table$valor_desc[is.na(table$valor_desc)==F]),1),big.mark = ".",decimal.mark = ",")
+      table$valor_desc[is.na(table$valor_desc)==F] = format(round(as.numeric(table$valor_desc[is.na(table$valor_desc)==F]),1),big.mark = ",",decimal.mark = ".")
       
       table$valor_desc[is.na(table$valor_desc)] = "-"
       

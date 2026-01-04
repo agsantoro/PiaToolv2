@@ -250,8 +250,9 @@ ui_grafico_hpv = function (run_hpv, input) {
 ui_tabla_hpv = function (run_hpv, input, hpv_map_outputs) {
   if (length(input$coverageBase)>0) {
     table = run_hpv$outcomes
-    table$disc = format(round(table$disc,1), nsmall = 1,big.mark = ".", decimal.mark = ",", scientific = FALSE)
-    table$undisc = format(round(table$undisc,1), nsmall = 1,big.mark = ".", decimal.mark = ",", scientific = FALSE)
+    table$disc = format(round(table$disc,1), big.mark = ".", decimal.mark = ",", scientific = FALSE, nsmall = 2)
+    
+    table$undisc = format(round(table$undisc,1), big.mark = ".", decimal.mark = ",", scientific = FALSE, nsmall = 2)
     
     colnames(table) = c("Outcomes", "Undiscounted", "Discounted")
     

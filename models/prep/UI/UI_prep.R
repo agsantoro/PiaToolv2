@@ -121,7 +121,7 @@ ui_resultados_prep = function(input,output,resultados, prep_map_outputs) {
       table = prep_run
       table$Parametro = prep_outcomes_labels()
       
-      table$Valor = format(round(table$Valor,1),big.mark = ".",decimal.mark = ",")
+      table$Valor = format(round(table$Valor,1),big.mark = ".",decimal.mark = ",", nsmall = 2)
       
       cat_epi = 1:6
       cat_costos = 7:nrow(table)

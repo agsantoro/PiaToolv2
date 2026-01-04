@@ -146,6 +146,7 @@ ui_resultados_sifilis = function(input,output,resultados, sifilis_map_outputs) {
       table$cat[cat_epi] = "Resultados epidemiológicos"
       table$cat[cat_costos] = "Resultados económicos"
       
+      
       sifilis_map_outputs(table %>% dplyr::select(cat, Indicador, Valor))
       
       reactable(

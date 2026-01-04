@@ -528,7 +528,7 @@ ui_resultados_hearts = function(input,output,resultados, hearts_map_outputs) {
         table$cat[cat_epi] = "Resultados epidemiológicos"
         table$cat[cat_costos] = "Resultados económicos"
         rownames(table) = NULL
-        table$Valor = format(round(table$Valor,1), big.mark=".", small.mark=",")
+        table$Valor = format(round(table$Valor,1), big.mark=".", decimal.mark=",", nsmall = 2)
         
         tableShow = reactable(
           table,
