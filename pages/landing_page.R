@@ -361,8 +361,8 @@ visibility: hidden;
         ),
         menuBox(
           title = "Comparación de escenarios de múltiples intervenciones",
-          text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          iconType = "project-diagram",
+          text = "Mediante esta función, es posible realizar comparaciones entre múltiples escenarios previamente diseñados y guardados para su contraste.",
+          iconType = "balance-scale",
           iconColor = "#2C5F8B",
           linkTo = "multiComp"
         )
