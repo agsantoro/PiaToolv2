@@ -73,345 +73,332 @@ ui_inputs_multiComp = function (input, saved_scenarios, current_page, getCountry
 ui_resultados_multiComp = function(input,output,session,current_page, saved_scenarios, selectedScenarios) {
   
   if (get_page()!="multiComp") {return()} else {
-    browser()
+    
     if (is.null(input$selectScenariosMulti)) {return()}
     
     
-      # AVAD = list()
-      # COSTO_TOTAL = list()
-      # DIF_COSTO = list()
-      # RCEI_AVAD = list()
-      # ROI = list()
-      # 
-      SUMMARY = lapply(seq_along(saved_scenarios), function (i) {
-        if (saved_scenarios[[i]]$model == "hearts") {
-          data = saved_scenarios[[i]]$outputs
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$Valor[data$Indicador == "Años de vida ajustados por discapacidad evitados"],
-            "COSTO_TOTAL" = data$Valor[data$Indicador == "Costos totales de la intervención (USD)"],
-            "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por Año de Vida Ajustado por Discapacidad evitado (USD)"],
-            "ROI" = data$Valor[data$Indicador == "Retorno de inversión (%)"]
-          )
-          
-        } else if (saved_scenarios[[i]]$model == "hpv") {
-          data = saved_scenarios[[i]]$outputs
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$Undiscounted[data$Outcomes == "Años de Vida Ajustados por Discapacidad evitados (AVAD)"],
-            "COSTO_TOTAL" = data$Undiscounted[data$Outcomes == "Costo total de la intervención (USD)"],
-            "DIF_COSTO" = data$Undiscounted[data$Outcomes == "Diferencia de Costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$Undiscounted[data$Outcomes == "Razón de costo-efectividad incremental por Años de Vida Ajustados por Discapacidad evitados (USD)"],
-            "ROI" = data$Undiscounted[data$Outcomes == "Retorno de Inversión (%)"])
-        } else if (saved_scenarios[[i]]$model == "tbc") {
-          data = saved_scenarios[[i]]$outputs
-          
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$vDOT[data$Parametro == "Años de vida ajustados por discapacidad evitados"],
-            "COSTO_TOTAL" = data$vDOT[data$Parametro == "Costo total de la intervención (USD)"],
-            "DIF_COSTO" = data$vDOT[data$Parametro == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$vDOT[data$Parametro == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"],
-            "ROI" = data$vDOT[data$Parametro == "Retorno de Inversión (%)"])
-        } else if (saved_scenarios[[i]]$model == "hepC") {
-          data = saved_scenarios[[i]]$outputs
-          
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$Valor[data$Indicador == "Años de Vida Ajustados por Discapacidad evitados"],
-            "COSTO_TOTAL" = data$vDOT[data$Parametro == "Costo total de la intervención (USD)"],
-            "DIF_COSTO" = data$vDOT[data$Parametro == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$vDOT[data$Parametro == "Razón de costo-efectividad incremental por Años de Vida Ajustados por Discapacidad evitada (USD)"],
-            "ROI" = data$vDOT[data$Parametro == "Retorno de Inversión (%)"])
-        } else if (saved_scenarios[[i]]$model == "hpp") {
-          data = saved_scenarios[[i]]$outputs
-          
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$valor[data$indicador == "Años de vida ajustados por discapacidad evitados"],
-            "COSTO_TOTAL" = data$valor[data$indicador == "Costo total de la intervención (USD)"],
-            "DIF_COSTO" = data$valor[data$indicador == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$valor[data$indicador == "Razón de costo-efectividad incremental por Año de Vida Ajustado por Discapacidad evitado (USD)"],
-            "ROI" = data$valor[data$indicador == "Retorno de Inversión (%)"])
-        } else if (saved_scenarios[[i]]$model == "prep") {
-          data = saved_scenarios[[i]]$outputs
-          
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$Valor[data$Parametro == "Años de vida ajustados por discapacidad evitados"],
-            "COSTO_TOTAL" = data$Valor[data$Parametro == "Costo total de la intervención (USD)"],
-            "DIF_COSTO" = data$Valor[data$Parametro == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$Valor[data$Parametro == "Razón de costo-efectividad incremental (RCEI) por Años de Vida Ajustados por Discapacidad (AVAD) Evitados"],
-            "ROI" = data$Valor[data$Parametro == "Retorno de Inversión (ROI) (%)"])
-        } else if (saved_scenarios[[i]]$model == "sifilis") {
-          data = saved_scenarios[[i]]$outputs
-          
-          list(
-            "Name" = names(saved_scenarios[i]),
-            "Model" = saved_scenarios[[i]]$model,
-            "AVAD" = data$Valor[data$Indicador == "Años de Vida Ajustados por Discapacidad Evitados"],
-            "COSTO_TOTAL" = data$Valor[data$Indicador == "Costo Total de la Intervención (USD)"],
-            "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
-            "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por año de vida ajustado por discapacidad evitado (USD)"],
-            "ROI" = data$Valor[data$Indicador == "Retorno de Inversión (%)"])
-        }
-      })
-      
-      summaryTable = bind_rows(SUMMARY)
-      
-      compa <- summaryTable
-      colnames(compa)[1:2] = c("scenarioName","intervencion")
-      compa = compa %>% pivot_longer(
-        cols = 3:7,
-        names_to = "indicador",
-        values_to = "value"
-      )
-      
-      compa<- compa %>%
-        mutate(Intervencion_escenario = paste0(intervencion,'<br>',"(",scenarioName,")" ))
-      
-      compa$value = as.numeric(gsub("\\.", "", gsub(",", ".", compa$value)))
-      
-      compa$indicador[compa$indicador=="AVAD"] = "Años de vida ajustados por discapacidad evitados"
-      compa$indicador[compa$indicador=="COSTO_TOTAL"] = "Costo total de la intervención (USD)"
-      compa$indicador[compa$indicador=="DIF_COSTO"] = "Diferencia de costos respecto al escenario basal (USD)"
-      compa$indicador[compa$indicador=="ROI"] = "Retorno de Inversión (%)"
-      compa$indicador[compa$indicador=="RCEI_AVAD"] = "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"
-      
-      
-      
-      # Colores de fondo para cada gráfico
-      background_colors <- c("#FEDCB4", "#FCE3CB", "#c6efef", "#b2ceea", "#A8B7CC")
-      unique_indicators <- unique(compa$indicador)
-      
-      #  gráficos
-      list_of_plots <- lapply(seq_along(unique(compa$indicador)), function(idx) {
-        indicador <- unique_indicators[idx]
-        data_subset <- dplyr::filter(compa, indicador == !!indicador)
-        data_subset$value = as.numeric(gsub("\\.", "", gsub(",", ".", data_subset$value)))
-        
-        chart <- hchart(data_subset, "bar", hcaes(x = Intervencion_escenario, y = value, name = intervencion)) %>%
-          hc_chart(backgroundColor = background_colors[idx %% length(background_colors) + 1]) %>% # Establecer color de fondo
-          hc_title(text = paste("Indicador:", indicador),
-                   style = list(fontSize = "14px")) %>%
-          hc_plotOptions(series = list(
-            color = '#596775', # Configurar el color de las barras a negro
-            dataLabels = list(
-              enabled = TRUE,
-              format = '{point.y}',  # Usar el nombre de la opción de punto para la etiqueta
-              color = 'black', # Cambiar el color del texto a negro
-              align = 'right', # Alinear a la derecha (fuera de la barra)
-              inside = FALSE, # Asegurar que la etiqueta esté fuera de la barra
-              verticalAlign = 'middle', # Alinear verticalmente en el medio
-              y = 0, # Ajustar posición vertical
-              x = 5  # Ajustar posición horizontal (un poco a la derecha de la barra)
-            )
-          )) %>%
-          hc_xAxis(title = list(text = "Escenario selecionado"),
-                   categories=data_subset$Intervencion_escenario) %>%
-          hc_yAxis(title = list(text = ""),
-                   opposite = TRUE,
-                   plotLines = list(list(
-                     value = 0,
-                     color = 'white',
-                     width = 2 # Puedes ajustar el grosor de la línea aquí
-                   )) )%>%
-          hc_tooltip(pointFormat = paste('Valor de',indicador,': <b>{point.y:,.0f}</b><br/>'))
-        chart
-      })
-      #     
-      #     # cuadrícula
-      #     
-      #     
-      # hw_grid(list_of_plots, rowheight = 240, ncol=5, add_htmlgrid_css = F) %>%
-      #   htmltools::browsable()
-      # 
-      #     
-      #     
-      output$grafico_multiple1 = renderHighchart({list_of_plots[[1]]})
-      output$grafico_multiple2 = renderHighchart({list_of_plots[[2]]})
-      output$grafico_multiple3 = renderHighchart({list_of_plots[[3]]})
-      output$grafico_multiple4 = renderHighchart({list_of_plots[[4]]})
-      output$grafico_multiple5 = renderHighchart({list_of_plots[[5]]})
-      
-      
-      output$tabla_escenarios_guardados = renderReactable({
-        
-        table_data = data.frame(
-          scenarioName = paste0(table$scenarioName," (",table$country," / ",table$intervencion),
-          table$indicador,
-          table$value
-        ) %>% dplyr::mutate(
-          table.indicador = case_when(table$indicador == "AVAD" ~ "Años de vida ajustados por discapacidad evitados",
-                                      table$indicador == "COSTO_TOTAL" ~ "Costos totales de la intervención (USD)",
-                                      table$indicador == "DIF_COSTO"  ~ "Diferencia de costos respecto al escenario basal (USD)",
-                                      table$indicador == "ROI"  ~ "Retorno de inversión (%)",
-                                      table$indicador == "RCEI_AVAD" ~  "Razón de costo-efectividad incremental por Año de Vida Ajustado por Discapacidad evitado (USD)"),
-          table.value = format(round(table.value,1), big.mark=".", decimal.mark=",")
+    SUMMARY = lapply(seq_along(saved_scenarios), function (i) {
+      if (saved_scenarios[[i]]$model == "hearts") {
+        data = saved_scenarios[[i]]$outputs
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Valor[data$Indicador == "Años de vida ajustados por discapacidad evitados"],
+          "COSTO_TOTAL" = data$Valor[data$Indicador == "Costos totales de la intervención (USD)"],
+          "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por Año de Vida Ajustado por Discapacidad evitado (USD)"],
+          "ROI" = data$Valor[data$Indicador == "Retorno de inversión (%)"]
         )
         
-        reactable(
-          table_data,
-          defaultExpanded = T,
-          groupBy = "scenarioName",
-          pagination = F,
-          columns = list(
-            scenarioName = colDef(name = "Escenario guardado", align = "left"),
-            table.indicador = colDef(name = "Indicador", align = "left"),
-            table.value = colDef(name = "Valor", align = "right")
-          ),
-          defaultColDef = colDef(
-            headerStyle = list(background = "#236292", color = "white", borderWidth = "0")
-          )
-          
-        )
+      } else if (saved_scenarios[[i]]$model == "hpv") {
+        data = saved_scenarios[[i]]$outputs
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Undiscounted[data$Outcomes == "Años de Vida Ajustados por Discapacidad evitados (AVAD)"],
+          "COSTO_TOTAL" = data$Undiscounted[data$Outcomes == "Costo total de la intervención (USD)"],
+          "DIF_COSTO" = data$Undiscounted[data$Outcomes == "Diferencia de Costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Undiscounted[data$Outcomes == "Razón de costo-efectividad incremental por Años de Vida Ajustados por Discapacidad evitados (USD)"],
+          "ROI" = data$Undiscounted[data$Outcomes == "Retorno de Inversión (%)"])
+      } else if (saved_scenarios[[i]]$model == "tbc") {
+        data = saved_scenarios[[i]]$outputs
         
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$vDOT[data$Parametro == "Años de vida ajustados por discapacidad evitados"],
+          "COSTO_TOTAL" = data$vDOT[data$Parametro == "Costo total de la intervención (USD)"],
+          "DIF_COSTO" = data$vDOT[data$Parametro == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$vDOT[data$Parametro == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"],
+          "ROI" = data$vDOT[data$Parametro == "Retorno de Inversión (%)"])
+      } else if (saved_scenarios[[i]]$model == "hepC") {
+        data = saved_scenarios[[i]]$outputs
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Valor[data$Indicador == "Años de Vida Ajustados por Discapacidad evitados"],
+          "COSTO_TOTAL" = data$Valor[data$Indicador == "Costo total de la intervención (USD)"],
+          "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por Años de Vida Ajustados por Discapacidad evitada (USD)"],
+          "ROI" = data$Valor[data$Indicador == "Retorno de Inversión (%)"])
+      } else if (saved_scenarios[[i]]$model == "hpp") {
+        data = saved_scenarios[[i]]$outputs
         
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$valor[data$indicador == "Años de vida ajustados por discapacidad evitados"],
+          "COSTO_TOTAL" = data$valor[data$indicador == "Costo total de la intervención (USD)"],
+          "DIF_COSTO" = data$valor[data$indicador == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$valor[data$indicador == "Razón de costo-efectividad incremental por Año de Vida Ajustado por Discapacidad evitado (USD)"],
+          "ROI" = data$valor[data$indicador == "Retorno de Inversión (%)"])
+      } else if (saved_scenarios[[i]]$model == "prep") {
+        data = saved_scenarios[[i]]$outputs
         
-      })
-      
-      output$infoBoxAVAD = renderUI({
-        best = max(compa$value[compa$indicador=="Años de vida ajustados por discapacidad evitados"])
-        nombre_scn = compa$scenarioName[compa$indicador == "Años de vida ajustados por discapacidad evitados" & compa$value == best]
-        hito = "Mayor cantidad de AVAD salvados"
-        valor = format(round(best,1),big.mark=".",decimal.mark=",")
-        intervencion = compa$intervencion[compa$indicador == "Años de vida ajustados por discapacidad evitados" & compa$value == best]
-        
-        info_box(
-          nombre_scn = nombre_scn,
-          hito = hito,
-          valor = valor,
-          intervencion = intervencion)
-        
-      })
-      
-      output$infoBoxCostoTotal = renderUI({
-        best = min(table$value[table$indicador=="COSTO_TOTAL"])
-        nombre_scn = table$scenarioName[table$indicador == "COSTO_TOTAL" & table$value == best]
-        hito = "Menor costo total de la intervención (%)"
-        valor = format(round(best,1),big.mark=".",small.mark=",")
-        intervencion = table$intervencion[table$indicador == "COSTO_TOTAL" & table$value == best]
-        
-        info_box(
-          nombre_scn = nombre_scn,
-          hito = hito,
-          valor = valor,
-          intervencion = intervencion)
-        
-      })
-      
-      output$infoBoxDiferenciaCosto = renderUI({
-        best = min(table$value[table$indicador=="DIF_COSTO"])
-        nombre_scn = table$scenarioName[table$indicador == "DIF_COSTO" & table$value == best]
-        hito = "Menor diferencia de costo respecto del escenario basal (%)"
-        valor = format(round(best,1),big.mark=".",small.mark=",")
-        intervencion = table$intervencion[table$indicador == "DIF_COSTO" & table$value == best]
-        
-        info_box(
-          nombre_scn = nombre_scn,
-          hito = hito,
-          valor = valor,
-          intervencion = intervencion)
-        
-      })
-      
-      output$infoBoxROI = renderUI({
-        best = max(table$value[table$indicador=="ROI"])
-        nombre_scn = table$scenarioName[table$indicador == "ROI" & table$value == best]
-        hito = "Mayor retorno de inversión (%)"
-        valor = format(round(best,1),big.mark=".",small.mark=",")
-        intervencion = table$intervencion[table$indicador == "ROI" & table$value == best]
-        
-        info_box(
-          nombre_scn = nombre_scn,
-          hito = hito,
-          valor = valor,
-          intervencion = intervencion)
-        
-      })
-      
-      output$infoBoxRCEIAVAD = renderUI({
-        best = min(table$value[table$indicador=="RCEI_AVAD"])
-        nombre_scn = table$scenarioName[table$indicador == "RCEI_AVAD" & table$value == best]
-        hito = "Menor razón de costo incremental por AVAD evitado (%)"
-        valor = format(round(best,1),big.mark=".",small.mark=",")
-        intervencion = table$intervencion[table$indicador == "RCEI_AVAD" & table$value == best]
-        
-        info_box(
-          nombre_scn = nombre_scn,
-          hito = hito,
-          valor = valor,
-          intervencion = intervencion)
-        
-      })
-      
-      
-      
-      
-      shiny::tagList(
-        fluidRow(
-          column(9,
-                 tags$header(class="text-1xl flex justify-between items-center p-5 mt-4",style="background-color: #FF671B; color: white; text-align: center",
-                             tags$h1(style="display: inline-block; margin: 0 auto;", class="flex-grow mt-8 mb-8",tags$b("Generales")),
-                 ),
-                 br(),
-                 reactableOutput("tabla_escenarios_guardados"), align="center"),
-          column(3,
-                 tags$header(class="text-1xl flex justify-between items-center p-5 mt-4", style="background-color: #FF671B; color: white; text-align: center",
-                             tags$h1(style="display: inline-block; margin: 0 auto;", class="flex-grow mt-8 mb-8",tags$b("Destacados")),
-                 ),
-                 br(),
-                 htmlOutput("infoBoxAVAD"),
-                 htmlOutput("infoBoxCostoTotal"),
-                 htmlOutput("infoBoxDiferenciaCosto"),
-                 htmlOutput("infoBoxROI"),
-                 htmlOutput("infoBoxRCEIAVAD"), align = "center")
-          
-        ),
-        
-        fluidRow(
-          
-          column(
-            12,
-            br(),
-            tags$header(class="text-1xl flex justify-between items-center p-5 mt-4", style="background-color: #FF671B; color: white; text-align: center",
-                        tags$h1(style="display: inline-block; margin: 0 auto;", class="flex-grow mt-8 mb-8",tags$b("Gráficos")),
-                        
-            ),
-            br()
-          ), align="center"),
-        fluidRow(
-          column(4,highchartOutput("grafico_multiple1")),
-          column(4,highchartOutput("grafico_multiple2")),
-          column(4,highchartOutput("grafico_multiple3"))
-        ),
-        fluidRow(
-          column(4,highchartOutput("grafico_multiple4")),
-          column(4,highchartOutput("grafico_multiple5"))
-        ),
-        fluidRow(
-          br(),
-          column(12,
-                 br(),
-                 tags$header(id = "header_tabla_inputs_multiple", class="text-1xl flex justify-between items-center p-5 mt-4", style="background-color: #FF671B; color: white; text-align: center",
-                             tags$h1(style="display: inline-block; margin: 0 auto;", class="flex-grow mt-8 mb-8",tags$b("Descripción de escenarios guardados")),
-                             actionLink(inputId = "toggle_tabla_inputs_multiple", label=icon("stream", style = "color: white;"))
-                 ),
-                 br()
-          )
-        )
-      )
-      
-  }
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Valor[data$Parametro == "Años de vida ajustados por discapacidad evitados"],
+          "COSTO_TOTAL" = data$Valor[data$Parametro == "Costo total de la intervención (USD)"],
+          "DIF_COSTO" = data$Valor[data$Parametro == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Valor[data$Parametro == "Razón de costo-efectividad incremental (RCEI) por Años de Vida Ajustados por Discapacidad (AVAD) Evitados"],
+          "ROI" = data$Valor[data$Parametro == "Retorno de Inversión (ROI) (%)"])
+      } else if (saved_scenarios[[i]]$model == "sifilis") {
+        data = saved_scenarios[[i]]$outputs
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Valor[data$Indicador == "Años de Vida Ajustados por Discapacidad Evitados"],
+          "COSTO_TOTAL" = data$Valor[data$Indicador == "Costo Total de la Intervención (USD)"],
+          "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por año de vida ajustado por discapacidad evitado (USD)"],
+          "ROI" = data$Valor[data$Indicador == "Retorno de Inversión (%)"])
+      }
+    })
     
-  
+    summaryTable = bind_rows(SUMMARY)
+    compa <- summaryTable
+    colnames(compa)[1:3] = c("scenarioName","country","intervencion")
+    compa = compa %>% pivot_longer(
+      cols = 4:8,
+      names_to = "indicador",
+      values_to = "value"
+    )
+    
+    compa$value = str_replace_all(compa$value, "\\$", "")
+    
+    compa = compa %>%
+      mutate(Intervencion_escenario = paste0(intervencion,'<br>',"(",scenarioName,")" )) %>%
+      dplyr::filter(scenarioName %in% input$selectScenariosMulti)
+    
+    compaBox = compa %>%
+      dplyr::filter(!indicador %in% c("RCEI_AVAD","ROI"))
+    
+    compaBox$value = as.numeric(gsub("\\.", "", gsub(",", ".", compaBox$value)))
+    
+    compa$indicador[compa$indicador=="AVAD"] = "Años de vida ajustados por discapacidad evitados"
+    compa$indicador[compa$indicador=="COSTO_TOTAL"] = "Costo total de la intervención (USD)"
+    compa$indicador[compa$indicador=="DIF_COSTO"] = "Diferencia de costos respecto al escenario basal (USD)"
+    compa$indicador[compa$indicador=="ROI"] = "Retorno de Inversión (%)"
+    compa$indicador[compa$indicador=="RCEI_AVAD"] = "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"
+    
+    compaBox$indicador[compaBox$indicador=="AVAD"] = "Años de vida ajustados por discapacidad evitados"
+    compaBox$indicador[compaBox$indicador=="COSTO_TOTAL"] = "Costo total de la intervención (USD)"
+    compaBox$indicador[compaBox$indicador=="DIF_COSTO"] = "Diferencia de costos respecto al escenario basal (USD)"
+    compaBox$indicador[compaBox$indicador=="ROI"] = "Retorno de Inversión (%)"
+    compaBox$indicador[compaBox$indicador=="RCEI_AVAD"] = "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"
+    
+    
+    
+    # Colores de fondo para cada gráfico
+    background_colors <- c("#E3F2FD", "#E8F5E9", "#FFF3E0", "#F3E5F5", "#E0F2F1")
+    unique_indicators <- unique(compa$indicador)
+    
+    #  gráficos
+    list_of_plots <- lapply(seq_along(unique(compaBox$indicador)), function(idx) {
+      indicador <- unique_indicators[idx]
+      data_subset <- dplyr::filter(compaBox, indicador == !!indicador)
+      data_subset$value = as.numeric(gsub("\\.", "", gsub(",", ".", data_subset$value)))
+      
+      chart <- hchart(data_subset, "bar", hcaes(x = Intervencion_escenario, y = value, name = intervencion)) %>%
+        hc_chart(backgroundColor = background_colors[idx %% length(background_colors) + 1]) %>% # Establecer color de fondo
+        hc_title(text = paste("Indicador:", indicador),
+                 style = list(fontSize = "14px")) %>%
+        hc_plotOptions(series = list(
+          color = '#596775', # Configurar el color de las barras a negro
+          dataLabels = list(
+            enabled = TRUE,
+            format = '{point.y}',  # Usar el nombre de la opción de punto para la etiqueta
+            color = 'black', # Cambiar el color del texto a negro
+            align = 'right', # Alinear a la derecha (fuera de la barra)
+            inside = FALSE, # Asegurar que la etiqueta esté fuera de la barra
+            verticalAlign = 'middle', # Alinear verticalmente en el medio
+            y = 0, # Ajustar posición vertical
+            x = 5  # Ajustar posición horizontal (un poco a la derecha de la barra)
+          )
+        )) %>%
+        hc_xAxis(title = list(text = "Escenario selecionado"),
+                 categories=data_subset$Intervencion_escenario) %>%
+        hc_yAxis(title = list(text = ""),
+                 opposite = TRUE,
+                 plotLines = list(list(
+                   value = 0,
+                   color = 'white',
+                   width = 2 # Puedes ajustar el grosor de la línea aquí
+                 )) )%>%
+        hc_tooltip(pointFormat = paste('Valor de',indicador,': <b>{point.y:,.0f}</b><br/>'))
+      chart
+    })
+    #     
+    #     # cuadrícula
+    #     
+    #     
+    # hw_grid(list_of_plots, rowheight = 240, ncol=5, add_htmlgrid_css = F) %>%
+    #   htmltools::browsable()
+    # 
+    #     
+    #     
+    output$grafico_multiple1 = renderHighchart({list_of_plots[[1]]})
+    output$grafico_multiple2 = renderHighchart({list_of_plots[[2]]})
+    output$grafico_multiple3 = renderHighchart({list_of_plots[[3]]})
+    output$grafico_multiple4 = renderHighchart({list_of_plots[[4]]})
+    output$grafico_multiple5 = renderHighchart({list_of_plots[[5]]})
+    
+    
+    output$tabla_escenarios_guardados = renderReactable({
+      table_data = data.frame(
+        scenarioName = paste0(compa$scenarioName," (",compa$country," / ",compa$intervencion),
+        indicador = compa$indicador,
+        value = compa$value
+      ) 
+      
+      reactable(
+        table_data,
+        defaultExpanded = T,
+        groupBy = "scenarioName",
+        pagination = F,
+        columns = list(
+          scenarioName = colDef(name = "Escenario guardado", align = "left"),
+          indicador = colDef(name = "Indicador", align = "left"),
+          value = colDef(name = "Valor", align = "right")
+        ),
+        defaultColDef = colDef(
+          headerStyle = list(background = "#236292", color = "white", borderWidth = "0")
+        )
+        
+      )
+      
+      
+      
+    })
+    
+    
+    
+    #output$infoBoxAVAD = renderUI({
+    best = max(compaBox$value[compaBox$indicador=="Años de vida ajustados por discapacidad evitados"])
+    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best]
+    hito = "Mayor cantidad de AVAD salvados"
+    valor = format(round(best,1),big.mark=".",decimal.mark=",")
+    intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best]))
+    ib1 = infoBox(
+      nombre_scn = nombre_scn,
+      hito = hito,
+      valor = valor,
+      intervencion = intervencion)
+    
+    #})
+    
+    #output$infoBoxCostoTotal = renderUI({
+    best = min(compaBox$value[compaBox$indicador=="Costo total de la intervención (USD)"])
+    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best]
+    hito = "Menor costo total de la intervención (%)"
+    valor = format(round(best,1),big.mark=".",decimal.mark=",")
+    intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best]))
+    
+    ib2 = infoBox(
+      nombre_scn = nombre_scn,
+      hito = hito,
+      valor = valor,
+      intervencion = intervencion)
+    
+    #})
+    
+    #output$infoBoxDiferenciaCosto = renderUI({
+    best = min(compaBox$value[compaBox$indicador=="Diferencia de costos respecto al escenario basal (USD)"])
+    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best]
+    hito = "Menor diferencia de costo respecto del escenario basal (%)"
+    valor = format(round(best,1),big.mark=".",decimal.mark=",")
+    intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best]))
+    
+    ib3 = infoBox(
+      nombre_scn = nombre_scn,
+      hito = hito,
+      valor = valor,
+      intervencion = intervencion)
+    
+    #})
+    
+    #output$infoBoxROI = renderUI({
+    # best = max(compa$value[compa$indicador=="Retorno de Inversión (%)"])
+    # nombre_scn = compa$scenarioName[compa$indicador == "Retorno de Inversión (%)" & compa$value == best]
+    # hito = "Mayor retorno de inversión (%)"
+    # valor = format(round(best,1),big.mark=".",decimal.mark=",")
+    # intervencion = compa$intervencion[compa$indicador == "Retorno de Inversión (%)" & compa$value == best]
+    # 
+    # ib4 = infoBox(
+    #   nombre_scn = nombre_scn,
+    #   hito = hito,
+    #   valor = valor,
+    #   intervencion = intervencion)
+    
+    #})
+    
+    #output$infoBoxRCEIAVAD = renderUI({
+    # best = min(compa$value[compa$indicador=="Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"])
+    # nombre_scn = compa$scenarioName[compa$indicador == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido" & compa$value == best]
+    # hito = "Menor razón de costo incremental por AVAD evitado (%)"
+    # valor = format(round(best,1),big.mark=".",decimal.mark=",")
+    # intervencion = compa$intervencion[compa$indicador == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido" & compa$value == best]
+    # 
+    # ib5 = infoBox(
+    #   nombre_scn = nombre_scn,
+    #   hito = hito,
+    #   valor = valor,
+    #   intervencion = intervencion)
+    
+    #})
+    
+    
+    infoboxes = list(
+      ib1,ib2,ib3)
+    
+    
+    output$carouselInfoBoxes = renderUI({
+      infoBoxCarousel(infoboxes, carousel_id = "destacados_carousel")
+    })
+    
+    
+    
+    
+    
+    shiny::tagList(
+      fluidRow(
+        column(12,
+               br(),
+               div(
+                 class = "comp-box",
+                 reactableOutput("tabla_escenarios_guardados"), align="center") 
+        )
+        
+      ),
+      
+      fluidRow(
+        lapply(1:3, function (i) {
+          column(4,
+                 
+                 div(
+                   class = "comp-box",
+                   style = "padding: 5px; !important",
+                   highchartOutput(glue("grafico_multiple{i}")))
+          )
+        })
+      ),
+      
+      fluidRow(
+        column(3),
+        column(6,
+               htmlOutput("carouselInfoBoxes")),
+        column(3)
+      )
+    )
+  }
 }
   
   

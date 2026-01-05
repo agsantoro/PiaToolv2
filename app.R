@@ -59,6 +59,9 @@ source("visualization functions/tempHideInputs.R")
 source("visualization functions/getStartModal.R")
 source("visualization functions/getHelpModalText.R")
 source("visualization functions/dragDropInput.R")
+source("visualization functions/infoBox.R")
+source("visualization functions/infoBoxCarousel.R")
+source("visualization functions/getModelName.R")
 
 source("functions/getStyle.R")
 
@@ -102,7 +105,38 @@ ui <- fluidPage(
     
     body {font-family: 'Roboto', sans-serif !important;}
     
+    .header-destacados {
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    background-color: #FF671B;
+    color: white;
+    text-align: center;
+  }
+  
+  .header-destacados-title {
+    display: inline-block;
+    margin: 2rem auto;
+    flex-grow: 1;
+    font-weight: bold;
+  }
+    .comp-box {
+      padding: 30px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
     
+          
+          
     .modal-dialog { 
         width: 80% !important; 
         max-width: 80% !important; 
