@@ -434,7 +434,7 @@ hearts_page <- div(
       
         
       # Botón 1: Guardar Escenario (Encima del de Crear)
-      introBox(  
+      
         tags$a(
           actionButton(
             inputId = "show_comparisson_btn_hearts",
@@ -486,9 +486,20 @@ hearts_page <- div(
         class = "floating-btn",
         title = "Ayuda de navegación",
         style = "margin-bottom: 6px;"
+      )
+  ),
+  div(
+    class = "left-side-button",
+    tags$a(
+      actionButton(
+        inputId = "multiCompBtn",
+        label = NULL,
+        icon = icon("balance-scale"),
+        class = "left-red-btn",
+        title = "Comparación de escenarios de múltiples intervenciones"
+        
       ),
-      data.step = 6,
-      data.intro = ""
+      href = route_link("multiComp")
     )
   ),
   

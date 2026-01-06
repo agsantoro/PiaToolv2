@@ -105,6 +105,53 @@ ui <- fluidPage(
     
     body {font-family: 'Roboto', sans-serif !important;}
     
+    
+    @keyframes pulse-left {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 115, 115, 0.7); }
+        50% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(229, 115, 115, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 115, 115, 0); }
+      }
+      
+      .pulse-highlight-left { animation: pulse-left 1s ease-out; }
+
+    /* Botón Especial Izquierda (Independiente) */
+    #multiCompBtn.left-red-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      z-index: 2500;
+      
+      /* Gradiente en gama de rojo suave / terracota claro */
+      background: linear-gradient(135deg, #e57373 0%, #c62828 100%);
+      color: white !important;
+      
+      /* Identidad visual igual a los de la derecha */
+      border: none;
+      border-radius: 50%; /* Circular como los de la derecha */
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    #multiCompBtn.left-red-btn:hover {
+      /* Hover ligeramente más intenso pero suave */
+      background: linear-gradient(135deg, #ef5350 0%, #b71c1c 100%);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    #multiCompBtn.left-red-btn .fa {
+      margin: 0 !important;
+    }
+    
+    
+    
     #acceso-multiComp.disabled {
         opacity: 0.4 !important;
         cursor: not-allowed !important;
@@ -873,10 +920,25 @@ server <- function(input, output, session) {
   observeEvent(saved_scenarios(), {
     print("pasa")
     if (length(saved_scenarios())>1 & length(unique(rownames(do.call(rbind,saved_scenarios()))))>1) {
-      enable("acceso-multiComp")
+      #enable("acceso-multiComp")
+      
+      enable(selector = ".left-side-button")
+      
+      if (length(saved_scenarios())==2) {
+        showNotification(
+          HTML("<p>Panel de comparación de intervenciones múltplies <strong>activado</strong><p>")
+        )
+      }
+      
+      addClass(id = "multiCompBtn", class = "pulse-highlight-left")
+      delay(3000, removeClass(id = "multiCompBtn", class = "pulse-highlight-left"))
+      
     } else {
-      disable("acceso-multiComp")
+      disable(selector = ".left-side-button")
+      #disable("acceso-multiComp")
     }
+    
+    
       
       
   })

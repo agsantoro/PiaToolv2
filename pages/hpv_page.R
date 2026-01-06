@@ -480,6 +480,20 @@ hpv_page <- div(
     )
     
   ),
+  div(
+    class = "left-side-button",
+    tags$a(
+      actionButton(
+        inputId = "multiCompBtn",
+        label = NULL,
+        icon = icon("balance-scale"),
+        class = "left-red-btn",
+        title = "Comparación de escenarios de múltiples intervenciones"
+        
+      ),
+      href = route_link("multiComp")
+    )
+  ),
   
   # CSS adicional para estilo institucional sobrio
   tags$style(HTML("

@@ -131,6 +131,9 @@ getStartModal = function () {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.03); }
         }
+        
+    .pulse-highlight { animation: pulse 1s ease-out; }
+    
     </style>
 
     <div class='bg-shapes'>

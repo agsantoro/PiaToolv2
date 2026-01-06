@@ -359,14 +359,18 @@ visibility: hidden;
           iconColor = "#2C5F8B",
           linkTo = "naat"
         ),
-
-        menuBox(
-          id = "acceso-multiComp",
-          title = "Comparación de escenarios de múltiples intervenciones",
-          text = "Mediante esta función, es posible realizar comparaciones entre múltiples escenarios previamente diseñados y guardados para su contraste.",
-          iconType = "balance-scale",
-          iconColor = "#2C5F8B",
-          linkTo = "multiComp"
+        
+        # div(
+        #   id = "acceso-multiComp",
+        #   menuBox(
+        #     
+        #     title = "Comparación de escenarios de múltiples intervenciones",
+        #     text = "Mediante esta función, es posible realizar comparaciones entre múltiples escenarios previamente diseñados y guardados para su contraste.",
+        #     iconType = "balance-scale",
+        #     iconColor = "#2C5F8B",
+        #     linkTo = "multiComp"
+        # )
+        # 
 
         )
         
@@ -382,9 +386,6 @@ visibility: hidden;
         
         
         
-      ),
-      data.step = 2,
-      data.intro = ""
       
     )
       

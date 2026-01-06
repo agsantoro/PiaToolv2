@@ -91,6 +91,32 @@ getHelpModalText = function(intervention) {
       </p>
     </div>
     
+    <div style='grid-column: 2; display: flex; align-items: center; justify-content: center; margin-left: 10px; padding-top: 10px;'>
+      <button type='button' 
+              style='background: linear-gradient(135deg, #e57373 0%, #c62828 100%);
+                     border: none;
+                     border-radius: 50%; /* Circular como los de la derecha */
+                     font-size: 1.2em;
+                     color: white !important;
+                     width: 50px;
+                     height: 50px;
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     cursor: pointer;
+                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+                     
+                     
+        <i class='fa fa-download'></i>
+      </button>
+    </div>
+    <div style='grid-column: 3; display: flex; align-items: center; padding-top: 10px;'>
+      <p style='margin: 0; color: #103362; font-size: 0.95em; line-height: 1.4;'>
+        Realice comparaciones múltiples entre intervenciones.
+      </p>
+    </div>
+    
+    
   </div>
 </div>"
     ))
