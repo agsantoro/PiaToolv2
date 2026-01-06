@@ -116,7 +116,7 @@ multiComp_page <- div(
         
         div(
           style = "display: flex; align-items: center; gap: 20px; margin-bottom: 20px;",
-          icon("project-diagram", style = "font-size: 2.5em; color: #2C5F8B;"),
+          icon("balance-scale", style = "font-size: 2.5em; color: #2C5F8B;"),
           div(
             h2("Comparación de escenarios guardados", 
                style = "margin: 0; font-size: 1.6em; color: #2C5F8B;"),
