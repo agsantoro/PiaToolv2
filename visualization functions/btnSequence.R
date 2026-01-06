@@ -24,7 +24,7 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
     shinyjs::disable("country")
     hide(glue("resultados_{page}"))
     
-    lapply(c("inputContainer","country",do::exec(glue("map_inputs()$i_names"))), 
+    lapply(c("inputContainer",glue("go-btn-container-{page}"),"country",do::exec(glue("map_inputs()$i_names"))), 
            function (i) {
              if (i == "country") {
                enable(selector = ".country-input-class") 
@@ -53,6 +53,7 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
       # Ocultar el modal de guardado y el overlay
       shinyjs::hide(id = "saveScenarioModal")
       shinyjs::hide(id = "modalOverlay")
+      
     })
     
     onclick("modalOverlay", {
@@ -100,6 +101,7 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
       
       shinyjs::hide(id = "saveScenarioModal")
       shinyjs::hide(id = "modalOverlay")
+      shinyjs::disable(id = glue("save_scenario_btn_{page}"))
       updateTextInput(session,"scenario_name", value = "")
     })
     

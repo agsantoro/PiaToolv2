@@ -99,9 +99,11 @@ ui_tbc = function (input, tbc_map_inputs) {
       tags$div(
         
         column(12,
-               actionButton(
-                 "tbc_go",
-                 icon("play")),
+               div(
+                 id = "go-btn-container-tbc",
+                 actionButton(
+                   "tbc_go",
+                   icon("play"))),
                align = "right")
         
       )

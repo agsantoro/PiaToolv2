@@ -189,9 +189,11 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
       tags$div(
         
         column(12,
-               actionButton(
+               div(
+                 id = "go-btn-container-hpv",
+                 actionButton(
                  "hpv_go",
-                 icon("play")),
+                 icon("play"))),
                align = "right")
         
       ),

@@ -1,6 +1,9 @@
 getHelpModalText = function(intervention) {
-  glue(
-    "<div style='width: 100%;'>
+  
+  if(intervention != "multiComp") {
+    # HTML original para todas las intervenciones excepto multiComp
+    return(glue(
+      "<div style='width: 100%;'>
   
   <p style='margin: 0 0 20px 0;
             color: #103362;
@@ -90,7 +93,51 @@ getHelpModalText = function(intervention) {
     
   </div>
 </div>"
-  )
+    ))
+  } else {
+    # HTML especial para multiComp
+    return(glue(
+      "<div style='width: 100%;'>
+  
+  <p style='margin: 0 0 20px 0;
+            color: #103362;
+            font-size: 0.95em;
+            line-height: 1.6;
+            text-align: left;'>
+    En el panel de la izquierda puede ver los escenarios guardados. En el panel de la derecha podrá comparar los escenarios seleccionados.
+  </p>
+  
+  <div style='display: grid;
+              grid-template-columns: 60% 1fr; 
+              gap: 0 15px;
+              align-items: center;
+              padding: 15px;
+              background: #f8f9fa;
+              border-radius: 12px;'>
+    
+    <div style='grid-column: 1; display: flex; align-items: center; justify-content: center; padding-right: 15px;'>
+      <img src='screenshot_{intervention}.jpg' 
+           alt='Screenshot' 
+           style='width: 100%;
+                  max-width: 100%;
+                  height: auto;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);'>
+    </div>
+
+    <div style='grid-column: 2; display: flex; align-items: center; padding-left: 15px;'>
+      <p style='margin: 0; 
+                color: #103362; 
+                font-size: 0.95em; 
+                line-height: 1.6;
+                text-align: left;'>
+        Arrastre los escenarios que desea comparar y en el panel inferior de la pantalla se desplegará el resumen de los resultados para los escenarios elegidos.
+      </p>
+    </div>
+    
+  </div>
+</div>"
+    ))
+  }
   
 }
-

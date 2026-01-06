@@ -105,9 +105,11 @@ UI_sifilis = function (input, sifilis_map_inputs) {
         tags$div(
           
           column(12,
-                 actionButton(
-                   "sifilis_go",
-                   icon("play")),
+                 div(
+                   id = "go-btn-container-sifilis",
+                   actionButton(
+                     "sifilis_go",
+                     icon("play"))),
                  align = "right")
           
         ),

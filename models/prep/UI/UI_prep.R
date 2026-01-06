@@ -54,15 +54,14 @@ ui_prep = function (input, prep_map_inputs) {
     )),
     
     tags$div(
+      
       column(12,
-             actionButton(
-               "prep_go",
-               icon("play")),
+             div(
+               id = "go-btn-container-prep",
+               actionButton(
+                 "prep_go",
+                 icon("play"))),
              align = "right")
-      
-      
-      
-      
       
     ),
     tags$script(HTML("

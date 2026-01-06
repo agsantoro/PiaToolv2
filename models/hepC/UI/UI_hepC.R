@@ -185,10 +185,13 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
           ),
         hr(),
         tags$div(
+          
           column(12,
-                 actionButton(
-                   "hepC_go",
-                   icon("play")),
+                 div(
+                   id = "go-btn-container-hepC",
+                   actionButton(
+                     "hepC_go",
+                     icon("play"))),
                  align = "right")
           
         )

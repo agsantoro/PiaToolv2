@@ -171,16 +171,15 @@ ui_hpp = function (input, hpp_map_inputs) {
         )),
         hr(),
         tags$div(
+          
           column(12,
-                 actionButton(
-                   "hpp_go",
-                   icon("play")),
+                 div(
+                   id = "go-btn-container-hpp",
+                   actionButton(
+                     "hpp_go",
+                     icon("play"))),
                  align = "right")
           
-          
-        
-        
-        
         ),
         tags$script(HTML("
     $('#collapseInputs_hpp').on('show.bs.collapse', function () {

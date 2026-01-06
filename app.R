@@ -105,6 +105,21 @@ ui <- fluidPage(
     
     body {font-family: 'Roboto', sans-serif !important;}
     
+    #acceso-multiComp.disabled {
+        opacity: 0.4 !important;
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+      }
+      
+      #acceso-multiComp.disabled .grid-item {
+        background: rgba(170, 202, 228, 0.15) !important;
+      }
+      
+      #acceso-multiComp.disabled a {
+        pointer-events: none !important;
+      }
+      
+      
     .header-destacados {
     font-size: 1.25rem;
     display: flex;
@@ -501,7 +516,7 @@ server <- function(input, output, session) {
     
   })
   
-  onclick("hpv_go", {
+  observeEvent(input$hpv_go, {
     
     toggle("resultados_hpv")
     
@@ -792,7 +807,7 @@ server <- function(input, output, session) {
   ##### ONCLICK #####
   interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
   
-  lapply(interventions, function(i) {
+  lapply(c(interventions, "multiComp"), function(i) {
     observeEvent(input[[glue("help_{i}")]], {
       showModal(modalDialog(
         title = NULL,
@@ -854,8 +869,16 @@ server <- function(input, output, session) {
     back_btn_clicked_comp(T)
   })
   
-  observeEvent(input$selectScenariosMulti, {
-    print(input$selectScenariosMulti)
+  
+  observeEvent(saved_scenarios(), {
+    print("pasa")
+    if (length(saved_scenarios())>1 & length(unique(rownames(do.call(rbind,saved_scenarios()))))>1) {
+      enable("acceso-multiComp")
+    } else {
+      disable("acceso-multiComp")
+    }
+      
+      
   })
   
 }

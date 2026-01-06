@@ -156,7 +156,23 @@ multiComp_page <- div(
           uiOutput("resultados_multiComp")
         )
       )
+    ),
+    
+    # Contenedor de botones flotantes (AÑADIDO)
+    div(
+      class = "floating-buttons-container",
+      
+        actionButton(
+          inputId = "help_multiComp",
+          label = NULL,
+          icon = icon("question"),
+          class = "floating-btn",
+          title = "Ayuda de navegación",
+          style = "margin-bottom: 6px;"
+        )
+      
     )
+    
   ),
   
   # 5. FOOTER

@@ -79,6 +79,7 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     
     SUMMARY = lapply(seq_along(saved_scenarios), function (i) {
       if (saved_scenarios[[i]]$model == "hearts") {
+        
         data = saved_scenarios[[i]]$outputs
         list(
           "Name" = names(saved_scenarios[i]),
@@ -181,7 +182,8 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     compaBox = compa %>%
       dplyr::filter(!indicador %in% c("RCEI_AVAD","ROI"))
     
-    compaBox$value = as.numeric(gsub("\\.", "", gsub(",", ".", compaBox$value)))
+    compa$value = str_replace_all(compa$value, "\\.", "")
+    compa$value = as.numeric(str_replace_all(compa$value, ",", "\\."))
     
     compa$indicador[compa$indicador=="AVAD"] = "Años de vida ajustados por discapacidad evitados"
     compa$indicador[compa$indicador=="COSTO_TOTAL"] = "Costo total de la intervención (USD)"
@@ -205,7 +207,9 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     list_of_plots <- lapply(seq_along(unique(compaBox$indicador)), function(idx) {
       indicador <- unique_indicators[idx]
       data_subset <- dplyr::filter(compaBox, indicador == !!indicador)
-      data_subset$value = as.numeric(gsub("\\.", "", gsub(",", ".", data_subset$value)))
+      data_subset$value = str_replace_all(data_subset$value,"\\.","") 
+      data_subset$value = as.numeric(str_replace_all(data_subset$value,",","\\.") )
+      #data_subset$value = as.numeric(gsub("\\.", "", gsub(",", ".", data_subset$value)))
       
       chart <- hchart(data_subset, "bar", hcaes(x = Intervencion_escenario, y = value, name = intervencion)) %>%
         hc_chart(backgroundColor = background_colors[idx %% length(background_colors) + 1]) %>% # Establecer color de fondo
@@ -232,8 +236,7 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
                    value = 0,
                    color = 'white',
                    width = 2 # Puedes ajustar el grosor de la línea aquí
-                 )) )%>%
-        hc_tooltip(pointFormat = paste('Valor de',indicador,': <b>{point.y:,.0f}</b><br/>'))
+                 )) )
       chart
     })
     #     
@@ -280,13 +283,17 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     })
     
     
+    compaBox$value = str_replace_all(compaBox$value,"\\.","") 
+    compaBox$value = as.numeric(str_replace_all(compaBox$value,",","\\.") )
     
     #output$infoBoxAVAD = renderUI({
-    best = max(compaBox$value[compaBox$indicador=="Años de vida ajustados por discapacidad evitados"])
-    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best]
+    
+    best = first(max(compaBox$value[compaBox$indicador=="Años de vida ajustados por discapacidad evitados"]))
+    nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best])
     hito = "Mayor cantidad de AVAD salvados"
     valor = format(round(best,1),big.mark=".",decimal.mark=",")
     intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best]))
+    
     ib1 = infoBox(
       nombre_scn = nombre_scn,
       hito = hito,
@@ -296,8 +303,8 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     #})
     
     #output$infoBoxCostoTotal = renderUI({
-    best = min(compaBox$value[compaBox$indicador=="Costo total de la intervención (USD)"])
-    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best]
+    best = first(min(compaBox$value[compaBox$indicador=="Costo total de la intervención (USD)"]))
+    nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best])
     hito = "Menor costo total de la intervención (%)"
     valor = format(round(best,1),big.mark=".",decimal.mark=",")
     intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best]))
@@ -311,8 +318,8 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     #})
     
     #output$infoBoxDiferenciaCosto = renderUI({
-    best = min(compaBox$value[compaBox$indicador=="Diferencia de costos respecto al escenario basal (USD)"])
-    nombre_scn = compaBox$scenarioName[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best]
+    best = first(min(compaBox$value[compaBox$indicador=="Diferencia de costos respecto al escenario basal (USD)"]))
+    nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best])
     hito = "Menor diferencia de costo respecto del escenario basal (%)"
     valor = format(round(best,1),big.mark=".",decimal.mark=",")
     intervencion = getModelName(first(compaBox$intervencion[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best]))
@@ -372,13 +379,16 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       fluidRow(
         column(12,
                br(),
-               div(
-                 class = "comp-box",
-                 reactableOutput("tabla_escenarios_guardados"), align="center") 
-        )
+               h4("Resumen de la comparación"),
+               br(),
+               reactableOutput("tabla_escenarios_guardados"), align="center") 
+        
         
       ),
-      
+      br(),
+      br(),
+      h4("Gráficos de resumen"),
+      br(),
       fluidRow(
         lapply(1:3, function (i) {
           column(4,
@@ -390,7 +400,9 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
           )
         })
       ),
-      
+      br(),
+      h4("Destacados"),
+      br(),
       fluidRow(
         column(3),
         column(6,
