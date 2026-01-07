@@ -388,6 +388,7 @@ visibility: hidden;
           label = NULL,
           icon = icon("balance-scale"),
           class = "left-red-btn",
+          style = "width: 100px; height: 100px; font-size: 40px;",
           title = "Comparación de escenarios de múltiples intervenciones"
           
         ),
