@@ -81,6 +81,7 @@ firstTime = T
 
 saved_scenarios <- reactiveVal(list())
 model_comp = reactiveVal()
+multiCompFirstTime = reactiveVal(T)
 
 # Definir las páginas
 
@@ -917,6 +918,7 @@ server <- function(input, output, session) {
   })
   
   
+  
   observeEvent(saved_scenarios(), {
     print("pasa")
     if (length(saved_scenarios())>1 & length(unique(rownames(do.call(rbind,saved_scenarios()))))>1) {
@@ -924,7 +926,7 @@ server <- function(input, output, session) {
       
       enable(selector = ".left-side-button")
       
-      if (length(saved_scenarios())==2) {
+      if (length(saved_scenarios())==2 & multiCompFirstTime() == T) {
         showNotification(
           HTML("<p>Panel de comparación de intervenciones múltplies <strong>activado</strong><p>")
         )
@@ -932,6 +934,8 @@ server <- function(input, output, session) {
       
       addClass(id = "multiCompBtn", class = "pulse-highlight-left")
       delay(3000, removeClass(id = "multiCompBtn", class = "pulse-highlight-left"))
+      
+      multiCompFirstTime(F)
       
     } else {
       disable(selector = ".left-side-button")
