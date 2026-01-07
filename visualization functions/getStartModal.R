@@ -144,7 +144,7 @@ getStartModal = function () {
     <main class='content-main'>
         <div class='info-box'>
             <p>
-                La Herramienta <strong>PIA Tool</strong> es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la <strong>Organización Mundial de la Salud (OMS)</strong>.
+                La Herramienta <strong>PIA Tool</strong> es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la <strong>Organización Panamericana de la Salud (OPS)</strong> y la <strong>Organización Mundial de la Salud (OMS)</strong>.
             </p>
         </div>
 
