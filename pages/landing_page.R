@@ -375,19 +375,25 @@ visibility: hidden;
         )
         
         
-        # menuBox(
-        #   title = "Brechas de género",
-        #   text = "Compare la evolución histórica de las brechas de género para los principales indicadores
-        #   de mortalidad.",
-        #   iconType = "chart-line",
-        #   iconColor = "#737B4F",
-        #   linkTo = "gaps"
-        # ),
         
         
         
       
-    )
+    ),
+    div(
+      class = "left-side-button",
+      tags$a(
+        actionButton(
+          inputId = "multiCompBtn",
+          label = NULL,
+          icon = icon("balance-scale"),
+          class = "left-red-btn",
+          title = "Comparación de escenarios de múltiples intervenciones"
+          
+        ),
+        href = route_link("multiComp")
+      )
+    ),
       
     
   ),
