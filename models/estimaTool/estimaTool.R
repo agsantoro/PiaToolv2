@@ -61,7 +61,8 @@ epi_model <- function(run, x1, x2, country) {
 }
 
 estimaToolCosts = function(
-    country = input$country,
+    
+  country = input$country,
     Population,
     `BASELINE_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad`,
     `TARGET_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad`,
@@ -75,6 +76,7 @@ estimaToolCosts = function(
     `Evento de enfermedad cardiaca isquemica promedio  (***)`,
     `Costo anual de consulta médica en paciente promedio (*)`
 ) {
+  
   country = str_to_title(country)
   
   # adding both sexes as rows
