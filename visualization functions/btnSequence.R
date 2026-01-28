@@ -125,7 +125,7 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
     dataComp = saved_scenarios()
     ui_comparisson(input, dataComp, model_comp(), getCountryCode)
   })
-
+  
   output$resultados_comparisson = renderUI({
     tagList(
       ui_resultados_comparisson(input,output,session,saved_scenarios(), isolate(model_comp()))

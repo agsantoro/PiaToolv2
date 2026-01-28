@@ -21,15 +21,18 @@ library(rintrojs)
 
 
 source("modules/toggle_advanced_inputs.R")
+
 source("models/estimaTool/UI/UI_hearts.R")
 source("models/estimaTool/estimaTool.R")
 source("models/hpv/UI/UI_hpv.R", encoding = "UTF-8")
 source("models/hpv/getPrime.R", encoding = "UTF-8")
 source("models/tbc/UI/UI_tbc.R", encoding = "UTF-8")
 source("models/tbc/funcion.R", encoding = "UTF-8")
-
 source("models/hepC/UI/UI_hepC.R", encoding = "UTF-8")
 source("models/hepC/funcion_hepC.R", encoding = "UTF-8")
+
+source("models/naat/UI/UI_naat.R", encoding = "UTF-8")
+source("models/naat/TbcNaatModel.R", encoding = "UTF-8")
 
 source("models/hpp/UI/UI_hpp.R")
 source("models/hpp/funciones/funciones.R")
@@ -42,12 +45,9 @@ source("models/sifilis/SifilisModel.R")
 
 source("multiComp/UI/UI_multiComp.R")
 
-
-
 source("comparisson/UI/UI_comparisson.R")
 
 source("functions/graf_esc.R")
-
 
 source("visualization functions/getHeader.R")
 source("visualization functions/getFooter.R")
@@ -460,6 +460,7 @@ server <- function(input, output, session) {
   hpp_map_inputs = reactiveVal()
   prep_map_inputs = reactiveVal()
   sifilis_map_inputs = reactiveVal()
+  naat_map_inputs = reactiveVal()
   
   hearts_map_outputs = reactiveVal()
   hpv_map_outputs = reactiveVal()
@@ -468,14 +469,12 @@ server <- function(input, output, session) {
   hpp_map_outputs = reactiveVal()
   prep_map_outputs = reactiveVal()
   sifilis_map_outputs = reactiveVal()
-  
-  
-  
+  naat_map_outputs = reactiveVal()
   
   
   back_btn_clicked_comp = reactiveVal(F)
   # mostrar parámetros avanzados
-  toggle_advanced_inputs(input, output, session)
+  #toggle_advanced_inputs(input, output, session)
   
   
   ##### HEARTS #####
@@ -820,14 +819,48 @@ server <- function(input, output, session) {
        ui_resultados_sifilis(input, output, sifilis_run(), sifilis_map_outputs)
      )
    })
-  
    tempHideInputs("sifilis", input, sifilis_map_inputs())
   })
   
   
+  ##### NAAT #####
+  
+  naat_run = reactive({
+    
+    if (is.null(input$country) == F) {
+      params = cargar_naat()[[input$country]]
+      inputsCountry = naatInputList()
+      inputsCountry$var = paste0(inputsCountry$var,"_naat")
+      
+      paramsRunNaat <- lapply(inputsCountry$var, function(i) {
+        if (inputsCountry$tipo[inputsCountry$var == i] %in% c("Avanzado", "Basico")) {
+          input[[i]]
+        } else {
+          params[[substring(i,1,nchar(i) - 5)]]
+        }
+      })
+      inputsCountry$var =substring(inputsCountry$var, 1, nchar(inputsCountry$var) - 5)
+      names(paramsRunNaat) = inputsCountry$var
+      
+      correrModelo_naat(paramsRunNaat)
+      
+    }
+  })
   
   
+  output$inputs_naat = renderUI({
+    UI_naat(input, naat_map_inputs)
+  })
   
+  observeEvent(input$naat_go, {
+    toggle("resultados_naat")
+    output$resultados_naat = renderUI({
+      tagList(
+        ui_resultados_naat(input, output, naat_run(), naat_map_outputs)
+      )
+    })
+    tempHideInputs("naat", input, naat_map_inputs())
+  })
   
   
   
@@ -853,7 +886,7 @@ server <- function(input, output, session) {
 
 
   ##### ONCLICK #####
-  interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc")
+  interventions = c("hearts","hpv","hepC","sifilis","hpp", "prep","tbc", "naat")
   
   lapply(c(interventions, "multiComp"), function(i) {
     observeEvent(input[[glue("help_{i}")]], {

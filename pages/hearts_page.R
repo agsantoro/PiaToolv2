@@ -429,64 +429,64 @@ hearts_page <- div(
   # Contenedor de botones flotantes (AÑADIDO)
   
   
-    div(
-      class = "floating-buttons-container",
-      
-        
-      # Botón 1: Guardar Escenario (Encima del de Crear)
-      
-        tags$a(
-          actionButton(
-            inputId = "show_comparisson_btn_hearts",
-            label = NULL,
-            icon = icon("table"),
-            class = "floating-btn",
-            title = "Mostrar comparación de escenarios",
-            style = "margin-bottom: 6px;"
-          ),
-          href = route_link("comparisson")
-        ),
-        
-        
+  div(
+    class = "floating-buttons-container",
+    
+    
+    # Botón 1: Guardar Escenario (Encima del de Crear)
+    
+    tags$a(
       actionButton(
-        inputId = "save_scenario_btn_hearts",
+        inputId = "show_comparisson_btn_hearts",
         label = NULL,
-        icon = icon("save"), # Icono de disquete (save)
+        icon = icon("table"),
         class = "floating-btn",
-        title = "Guardar Escenario en Pantalla",
+        title = "Mostrar comparación de escenarios",
         style = "margin-bottom: 6px;"
       ),
-      
-      # Botón 2: Nuevo Escenario
-      actionButton(
-        inputId = "new_scenario_btn_hearts",
-        label = NULL,
-        icon = icon("rocket"), # Icono de cohete (nuevo escenario)
-        class = "floating-btn",
-        title = "Crear Nuevo Escenario",
-        style = "margin-bottom: 6px;"
-      ),
-      
-      # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
-      # Usaré un icono de descarga y un ID genérico para este.
-      actionButton(
-        inputId = "download_scenario_btn_hearts",
-        label = NULL,
-        icon = icon("download"),
-        class = "floating-btn",
-        title = "Descargar Resultados",
-        style = "margin-bottom: 6px;"
-      ),
-      
-      
-      actionButton(
-        inputId = "help_hearts",
-        label = NULL,
-        icon = icon("question"),
-        class = "floating-btn",
-        title = "Ayuda de navegación",
-        style = "margin-bottom: 6px;"
-      )
+      href = route_link("comparisson")
+    ),
+    
+    
+    actionButton(
+      inputId = "save_scenario_btn_hearts",
+      label = NULL,
+      icon = icon("save"), # Icono de disquete (save)
+      class = "floating-btn",
+      title = "Guardar Escenario en Pantalla",
+      style = "margin-bottom: 6px;"
+    ),
+    
+    # Botón 2: Nuevo Escenario
+    actionButton(
+      inputId = "new_scenario_btn_hearts",
+      label = NULL,
+      icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+      class = "floating-btn",
+      title = "Crear Nuevo Escenario",
+      style = "margin-bottom: 6px;"
+    ),
+    
+    # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
+    # Usaré un icono de descarga y un ID genérico para este.
+    actionButton(
+      inputId = "download_scenario_btn_hearts",
+      label = NULL,
+      icon = icon("download"),
+      class = "floating-btn",
+      title = "Descargar Resultados",
+      style = "margin-bottom: 6px;"
+    ),
+    
+    
+    actionButton(
+      inputId = "help_hearts",
+      label = NULL,
+      icon = icon("question"),
+      class = "floating-btn",
+      title = "Ayuda de navegación",
+      style = "margin-bottom: 6px;"
+    )
   ),
   div(
     class = "left-side-button",

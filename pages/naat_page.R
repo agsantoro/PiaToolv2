@@ -43,14 +43,14 @@ paises_info <- list(
     ),
     tags$span("Costa Rica")
   ),
-  "JAMAICA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
-      alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Jamaica")
-  ),
+  # "JAMAICA" = tags$div(
+  #   style = "display: flex; align-items: center;",
+  #   tags$img(
+  #     src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
+  #     alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
+  #   ),
+  #   tags$span("Jamaica")
+  # ),
   "MEXICO" = tags$div(
     style = "display: flex; align-items: center;",
     tags$img(
@@ -296,7 +296,7 @@ naat_page <- div(
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"),
             
             h2("Pruebas de amplificación de ácidos nucleicos (NAAT) para diagnóstico de Tuberculosis Pulmonar", 
-               style = "margin: 0; font-size: 2em; font-weight: 500; color: #2C5F8B;")
+               style = "margin: 0; font-size: 1.3em; font-weight: 500; color: #2C5F8B;")
           ),
           
           # Texto descriptivo
@@ -331,7 +331,7 @@ naat_page <- div(
               ),
               
               #,
-              #uiOutput("inputs_hearts")
+              uiOutput("inputs_naat")
             )
           )
           
@@ -369,44 +369,44 @@ naat_page <- div(
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
         ",
         
-      #   div(
-      #     style = "
-      #   /* Fondo degradado discreto basado en #EE8223 */
-      #   background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
-      #   border-radius: 8px; /* Bordes suaves */
-      #   padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
-      #   margin-bottom: 20px; /* Separación del gráfico de resultados */
-      #   border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
-      # ",
-      #     p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
-      #       style = "
-      #     font-size: 0.9em; 
-      #     margin-bottom: 5px; 
-      #     color: #495057; 
-      #     text-align: justify; 
-      #     line-height: 1.7;
-      #     padding: 0 20px;"),
-      #     
-      #     p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
-      #       style = "
-      #     font-size: 0.9em; 
-      #     margin-bottom: 5px; 
-      #     color: #495057; 
-      #     text-align: justify; 
-      #     line-height: 1.7;
-      #     padding: 0 20px;"),
-      #     
-      #     p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
-      #       style = "
-      #   font-size: 0.9em; 
-      #   margin-bottom: 5px; 
-      #   color: #495057; 
-      #     text-align: justify; 
-      #   line-height: 1.7;
-      #   padding: 0 20px;"),
-      #     
-      #   ),
-      #   
+        #   div(
+        #     style = "
+        #   /* Fondo degradado discreto basado en #EE8223 */
+        #   background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+        #   border-radius: 8px; /* Bordes suaves */
+        #   padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
+        #   margin-bottom: 20px; /* Separación del gráfico de resultados */
+        #   border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
+        # ",
+        #     p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
+        #       style = "
+        #     font-size: 0.9em; 
+        #     margin-bottom: 5px; 
+        #     color: #495057; 
+        #     text-align: justify; 
+        #     line-height: 1.7;
+        #     padding: 0 20px;"),
+        #     
+        #     p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
+        #       style = "
+        #     font-size: 0.9em; 
+        #     margin-bottom: 5px; 
+        #     color: #495057; 
+        #     text-align: justify; 
+        #     line-height: 1.7;
+        #     padding: 0 20px;"),
+        #     
+        #     p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
+        #       style = "
+        #   font-size: 0.9em; 
+        #   margin-bottom: 5px; 
+        #   color: #495057; 
+        #     text-align: justify; 
+        #   line-height: 1.7;
+        #   padding: 0 20px;"),
+        #     
+        #   ),
+        #   
         
         # Grid de características con estilo sobrio
         div(
@@ -419,10 +419,10 @@ naat_page <- div(
           # Caja de gráfico con estilo institucional
           div(
             style = "color: #40809C;",
-            h3("En construcción")
+            hidden(uiOutput("resultados_naat"))
           )
           
-          #hidden(uiOutput("resultados_hearts"))
+          
         )
       )
       
@@ -436,13 +436,24 @@ naat_page <- div(
   # Contenedor de botones flotantes (AÑADIDO)
   
   
-    div(
-      class = "floating-buttons-container",
-      
-      # Botón 1: Guardar Escenario (Encima del de Crear)
-      introBox(  
+  div(
+    class = "floating-buttons-container",
+    
+    tags$a(
       actionButton(
-        inputId = "save_scenario_btn",
+        inputId = "show_comparisson_btn_naat",
+        label = NULL,
+        icon = icon("table"),
+        class = "floating-btn",
+        title = "Mostrar comparación de escenarios",
+        style = "margin-bottom: 6px;"
+      ),
+      href = route_link("comparisson")
+    ),
+    # Botón 1: Guardar Escenario (Encima del de Crear)
+    introBox(  
+      actionButton(
+        inputId = "save_scenario_btn_naat",
         label = NULL,
         icon = icon("save"), # Icono de disquete (save)
         class = "floating-btn",
@@ -452,7 +463,7 @@ naat_page <- div(
       
       # Botón 2: Nuevo Escenario
       actionButton(
-        inputId = "new_scenario_btn",
+        inputId = "new_scenario_btn_naat",
         label = NULL,
         icon = icon("rocket"), # Icono de cohete (nuevo escenario)
         class = "floating-btn",
@@ -463,7 +474,7 @@ naat_page <- div(
       # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
       # Usaré un icono de descarga y un ID genérico para este.
       actionButton(
-        inputId = "fixed_original_btn",
+        inputId = "fixed_original_btn_naat",
         label = NULL,
         icon = icon("download"),
         class = "floating-btn",
