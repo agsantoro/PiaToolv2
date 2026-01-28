@@ -37,7 +37,6 @@ UI_naat = function (input, naat_map_inputs) {
     tagList(
       lapply(bsc, function(j) {
         if (j %in% porcentajes) {
-          browser(expr = {input$country == "REPÚBLICA DOMINICANA"})
           sliderInput(addData$i_names[j],
                       tags$div(
                         addData$i_labels[j],
@@ -51,7 +50,6 @@ UI_naat = function (input, naat_map_inputs) {
                       step = 0.01,
                       value = values[[addData$i_names[j]]])
         } else {
-          browser(expr = {input$country == "REPÚBLICA DOMINICANA"})
           numericInput(addData$i_names[j],
                        tags$div(
                          addData$i_labels[j],
@@ -84,7 +82,6 @@ UI_naat = function (input, naat_map_inputs) {
           
           lapply(avz, function(i) {
             if (i %in% porcentajes) {
-              browser(expr = {input$country == "REPÚBLICA DOMINICANA"})
               sliderInput(addData$i_names[i],
                           tags$div(
                             addData$i_labels[i],
@@ -98,7 +95,6 @@ UI_naat = function (input, naat_map_inputs) {
                           step = 0.01,
                           value = values[[addData$i_names[i]]])
             } else {
-              browser(expr = {input$country == "REPÚBLICA DOMINICANA"})
               numericInput(addData$i_names[i],
                            tags$div(
                              addData$i_labels[i],

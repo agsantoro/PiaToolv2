@@ -774,7 +774,6 @@ ajustarOutcomePorNAAT_naat <- function(pTtoExitoso, pMuerte, rRRMuerteNAAT, rORE
 
 
 cargar_naat <- function(country) {
-  browser()
   data <- read_excel("models/NAAT/data/lparametros.xlsx", sheet = "parametros")[,c(1:5)]
   
   datafiltrada <- data[toupper(data$Pais) %in% c(country, "GLOBAL"),]
@@ -788,7 +787,6 @@ cargar_naat <- function(country) {
 
 
 naatInputList = function() {
-  browser()
   data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "clasificacion")[,1:4]
   colnames(data) = c("grupo","var","label","tipo")
   data$label = NULL
