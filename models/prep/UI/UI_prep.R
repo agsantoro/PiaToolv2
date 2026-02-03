@@ -52,7 +52,7 @@ ui_prep = function (input, prep_map_inputs) {
                      get_prep_params(input$country)[[i]])
       })
     )),
-    
+    hr(),
     tags$div(
       
       column(12,
@@ -60,6 +60,8 @@ ui_prep = function (input, prep_map_inputs) {
                id = "go-btn-container-prep",
                actionButton(
                  "prep_go",
+                 label = "Correr escenario",
+                 class = "go-button",
                  icon("play"))),
              align = "right")
       

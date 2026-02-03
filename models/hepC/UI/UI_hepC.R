@@ -191,6 +191,8 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
                    id = "go-btn-container-hepC",
                    actionButton(
                      "hepC_go",
+                     label = "Correr escenario",
+                     class = "go-button",
                      icon("play"))),
                  align = "right")
           

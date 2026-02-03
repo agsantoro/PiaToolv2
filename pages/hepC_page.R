@@ -116,14 +116,14 @@ hepC_page <- div(
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
     
     body, html {
-      font-family: 'Roboto', sans-serif;
+      
       padding: 0;
       margin: 0;
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
     
     h1, h2, h3, h4, h5, h6, p, span, div:not([class*='icon']):not([class*='fa']) {
-      font-family: 'Roboto', sans-serif;
+      
     }
     
     .dropdown-menu {
@@ -160,23 +160,6 @@ hepC_page <- div(
       border-radius: 10px;
     }
     
-    /* Header profesional con identidad CIIPS */
-    .fixed-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 85px;
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-bottom: 3px solid #2C5F8B;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-sizing: border-box;
-      box-shadow: 0 4px 20px rgba(44, 95, 139, 0.1);
-    }
     
     .header-logo {
       height: 55px;
@@ -262,7 +245,7 @@ hepC_page <- div(
     div(
       style = "
         width: 30%;
-        background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+        background: #1e7fb8;
         padding: 40px;
         display: inline;
         flex-direction: column;
@@ -345,31 +328,17 @@ hepC_page <- div(
         display: inline;
         flex-direction: column;
         justify-content: center;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);",
+        background-color: #ededed",
       
       div(
         style = "
         
-        
-        padding: 30px;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
-        ",
-        
-        div(
-          style = "
-        /* Fondo degradado discreto basado en #EE8223 */
-        background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
-        border-radius: 8px; /* Bordes suaves */
-        padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
-        margin-bottom: 20px; /* Separación del gráfico de resultados */
-        border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border: 1px solid rgba(238, 130, 35, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       ",
           p("El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica.",
             style = "
@@ -402,17 +371,19 @@ hepC_page <- div(
         
         
         # Grid de características con estilo sobrio
+      hidden(
         div(
-          style = "display: grid; 
-                 grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                 grid-auto-rows: 1fr;
-                 gap: 20px;
-                 padding: 0 20px;",
-          
+          id = "recuadro_resultados_hepC", 
+          style = "background-color: white;
+        border-radius: 8px;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border: 1px solid rgba(238, 130, 35, 0.1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);",
           # Caja de gráfico con estilo institucional
           hidden(uiOutput("resultados_hepC"))
-        )
-      )
+        ))
+      
       
       
       
@@ -424,6 +395,7 @@ hepC_page <- div(
   # Contenedor de botones flotantes (AÑADIDO)
   div(
     class = "floating-buttons-container",
+    id = "floatingButtonsContainer_hepC",
     
     tags$a(
       actionButton(
@@ -471,6 +443,14 @@ hepC_page <- div(
       class = "floating-btn",
       title = "Ayuda de navegación",
       style = "margin-bottom: 6px;"
+    ),
+    # Botón Toggle (Colapsar/Expandir)
+    actionButton(
+      inputId = "toggle_floating_buttons_hepC",
+      label = NULL,
+      icon = icon("chevron-down"),
+      class = "floating-btn toggle-btn",
+      title = "Colapsar/Expandir menú"
     )
   ),
   div(
@@ -487,6 +467,8 @@ hepC_page <- div(
       href = route_link("multiComp")
     )
   ),
+  
+  
   # CSS adicional para estilo institucional sobrio
   tags$style(HTML("
     /* Eliminar subrayado y cambios de color en enlaces */

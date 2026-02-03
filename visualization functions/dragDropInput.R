@@ -57,7 +57,7 @@ dragDropInput <- function(inputId, label, n_cuadros, choices, width = "100%",
   css <- tags$head(tags$style(HTML(sprintf("
     #%s-container {
       width: %s;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      
     }
     
     .drag-main-layout {

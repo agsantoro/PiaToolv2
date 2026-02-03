@@ -111,7 +111,7 @@ getFooter = function (landing) {
   # } else {
     div(
       style = "
-    background: linear-gradient(135deg, #2C5F8B 0%, #1a3a5c 100%);
+    background: #00205C;
     color: white;
     padding: 10px 0;
     text-align: center;

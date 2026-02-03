@@ -161,8 +161,10 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
                  div(
                    id = "go-btn-container-hearts",
                    actionButton(
-                     "hearts_go",
-                     icon("play"))),
+                     inputId = "hearts_go",
+                     label = "Correr escenario",
+                     class = "go-button",
+                     icon = icon("play"))),
                  align = "right")
           
         )

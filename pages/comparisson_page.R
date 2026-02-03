@@ -17,7 +17,7 @@ comparisson_page <- div(
     .apexcharts-canvas { min-width: 1px !important; }
     
     body, html {
-      font-family: 'Roboto', sans-serif;
+      
       padding: 0;
       margin: 0;
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -31,20 +31,7 @@ comparisson_page <- div(
       min-height: calc(100vh - 85px);
     }
     
-    /* Header fijo */
-    .fixed-header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 85px;
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-bottom: 3px solid #2C5F8B;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-shadow: 0 4px 20px rgba(44, 95, 139, 0.1);
-    }
+    
     
     /* Botón flotante único de retorno */
     .floating-back-container {

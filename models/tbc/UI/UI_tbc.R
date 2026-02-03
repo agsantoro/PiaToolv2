@@ -103,6 +103,8 @@ ui_tbc = function (input, tbc_map_inputs) {
                  id = "go-btn-container-tbc",
                  actionButton(
                    "tbc_go",
+                   label = "Correr escenario",
+                   class = "go-button",
                    icon("play"))),
                align = "right")
         

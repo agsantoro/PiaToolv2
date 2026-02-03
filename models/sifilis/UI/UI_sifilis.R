@@ -109,6 +109,8 @@ UI_sifilis = function (input, sifilis_map_inputs) {
                    id = "go-btn-container-sifilis",
                    actionButton(
                      "sifilis_go",
+                     label = "Correr escenario",
+                     class = "go-button",
                      icon("play"))),
                  align = "right")
           

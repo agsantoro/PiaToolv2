@@ -177,6 +177,8 @@ ui_hpp = function (input, hpp_map_inputs) {
                    id = "go-btn-container-hpp",
                    actionButton(
                      "hpp_go",
+                     label = "Correr escenario",
+                     class = "go-button",
                      icon("play"))),
                  align = "right")
           

@@ -116,14 +116,14 @@ naat_page <- div(
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
     
     body, html {
-      font-family: 'Roboto', sans-serif;
+      
       padding: 0;
       margin: 0;
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
     
     h1, h2, h3, h4, h5, h6, p, span, div:not([class*='icon']):not([class*='fa']) {
-      font-family: 'Roboto', sans-serif;
+      
     }
     
     .dropdown-menu {
@@ -160,23 +160,6 @@ naat_page <- div(
       border-radius: 10px;
     }
     
-    /* Header profesional con identidad CIIPS */
-    .fixed-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 85px;
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-      border-bottom: 3px solid #2C5F8B;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-sizing: border-box;
-      box-shadow: 0 4px 20px rgba(44, 95, 139, 0.1);
-    }
     
     .header-logo {
       height: 55px;
@@ -198,50 +181,7 @@ naat_page <- div(
       margin-top: 85px;
     }
     
-    /* Desactivar efectos de enlace */
-    a, a:hover, a:focus, a:active, a:visited {
-      text-decoration: none !important;
-      color: inherit !important;
-    }
     
-    /* Estilos para los nuevos botones fijos */
-    .floating-buttons-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px; /* Separación uniforme entre botones */
-      z-index: 1000; /* Asegura que estén sobre el contenido */
-    }
-    
-    .floating-btn {
-      /* Estilo general para todos los botones flotantes */
-      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
-      color: white;
-      border: none;
-      border-radius: 50%; /* Botón circular */
-      width: 50px;
-      height: 50px;
-      font-size: 1.2em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-    }
-    
-    .floating-btn:hover {
-      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-    
-    /* Para el botón principal que no tiene el texto del icono */
-    .floating-btn .fa {
-      margin: 0 !important;
-    }
     "
   ),
   
@@ -262,7 +202,7 @@ naat_page <- div(
     div(
       style = "
         width: 30%;
-        background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+        background: #1e7fb8;
         padding: 40px;
         display: inline;
         flex-direction: column;
@@ -352,62 +292,47 @@ naat_page <- div(
         display: inline;
         flex-direction: column;
         justify-content: center;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);",
+        background-color: #ededed",
       
       div(
         style = "
         
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border: 1px solid rgba(238, 130, 35, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      ",
+        p("El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
+          style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
+          color: #495057; 
+          text-align: justify; 
+          line-height: 1.7;
+          padding: 0 20px;"),
         
-        padding: 30px;
-        border-radius: 10px;
-        backdrop-filter: blur(10px);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
-        ",
+        p("Con este modelo podrá calcular indicadores como el número de CCU evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
+          style = "
+          font-size: 0.9em; 
+          margin-bottom: 5px; 
+          color: #495057; 
+          text-align: justify; 
+          line-height: 1.7;
+          padding: 0 20px;"),
         
-        #   div(
-        #     style = "
-        #   /* Fondo degradado discreto basado en #EE8223 */
-        #   background: linear-gradient(180deg, rgba(238, 130, 35, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
-        #   border-radius: 8px; /* Bordes suaves */
-        #   padding: 20px 0; /* Padding vertical para no chocar con el contenido interno */
-        #   margin-bottom: 20px; /* Separación del gráfico de resultados */
-        #   border: 1px solid rgba(238, 130, 35, 0.1); /* Borde muy sutil */
-        # ",
-        #     p("El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
-        #       style = "
-        #     font-size: 0.9em; 
-        #     margin-bottom: 5px; 
-        #     color: #495057; 
-        #     text-align: justify; 
-        #     line-height: 1.7;
-        #     padding: 0 20px;"),
-        #     
-        #     p("Con este modelo podrá calcular indicadores como los eventos coronarios y ACV evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión.",
-        #       style = "
-        #     font-size: 0.9em; 
-        #     margin-bottom: 5px; 
-        #     color: #495057; 
-        #     text-align: justify; 
-        #     line-height: 1.7;
-        #     padding: 0 20px;"),
-        #     
-        #     p("Este modelo está basado en las herramientas “Hypertension: cardiovascular disease EstimaTool (HTN: CVD EstimaTool)” y Global HEARTS Costing Tool Version 5.4.",
-        #       style = "
-        #   font-size: 0.9em; 
-        #   margin-bottom: 5px; 
-        #   color: #495057; 
-        #     text-align: justify; 
-        #   line-height: 1.7;
-        #   padding: 0 20px;"),
-        #     
-        #   ),
-        #   
+        p("Este modelo está basado en la herramienta Papillomavirus Rapid Interface for Modelling and Economics (PRIME).",
+          style = "
+        font-size: 0.9em; 
+        margin-bottom: 5px; 
+        color: #495057; 
+          text-align: justify; 
+        line-height: 1.7;
+        padding: 0 20px;"),
         
+      ),
+      
         # Grid de características con estilo sobrio
         div(
           style = "display: grid; 
@@ -424,7 +349,7 @@ naat_page <- div(
           
           
         )
-      )
+      
       
       
       
@@ -433,11 +358,10 @@ naat_page <- div(
   ),
   getFooter(landing=F),
   
-  # Contenedor de botones flotantes (AÑADIDO)
-  
-  
+  # Contenedor de botones flotantes (MEJORADO)
   div(
     class = "floating-buttons-container",
+    id = "floatingButtonsContainer_naat",
     
     tags$a(
       actionButton(
@@ -445,56 +369,60 @@ naat_page <- div(
         label = NULL,
         icon = icon("table"),
         class = "floating-btn",
-        title = "Mostrar comparación de escenarios",
-        style = "margin-bottom: 6px;"
+        title = "Mostrar comparación de escenarios"
       ),
       href = route_link("comparisson")
     ),
-    # Botón 1: Guardar Escenario (Encima del de Crear)
-    introBox(  
+    
+    # Botón 1: Guardar Escenario
+      
       actionButton(
         inputId = "save_scenario_btn_naat",
         label = NULL,
-        icon = icon("save"), # Icono de disquete (save)
+        icon = icon("save"),
         class = "floating-btn",
-        title = "Guardar Escenario en Pantalla",
-        style = "margin-bottom: 6px;"
+        title = "Guardar Escenario en Pantalla"
       ),
       
       # Botón 2: Nuevo Escenario
       actionButton(
         inputId = "new_scenario_btn_naat",
         label = NULL,
-        icon = icon("rocket"), # Icono de cohete (nuevo escenario)
+        icon = icon("rocket"),
         class = "floating-btn",
-        title = "Crear Nuevo Escenario",
-        style = "margin-bottom: 6px;"
+        title = "Crear Nuevo Escenario"
       ),
       
-      # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
-      # Usaré un icono de descarga y un ID genérico para este.
+      # Botón 3: Descargar
       actionButton(
         inputId = "fixed_original_btn_naat",
         label = NULL,
         icon = icon("download"),
         class = "floating-btn",
-        title = "Descargar Resultados",
-        style = "margin-bottom: 6px;"
+        title = "Descargar Resultados"
       ),
       
-      
+      # Botón 4: Ayuda
       actionButton(
         inputId = "help_naat",
         label = NULL,
         icon = icon("question"),
         class = "floating-btn",
-        title = "Ayuda de navegación",
-        style = "margin-bottom: 6px;"
+        title = "Ayuda de navegación"
       ),
-      data.step = 6,
-      data.intro = ""
+      
+      
+    
+    # Botón Toggle (Colapsar/Expandir)
+    actionButton(
+      inputId = "toggle_floating_buttons_naat",
+      label = NULL,
+      icon = icon("chevron-down"),
+      class = "floating-btn toggle-btn",
+      title = "Colapsar/Expandir menú"
     )
   ),
+  
   div(
     class = "left-side-button",
     tags$a(
@@ -509,6 +437,7 @@ naat_page <- div(
       href = route_link("multiComp")
     )
   ),
+  
   
   # CSS adicional para estilo institucional sobrio
   tags$style(HTML("

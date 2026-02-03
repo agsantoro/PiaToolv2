@@ -62,6 +62,7 @@ source("visualization functions/dragDropInput.R")
 source("visualization functions/infoBox.R")
 source("visualization functions/infoBoxCarousel.R")
 source("visualization functions/getModelName.R")
+source("visualization functions/functionJSToggle.R")
 
 source("functions/getStyle.R")
 
@@ -90,6 +91,15 @@ ui <- fluidPage(
   
   shinyjs::useShinyjs(),
   
+  functionJSToggle("hearts"),
+  functionJSToggle("hpv"),
+  functionJSToggle("tbc"),
+  functionJSToggle("hepC"),
+  functionJSToggle("hpp"),
+  functionJSToggle("prep"),
+  functionJSToggle("sifilis"),
+  functionJSToggle("naat"),
+  
   tags$head(
     tags$link(
       href = "https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap",
@@ -104,7 +114,16 @@ ui <- fluidPage(
     
     "
     
-    body {font-family: 'Roboto', sans-serif !important;}
+     @font-face {
+        font-family: 'Frutiger';
+        src: url('fonts/Frutiger 55 Roman.otf') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      body {
+        font-family: 'Frutiger', Arial, sans-serif !important;
+      }
     
     
     @keyframes pulse-left {
@@ -117,57 +136,91 @@ ui <- fluidPage(
 
     /* Botón Especial Izquierda (Independiente) */
     #multiCompBtn.left-red-btn {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      z-index: 2500;
-      
-      /* Gradiente en gama de rojo suave / terracota claro */
-      background: linear-gradient(135deg, #e57373 0%, #c62828 100%);
-      color: white !important;
-      
-      /* Identidad visual igual a los de la derecha */
-      border: none;
-      border-radius: 50%; /* Circular como los de la derecha */
-      width: 50px;
-      height: 50px;
-      font-size: 1.2em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-    }
-    
-    #multiCompBtn.left-red-btn:hover {
-      /* Hover ligeramente más intenso pero suave */
-      background: linear-gradient(135deg, #ef5350 0%, #b71c1c 100%);
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 2500;
+  
+  /* Gradiente basado en #00205C */
+  background: linear-gradient(135deg, #003d8f 0%, #00205C 100%);
+  color: white !important;
+  
+  /* Identidad visual igual a los de la derecha */
+  border: none;
+  border-radius: 50%; /* Circular como los de la derecha */
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
 
-    #multiCompBtn.left-red-btn .fa {
-      margin: 0 !important;
-    }
-    
-    
-    
-    #acceso-multiComp.disabled {
-        opacity: 0.4 !important;
-        cursor: not-allowed !important;
-        pointer-events: none !important;
-      }
-      
-      #acceso-multiComp.disabled .grid-item {
-        background: rgba(170, 202, 228, 0.15) !important;
-      }
-      
-      #acceso-multiComp.disabled a {
-        pointer-events: none !important;
-      }
-      
-      
+#multiCompBtn.left-red-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 2500;
+  
+  /* Gradiente basado en #00205C */
+  background: linear-gradient(135deg, #003d8f 0%, #00205C 100%);
+  color: white !important;
+  
+  /* Identidad visual igual a los de la derecha */
+  border: none;
+  border-radius: 50%; /* Circular como los de la derecha */
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  outline: none !important; /* Elimina el outline al hacer click */
+}
+
+#multiCompBtn.left-red-btn:hover {
+  /* Hover ligeramente más claro */
+  background: linear-gradient(135deg, #0051c4 0%, #003d8f 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+#multiCompBtn.left-red-btn:focus {
+  outline: none !important; /* Elimina el outline al enfocar */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+#multiCompBtn.left-red-btn:active {
+  outline: none !important; /* Elimina el outline al hacer click */
+  transform: scale(0.98); /* Efecto de presión */
+}
+
+#multiCompBtn.left-red-btn .fa {
+  margin: 0 !important;
+}
+
+/* Estilos cuando el botón está deshabilitado */
+#multiCompBtn.left-red-btn:disabled,
+.left-side-button:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  pointer-events: auto !important; /* Permite mostrar el cursor */
+  background: linear-gradient(135deg, #003d8f 0%, #00205C 100%) !important;
+  outline: none !important;
+}
+
+#multiCompBtn.left-red-btn:disabled:hover,
+.left-side-button:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  background: linear-gradient(135deg, #003d8f 0%, #00205C 100%) !important;
+}      
     .header-destacados {
     font-size: 1.25rem;
     display: flex;
@@ -256,10 +309,52 @@ ui <- fluidPage(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
+  padding: 10px 20px;
   box-sizing: border-box;
   pointer-events: auto !important;
+  gap: 15px;
 }
+
+/* Línea vertical separadora */
+.header-divider {
+  width: 1px;
+  height: 50px; /* Ajusta según la altura del logo */
+  background-color: #9d9d9d;
+  margin: 0 5 px;
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  margin-left: 5px !important;
+  gap: 15px;
+  flex: 1;
+}
+
+.header-title {
+  color: #236192 !important;
+  margin: 0 !important;
+  text-align: left !important;
+  font-size: 28px  !important; /* Ajusta según necesites */
+}
+
+.home-icon {
+  font-size: 20px;
+  color: #236192;
+  transition: color 0.3s;
+}
+
+.home-icon:hover {
+  color: #1a4a6f;
+}
+
+.p-2 {
+  margin-left: auto;
+}
+  
+  
+  
+
 
 /* --- INTROJS FIX PARA NO TAPAR EL HEADER --- */
 
@@ -357,6 +452,112 @@ ui <- fluidPage(
   .close-btn:hover {
     color: #333;
   }
+  
+  
+  /* Desactivar efectos de enlace */
+    a, a:hover, a:focus, a:active, a:visited {
+      text-decoration: none !important;
+      color: inherit !important;
+    }
+    
+    /* Estilos para los nuevos botones fijos */
+    .floating-buttons-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .floating-buttons-container.collapsed {
+      gap: 0;
+    }
+    
+    .floating-btn {
+      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+    
+    .floating-btn:hover {
+      background: linear-gradient(135deg, #1e4368 0%, #3a7a8a 100%);
+      transform: scale(1.05) translateY(0);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Botones colapsados */
+    .floating-buttons-container.collapsed .floating-btn:not(.toggle-btn) {
+      opacity: 0;
+      transform: scale(0.3) translateY(20px);
+      pointer-events: none;
+      margin: -25px 0;
+    }
+    
+    /* Botón toggle siempre visible */
+    .toggle-btn {
+      background: #EC7016 !important;
+      position: relative;
+      z-index: 1001;
+    }
+    
+    .toggle-btn:hover {
+      background: #D46212 !important;
+    }
+    
+    /* Animación de rotación del icono */
+    .toggle-btn i {
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .floating-buttons-container.collapsed .toggle-btn i {
+      transform: rotate(180deg);
+    }
+    
+    .floating-btn .fa {
+      margin: 0 !important;
+    }
+    
+    
+    .go-button {
+  background-color: #EC7016 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 10px 20px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.go-button:hover {
+  background-color: #d4631a !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(236, 112, 22, 0.3) !important;
+}
+
+.go-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(236, 112, 22, 0.3) !important;
+}
+
+.go-button .fa-play {
+  margin-right: 8px;
+}
     
     "
   
@@ -421,6 +622,8 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+  
+  
   
   router_server()
   
@@ -507,6 +710,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$hearts_go, {
     
+    toggle("recuadro_resultados_hearts")
     toggle("resultados_hearts")
     output$resultados_hearts = renderUI({
        ui_resultados_hearts(input,output,run_hearts, hearts_map_outputs)
@@ -564,7 +768,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$hpv_go, {
-    
+    toggle("recuadro_resultados_hpv")
     toggle("resultados_hpv")
     
     output$resultados_hpv = renderUI({
@@ -629,6 +833,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$tbc_go, {
+    toggle("recuadro_resultados_tbc")
     toggle("resultados_tbc")
     output$resultados_tbc = renderUI({
       ui_resultados_tbc(input,output,tbc_run, tbc_map_outputs)
@@ -687,6 +892,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$hepC_go, {
+    toggle("recuadro_resultados_hepC")
     toggle("resultados_hepC")
     output$resultados_hepC = renderUI({
       tagList(
@@ -734,6 +940,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$hpp_go, {
+    toggle("recuadro_resultados_hpp")
     toggle("resultados_hpp")
     output$resultados_hpp = renderUI({
       tagList(
@@ -769,6 +976,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$prep_go, {
+    toggle("recuadro_resultados_prep")
     toggle("resultados_prep")
     output$resultados_prep = renderUI({
       tagList(
@@ -812,7 +1020,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$sifilis_go, {
-   
+    toggle("recuadro_resultados_sifilis") 
   toggle("resultados_sifilis")
    output$resultados_sifilis = renderUI({
      tagList(
@@ -853,7 +1061,9 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$naat_go, {
+    toggle("recuadro_resultados_naat")
     toggle("resultados_naat")
+    
     output$resultados_naat = renderUI({
       tagList(
         ui_resultados_naat(input, output, naat_run(), naat_map_outputs)
@@ -979,6 +1189,10 @@ server <- function(input, output, session) {
       
       
   })
+  
+  ##### toggle buttons #####
+  
+  
   
 }
 

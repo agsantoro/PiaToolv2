@@ -68,23 +68,7 @@ landing_page <- div(
       background: transparent; /* make scrollbar transparent */
     }
     
-    /* Estilos para el header fijo */
-   .fixed-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(16, 51, 98, 0.1);
-  z-index: 2000; /* Suficientemente alto, pero no rompe IntroJS */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
-  box-sizing: border-box;
-   }
+   
 .introjs-hint {
 visibility: hidden;
 }
@@ -103,7 +87,7 @@ visibility: hidden;
   border-radius: 14px !important;
   box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
   max-width: 420px !important;
-  font-family: 'Roboto', sans-serif !important;
+  
   border: 1px solid rgba(16,51,98,0.1) !important;
 }
 
@@ -250,7 +234,7 @@ visibility: hidden;
     flex: 1; 
     
             padding: 0; 
-            background: #F2F3FA;
+            background: #ededed;
             color: #103362;
             display: flex; 
             flex-direction: column; 
@@ -261,31 +245,42 @@ visibility: hidden;
     text-align; center !important;",
     
     introBox(
-      h3("La Herramienta PIA Tool es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la Organización Mundial de la Salud.",
-         class = "animate-left",
-         style = "margin-bottom: 40px; 
-                  opacity: 0.9;width: 60%; 
-                  margin-top: 20px; 
-                  margin-left: auto;
-            margin-right: auto;"),
+      div(
+        HTML("<h3 style = 'font-size: 1.3em !important;'>La <strong>Herramienta PIA Tool</strong> es una solución interactiva diseñada para guiar a los usuarios en la evaluación del impacto epidemiológico y económico de intervenciones prioritarias identificadas por la <strong>Organización Mundial de la Salud.</strong></h3>"),
+             class = "animate-left",
+             style = "margin-bottom: 0 !important; 
+                      opacity: 1;width: 60%; 
+                      color: #236192 !important;
+                      margin-top: 20px  !important; 
+                      margin-left: auto;
+                      margin-right: auto;"),
+      
+      
       data.step = 1,
       data.intro = ""
       
     ),    
     
-    div(
-      class = "floating-buttons-container",
-      
+      div(
         
+        class = "floating-buttons-container",
+        
+        introBox(
         actionButton(
           inputId = "help",
           label = NULL,
           icon = icon("question"),
           class = "floating-btn",
           title = "Ayuda de navegación"
-        )
-      
-      ),
+        ),
+        data.position = "bottom-left_aligned",
+        data.step = 3,
+        data.intro = ""
+        
+        
+      )
+    )
+    ,
     
     # Contenedor grid para las características - MODIFICADO PARA IGUAL ALTURA
     introBox(
@@ -306,49 +301,49 @@ visibility: hidden;
           title = "Iniciativa HEARTS",
           text = "El modelo de la iniciativa HEARTS permite evaluar el impacto de aumentar la cobertura del tratamiento farmacológico de personas con hipertensión ya diagnosticadas en la carga de enfermedad cardio y cerebrovascular modificando diversos parámetros como el porcentaje de cobertura de tratamiento objetivo y el costo farmacológico anual promedio por paciente.",
           iconType = "heart",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "hearts"
         ),
         menuBox(
           title = "Vacunación contra el VPH",
           text = "El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
           iconType = "syringe",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "hpv"
         ),
         menuBox(
           title = "Tratamiento de observación directa por vídeo para tuberculosis (VDOT)",
           text = "El modelo de VDOT permite evaluar el impacto de este tipo de tratamiento en la carga de enfermedad por Tuberculosis pulmonar modificando parámetros como el porcentaje de adherencia a vDOT y los costos del tratamiento.",
           iconType = "lungs",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "tbc"
         ),
         menuBox(
           title = "Tratamiento para la hepatitis C crónica",
           text = "El modelo del uso de tratamiento específico para Hepatitis C Crónica le permite evaluar el impacto del uso del mismo en personas ya diagnosticadas, con distintos estadíos de fibrosis hepática y que nunca han recibido tratamiento anteriormente, en la carga de enfermedad por Hepatitis C Crónica.",
           iconType = "virus",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "hepC"
         ),
         menuBox(
           title = "Uso de oxitocina para la prevención de la hemorragia post parto",
           text = "El modelo del uso de Oxitocina para la prevención de Hemorragia Post Parto permite evaluar el impacto del aumento de cobertura del uso de oxitocina durante el parto en la carga de enfermedad por hemorragia postparto modificando parámetros como el porcentaje de uso de oxitocina y el costo de la misma.",
           iconType = "baby",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "hpp"
         ),
         menuBox(
           title = "Profilaxis pre exposición (PrEP) para VIH",
           text = "El modelo de PrEP permite evaluar el impacto del uso de profilaxis pre exposición oral en personas con alto riesgo de infección por el Virus de la Inmunodeficiencia Humana (VIH) en la carga de enfermedad por esta infección modificando parámetros como el porcentaje de adherencia a la medicación y el costo anual del uso de PrEP.",
           iconType = "pills",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "prep"
         ),
         menuBox(
           title = "Tests rápidos en punto de cuidado para sífilis gestacional",
           text = "Este modelo permite evaluar el impacto de la incorporación de test rápidos en el proceso de diagnóstico y tratamiento oportuno de la sífilis en gestantes. El modelo contrasta un escenario basal (pruebas convencionales) con un escenario alternativo (test rápidos) para estimar las variaciones en los resultados de salud adversos en el producto de la gestación, así como en los años de vida ajustados por discapacidad y los costos en salud asociados.",
           iconType = "vial",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "sifilis"
         ),
         
@@ -356,9 +351,9 @@ visibility: hidden;
           title = "Pruebas de amplificación de ácidos nucleicos (NAAT) para diagnóstico de Tuberculosis Pulmonar",
           text = "Este modelo de cohorte estático simula el proceso diagnóstico y terapéutico de la tuberculosis para evaluar el impacto de la incorporación de las pruebas de amplificación de ácidos nucleicos (NAAT). Lo anterior se logra modificando parámetros clave, como la reducción del retraso diagnóstico y la capacidad de detección temprana de resistencia a fármacos que ofrecen las NAAT.",
           iconType = "lungs-virus",
-          iconColor = "#2C5F8B",
+          iconColor = "#1c98d6",
           linkTo = "naat"
-        ),
+        )
         
         # div(
         #   id = "acceso-multiComp",
@@ -372,7 +367,10 @@ visibility: hidden;
         # )
         # 
 
-        )
+        ),
+      
+      data.step = 2,
+      data.intro = ""
         
         
         

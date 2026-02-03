@@ -23,6 +23,7 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
     shinyjs::disable(glue("download_scenario_btn_{page}"))
     shinyjs::disable("country")
     hide(glue("resultados_{page}"))
+    hide(glue("recuadro_resultados_{page}"))
     
     lapply(c("inputContainer",glue("go-btn-container-{page}"),"country",do::exec(glue("map_inputs()$i_names"))), 
            function (i) {

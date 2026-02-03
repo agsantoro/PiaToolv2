@@ -113,6 +113,8 @@ UI_naat = function (input, naat_map_inputs) {
                    id = "go-btn-container-naat",
                    actionButton(
                      "naat_go",
+                     label = "Correr escenario",
+                     class = "go-button",
                      icon("play"))),
                  align = "right")
           

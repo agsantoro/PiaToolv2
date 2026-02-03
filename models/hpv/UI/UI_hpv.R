@@ -193,6 +193,8 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
                  id = "go-btn-container-hpv",
                  actionButton(
                  "hpv_go",
+                 label = "Correr escenario",
+                 class = "go-button",
                  icon("play"))),
                align = "right")
         
