@@ -88,8 +88,12 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     addData$avanzado = NA
     addData$avanzado[avz] = T
     addData$avanzado[bsc] = F
-    
-    hpv_map_inputs(addData)
+    hpv_map_inputs(
+      cbind(
+        addData %>% dplyr::select(Input = i_labels) %>%
+          mutate(Valor = unlist(isolate(parametersReactive())))
+      )
+    )
     
   }
   renderUI({

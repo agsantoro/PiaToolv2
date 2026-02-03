@@ -104,7 +104,14 @@ ui_hpp = function (input, hpp_map_inputs) {
       
       rownames(addData) = 1:nrow(addData)
       
-      hpp_map_inputs(addData)
+      
+      hpp_map_inputs(
+        cbind(
+          addData %>% dplyr::select(Input = i_labels) %>%
+            mutate(Valor = input_values)
+        )
+      )
+      
       
     }
     

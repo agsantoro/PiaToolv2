@@ -90,7 +90,17 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
       
       rownames(addData) = 1:nrow(addData)
       
-      hepC_map_inputs(addData)
+      defaultDF = data.frame(
+        i_names = names(default),
+        Valor = unname(unlist(as.vector(default)))
+      )
+      
+      hepC_map_inputs(
+        cbind(
+          addData %>% dplyr::select(i_names, Input = i_labels) %>%
+            left_join(defaultDF) %>% dplyr::select(Input, Valor)
+        )
+      )
       
     }
     

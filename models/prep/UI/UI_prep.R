@@ -15,15 +15,25 @@ ui_prep = function (input, prep_map_inputs) {
       addData$avanzado[bsc] = F
 
       rownames(addData) = 1:nrow(addData)
-
-      prep_map_inputs(addData)
+      
+      prep_map_inputs_current = addData
+      
+      prep_map_inputs(
+        cbind(
+          addData %>% dplyr::select(Input = i_labels) %>%
+            mutate(Valor = unlist(get_prep_params(input$country))
+            )
+        )
+      )
+      
+      
     }
 
     tagList(
       
       lapply(bsc, function(i) {
-        numericInput(prep_map_inputs()$i_names[i],
-                     prep_map_inputs()$i_labels[i],
+        numericInput(prep_map_inputs_current$i_names[i],
+                     prep_map_inputs_current$i_labels[i],
                      get_prep_params(input$country)[[i]])
       }),
       
@@ -47,8 +57,8 @@ ui_prep = function (input, prep_map_inputs) {
           style = "padding: 10px; border: 1px solid #ddd; border-radius: 4px;",
 
       lapply(avz, function(i) {
-        numericInput(prep_map_inputs()$i_names[i],
-                     prep_map_inputs()$i_labels[i],
+        numericInput(prep_map_inputs_current$i_names[i],
+                     prep_map_inputs_current$i_labels[i],
                      get_prep_params(input$country)[[i]])
       })
     )),

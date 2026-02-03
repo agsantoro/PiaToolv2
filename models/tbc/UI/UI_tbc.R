@@ -17,10 +17,21 @@ ui_tbc = function (input, tbc_map_inputs) {
 
       rownames(addData) = 1:nrow(addData)
       
-      tbc_map_inputs(addData)
+      
+      tbc_map_inputs_current = addData
+      
+      tbc_map_inputs(
+        cbind(
+          addData %>% dplyr::select(Input = i_labels) %>%
+            mutate(Valor = unlist(get_tbc_params(input))
+        )
+        )
+      )
 
 
     }
+    
+    
     
     porcentajes = c(2,6,7,8,14,20,31)
     
@@ -32,9 +43,9 @@ ui_tbc = function (input, tbc_map_inputs) {
       lapply(bsc, function(i) {
         
         if (i %in% porcentajes) {
-          sliderInput(tbc_map_inputs()$i_names[i],
+          sliderInput(tbc_map_inputs_current$i_names[i],
                       tags$div(
-                        tbc_map_inputs()$i_labels[i],
+                        tbc_map_inputs_current$i_labels[i],
                         icon("circle-info",
                              "fa-1x",
                              title = inputs_hover[i])
@@ -45,8 +56,8 @@ ui_tbc = function (input, tbc_map_inputs) {
                       step = 0.01,
                       value = get_tbc_params(input)[[i]]*100)
         } else {
-          numericInput(tbc_map_inputs()$i_names[i],tags$div(
-            tbc_map_inputs()$i_labels[i],
+          numericInput(tbc_map_inputs_current$i_names[i],tags$div(
+            tbc_map_inputs_current$i_labels[i],
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])
@@ -76,8 +87,8 @@ ui_tbc = function (input, tbc_map_inputs) {
 
       lapply(avz, function(i) {
         if (i %in% porcentajes) {
-          sliderInput(tbc_map_inputs()$i_names[i],tags$div(
-            tbc_map_inputs()$i_labels[i],
+          sliderInput(tbc_map_inputs_current$i_names[i],tags$div(
+            tbc_map_inputs_current$i_labels[i],
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])
@@ -86,8 +97,8 @@ ui_tbc = function (input, tbc_map_inputs) {
           step = 0.01,
           value = get_tbc_params(input)[[i]]*100)
         } else {
-          numericInput(tbc_map_inputs()$i_names[i],tags$div(
-            tbc_map_inputs()$i_labels[i],
+          numericInput(tbc_map_inputs_current$i_names[i],tags$div(
+            tbc_map_inputs_current$i_labels[i],
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])

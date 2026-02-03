@@ -73,7 +73,11 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       df_hearts_map_inputs$avanzado[is.na(df_hearts_map_inputs$avanzado)] = T
       rownames(df_hearts_map_inputs) = 1:nrow(df_hearts_map_inputs)
       
-      hearts_map_inputs(df_hearts_map_inputs)
+      hearts_map_inputs(cbind(
+        df_hearts_map_inputs %>% dplyr::select(Input = i_labels) %>%
+          mutate(Valor = input_values)
+        
+        ))
       
       hearts_map_inputs()
       

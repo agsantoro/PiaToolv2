@@ -18,7 +18,22 @@ UI_sifilis = function (input, sifilis_map_inputs) {
       
       rownames(addData) = 1:nrow(addData)
       
-      sifilis_map_inputs(addData)
+      sifilis_map_inputs_current = addData
+      
+      valuesInput = unlist(cargar(input$country))
+      valuesInput = data.frame(
+        i_names = names(valuesInput),
+        Valor = valuesInput
+      )
+      
+      
+      sifilis_map_inputs(
+        cbind(
+          addData %>% dplyr::select(Input = i_labels, i_names) %>%
+            left_join(valuesInput)
+        ) %>% dplyr::select(Input, Valor)
+      )
+      
       
       
     }
@@ -33,9 +48,9 @@ UI_sifilis = function (input, sifilis_map_inputs) {
       lapply(bsc, function(i) {
         if (i %in% porcentajes) {
           
-          sliderInput(sifilis_map_inputs()$i_names[i],
+          sliderInput(sifilis_map_inputs_current$i_names[i],
                       tags$div(
-                        sifilis_map_inputs()$i_labels[i],
+                        sifilis_map_inputs_current$i_labels[i],
                         icon("circle-info",
                              "fa-1x",
                              title = inputs_hover[i])
@@ -44,15 +59,15 @@ UI_sifilis = function (input, sifilis_map_inputs) {
                       min=0, 
                       max=1,
                       step = 0.01,
-                      value = values[[sifilis_map_inputs()$i_names[i]]])
+                      value = values[[sifilis_map_inputs_current$i_names[i]]])
         } else {
-          numericInput(sifilis_map_inputs()$i_names[i],
+          numericInput(sifilis_map_inputs_current$i_names[i],
                        tags$div(
-                         sifilis_map_inputs()$i_labels[i],
+                         sifilis_map_inputs_current$i_labels[i],
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])
-          ),values[[sifilis_map_inputs()$i_names[i]]])
+          ),values[[sifilis_map_inputs_current$i_names[i]]])
         }
         
       }),
@@ -78,9 +93,9 @@ UI_sifilis = function (input, sifilis_map_inputs) {
           
           lapply(avz, function(i) {
             if (i %in% porcentajes) {
-              sliderInput(sifilis_map_inputs()$i_names[i],
+              sliderInput(sifilis_map_inputs_current$i_names[i],
                           tags$div(
-                            sifilis_map_inputs()$i_labels[i],
+                            sifilis_map_inputs_current$i_labels[i],
                             icon("circle-info",
                                  "fa-1x",
                                  title = inputs_hover[i])
@@ -89,15 +104,15 @@ UI_sifilis = function (input, sifilis_map_inputs) {
                           min=0, 
                           max=1,
                           step = 0.01,
-                          value = values[[sifilis_map_inputs()$i_names[i]]])
+                          value = values[[sifilis_map_inputs_current$i_names[i]]])
             } else {
-              numericInput(sifilis_map_inputs()$i_names[i],
+              numericInput(sifilis_map_inputs_current$i_names[i],
                            tags$div(
-                             sifilis_map_inputs()$i_labels[i],
+                             sifilis_map_inputs_current$i_labels[i],
                              icon("circle-info",
                                   "fa-1x",
                                   title = inputs_hover[i])
-                           ),values[[sifilis_map_inputs()$i_names[i]]])
+                           ),values[[sifilis_map_inputs_current$i_names[i]]])
             }
             
           })),

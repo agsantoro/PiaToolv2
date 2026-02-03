@@ -22,7 +22,16 @@ UI_naat = function (input, naat_map_inputs) {
       rownames(addData) = 1:nrow(addData)
       addData$i_names = paste0(addData$i_names,"_naat")
       
-      naat_map_inputs(addData)
+      valuesInputs = cargar_naat()[[input$country]]
+      valuesInputs = valuesInputs[paste0(names(valuesInputs),"_naat") %in% addData$i_names]
+      valuesInputs = data.frame(
+        i_names = paste0(names(valuesInputs),"_naat"),
+        Valor = unname(unlist(valuesInputs))
+      )
+      
+      naat_map_inputs(
+        addData %>% left_join(valuesInputs) %>% dplyr::select(Input = i_labels, Valor)
+      )
       
       
     }
