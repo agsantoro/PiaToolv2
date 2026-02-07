@@ -364,6 +364,7 @@ hearts_page <- div(
         label = NULL,
         icon = icon("table"),
         class = "floating-btn",
+        style = "color: white !important;",
         title = "Mostrar comparación de escenarios"
       ),
       href = route_link("comparisson")
@@ -375,6 +376,7 @@ hearts_page <- div(
       label = NULL,
       icon = icon("save"),
       class = "floating-btn",
+      style = "color: white !important;",
       title = "Guardar Escenario en Pantalla"
     ),
     
@@ -384,16 +386,19 @@ hearts_page <- div(
       label = NULL,
       icon = icon("rocket"),
       class = "floating-btn",
+      style = "color: white !important;",
       title = "Crear Nuevo Escenario"
     ),
     
     # Botón 4: Descargar
-    actionButton(
-      inputId = "download_scenario_btn_hearts",
+    shiny::downloadButton(
+      outputId = "download_scenario_btn_hearts",
       label = NULL,
       icon = icon("download"),
       class = "floating-btn",
+      style = "color: white !important;",
       title = "Descargar Resultados"
+      
     ),
     
     # Botón 5: Ayuda
@@ -402,6 +407,7 @@ hearts_page <- div(
       label = NULL,
       icon = icon("question"),
       class = "floating-btn",
+      style = "color: white !important;",
       title = "Ayuda de navegación"
     ),
     
@@ -411,6 +417,7 @@ hearts_page <- div(
       label = NULL,
       icon = icon("chevron-down"),
       class = "floating-btn toggle-btn",
+      style = "color: white !important;",
       title = "Colapsar/Expandir menú"
     )
   ),
@@ -423,6 +430,7 @@ hearts_page <- div(
         label = NULL,
         icon = icon("balance-scale"),
         class = "left-red-btn",
+        style = "color: white !important;",
         title = "Comparación de escenarios de múltiples intervenciones"
         
       ),

@@ -161,6 +161,17 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
           "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
           "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por año de vida ajustado por discapacidad evitado (USD)"],
           "ROI" = data$Valor[data$Indicador == "Retorno de Inversión (%)"])
+      } else if (saved_scenarios[[i]]$model == "naat") {
+        data = saved_scenarios[[i]]$outputs
+        list(
+          "Name" = names(saved_scenarios[i]),
+          "Country" = saved_scenarios[[i]]$country,
+          "Model" = saved_scenarios[[i]]$model,
+          "AVAD" = data$Valor[data$Indicador == "Años de Vida Ajustados por Discapacidad Evitados"],
+          "COSTO_TOTAL" = data$Valor[data$Indicador == "Costo Total de la Intervención (USD)"],
+          "DIF_COSTO" = data$Valor[data$Indicador == "Diferencia de costos respecto al escenario basal (USD)"],
+          "RCEI_AVAD" = data$Valor[data$Indicador == "Razón de costo-efectividad incremental por año de vida ajustado por discapacidad evitado (USD)"],
+          "ROI" = data$Valor[data$Indicador == "Retorno de Inversión (%)"])
       }
     })
     

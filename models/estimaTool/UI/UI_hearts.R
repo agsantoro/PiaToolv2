@@ -56,6 +56,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
         i_names = c(i_names,paste0("hearts_input_",i))
       }
       
+      
       i_labels = c()
       
       for (i in 1:length(input_labels)) {
@@ -79,17 +80,13 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
         
         ))
       
-      hearts_map_inputs()
       
-      bsc = which(hearts_map_inputs()$avanzado==F)
-      avz = which(hearts_map_inputs()$avanzado==T)
+      
+      bsc = which(df_hearts_map_inputs$avanzado==F)
+      avz = which(df_hearts_map_inputs$avanzado==T)
       prc = c(3,4,5,6,11)
       
       
-      # save(
-      #   hearts_map_inputs,
-      #   file = "hearts_map_inputs.Rdata"
-      # )
       
     }
     tagList(
