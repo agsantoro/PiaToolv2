@@ -1,90 +1,109 @@
-library(shiny)
 library(htmltools)
+library(shiny)
 
-paises_info <- list(
-  # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
-  "ARGENTINA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
-      alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Argentina")
-  ),
-  "BRAZIL" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
-      alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Brazil")
-  ),
-  "CHILE" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
-      alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Chile")
-  ),
-  "COLOMBIA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
-      alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Colombia")
-  ),
-  "COSTA RICA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
-      alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Costa Rica")
-  ),
-  "JAMAICA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
-      alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Jamaica")
-  ),
-  "MEXICO" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
-      alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Mexico")
-  ),
-  "PERU" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
-      alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Peru")
-  ),
-  "REPÚBLICA DOMINICANA" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
-      alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("República Dominicana")
-  ),
-  "URUGUAY" = tags$div(
-    style = "display: flex; align-items: center;",
-    tags$img(
-      src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
-      alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
-    ),
-    tags$span("Uruguay")
-  )
-  
+countriesIncluded = readxl::read_xlsx("models/hpp/data/datosPais.xlsx", sheet = "countries")
+
+paises_info = setNames(
+  lapply(seq_along(countriesIncluded$Name), function(i) {
+    ctr = toupper(countriesIncluded$Name[i])
+    alpha = countriesIncluded$Alpha2[i]
+    ctr = tags$div(
+      style = "display: flex; align-items: center;",
+      tags$img(
+        src = glue("https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/{alpha}.svg"),
+        alt = "Bandera {ctr}", width = 20, height = 15, style = "margin-right: 8px;"
+      ),
+      tags$span(countriesIncluded$Name[i])
+    )
+  }), toupper(countriesIncluded$Name)
 )
+
+
+
+# paises_info <- list(
+#   # El valor (value) es lo que se retorna; El nombre (name) es lo que se muestra
+#   "ARGENTINA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/ar.svg",
+#       alt = "Bandera Argentina", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Argentina")
+#   ),
+#   "BRAZIL" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/br.svg",
+#       alt = "Bandera Brazil", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Brazil")
+#   ),
+#   "CHILE" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cl.svg",
+#       alt = "Bandera Chile", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Chile")
+#   ),
+#   "COLOMBIA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/co.svg",
+#       alt = "Bandera Colombia", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Colombia")
+#   ),
+#   "COSTA RICA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/cr.svg",
+#       alt = "Bandera Costa Rica", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Costa Rica")
+#   ),
+#   "JAMAICA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/jm.svg",
+#       alt = "Bandera Jamaica", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Jamaica")
+#   ),
+#   "MEXICO" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/mx.svg",
+#       alt = "Bandera Mexico", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Mexico")
+#   ),
+#   "PERU" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/pe.svg",
+#       alt = "Bandera Peru", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Peru")
+#   ),
+#   "REPÚBLICA DOMINICANA" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/do.svg",
+#       alt = "Bandera República Dominicana", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("República Dominicana")
+#   ),
+#   "URUGUAY" = tags$div(
+#     style = "display: flex; align-items: center;",
+#     tags$img(
+#       src = "https://cdn.rawgit.com/lipis/flag-icon-css/master/flags/4x3/uy.svg",
+#       alt = "Bandera Uruguay", width = 20, height = 15, style = "margin-right: 8px;"
+#     ),
+#     tags$span("Uruguay")
+#   )
+#   
+# )
 
 options_con_html <- lapply(names(paises_info), function(cod) {
   list(value = cod, content = as.character(paises_info[[cod]]))
@@ -298,7 +317,7 @@ hpp_page <- div(
             div(
               id = "wrapper_country", class = "country-input-class",
               pickerInput(
-                inputId = "country",
+                inputId = "country_hpp",
                 label = "Selecciona un País:",
                 choices = names(paises_con_banderas),
                 selected = "AR", # Argentina por defecto

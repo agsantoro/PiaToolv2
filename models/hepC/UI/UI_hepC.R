@@ -89,7 +89,6 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
       addData$avanzado[bsc] = F
       
       rownames(addData) = 1:nrow(addData)
-      
       defaultDF = data.frame(
         i_names = names(default),
         Valor = unname(unlist(as.vector(default)))

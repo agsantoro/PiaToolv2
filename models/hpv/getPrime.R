@@ -1,21 +1,26 @@
 library(readxl)
 # parameters
 parameters = readxl::read_xlsx("models/hpv/xlsx/definitiva.xlsx", sheet = "Parameters")
+print("lee parametros hpv")
 #load("hpv/data/parameters.RData")
 
 
 # mortality and incidence data
 mortall = readxl::read_xlsx("models/hpv/xlsx/definitiva.xlsx", sheet = "mortall")
+print("lee mortalidad hpv")
 #load("hpv/data/mortall.RData")
 
 mortcecx = readxl::read_xlsx("models/hpv/xlsx/definitiva.xlsx", sheet = "mortcecx")
+print("lee cex hpv")
 #load("hpv/data/mortcex.RData")
 #mortcecx[is.na(mortcecx)] = 0
 
 incidence = readxl::read_xlsx("models/hpv/xlsx/definitiva.xlsx", sheet = "incidence")
+print("lee incidence hpv")
 #load("hpv/incidence.RData")
 
 cohortSizeAcVac = readxl::read_xlsx("models/hpv/xlsx/definitiva.xlsx", sheet = "EDAD_VACUNA")
+print("lee cohort size hpv")
 names(cohortSizeAcVac)[1]="age"
 #load("hpv/cohortSizeAcVac.RData")
 cohortSizeAcVac = cohortSizeAcVac %>% pivot_longer(cols = 2:ncol(cohortSizeAcVac), names_to = "country")

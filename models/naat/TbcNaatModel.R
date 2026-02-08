@@ -764,7 +764,7 @@ ajustarOutcomePorNAAT_naat <- function(pTtoExitoso, pMuerte, rRRMuerteNAAT, rORE
 
 cargar_naat <- function() {
     
-  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros")
+  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros", range = cell_cols("A:E"))
 
   parametros_paises <- list()
   lista_paises <- c("ARGENTINA", "BRAZIL", "CHILE", "COLOMBIA", "ECUADOR", "MEXICO", "COSTA RICA", "PERU", "URUGUAY", "JAMAICA", "REPÚBLICA DOMINICANA")
@@ -780,10 +780,10 @@ cargar_naat <- function() {
 }
 
 naatInputList = function() {
-  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "clasificacion")[,1:4]
+  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "clasificacion", range = cell_cols("A:D"))
   colnames(data) = c("grupo","var","label","tipo")
   data$label = NULL
-  labels = read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros")[,2:3] %>% distinct()
+  labels = read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros", range = cell_cols("B:C")) %>% distinct()
   colnames(labels) = c("var","label")
   
   

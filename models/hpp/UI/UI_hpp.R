@@ -1,7 +1,8 @@
 ui_hpp = function (input, hpp_map_inputs) {
   renderUI({
     datosPais = readxl::read_xlsx("models/hpp/data/datosPais.xlsx", col_types = c("text","text","numeric","text","text","text"))
-    country = str_to_title(input$country)
+    print("lee datos HPV")
+    country = str_to_title(input$country_hpp)
     datosPais = datosPais %>% dplyr::filter(pais==country)
     
     nombres_input = c(
@@ -65,7 +66,7 @@ ui_hpp = function (input, hpp_map_inputs) {
       'Costo de hemorragia post parto severa (≥1000 ml) en el país para julio 2023'
     )
     
-    datosPais = datosPais[datosPais$pais==str_to_title(input$country),]
+    datosPais = datosPais[datosPais$pais==str_to_title(input$country_hpp),]
     
     input_values = c(
       round(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"] * datosPais$value[datosPais$indicador=="USO.DE.OXITOCINA"] /(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"]*datosPais$value[datosPais$indicador=="pINSTITUCIONALES"]),5), 
@@ -91,7 +92,7 @@ ui_hpp = function (input, hpp_map_inputs) {
     avz = c(3:length(input_values))
     porcentajes = c(1,2,5,7,8,9,10,11,15)
     
-    if (is.null(input$country) == F) {
+    if (is.null(input$country_hpp) == F) {
       addData = data.frame(
         intervencion = "Hemorragia postparto",
         i_names = nombres_input,
