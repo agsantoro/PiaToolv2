@@ -51,7 +51,7 @@ infoBoxCarousel <- function(infoBoxes_list, carousel_id = "infoCarousel") {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          background-color: rgba(33, 150, 243, 0.8);
+          background-color: rgba(240, 104, 42, 0.8);
           color: white;
           border: none;
           width: 50px;
@@ -68,7 +68,7 @@ infoBoxCarousel <- function(infoBoxes_list, carousel_id = "infoCarousel") {
         }}
         
         .carousel-btn:hover {{
-          background-color: rgba(33, 150, 243, 1);
+          background-color: rgba(240, 104, 42, 1);
           transform: translateY(-50%) scale(1.1);
         }}
         
@@ -90,20 +90,20 @@ infoBoxCarousel <- function(infoBoxes_list, carousel_id = "infoCarousel") {
           width: 12px;
           height: 12px;
           border-radius: 50%;
-          background-color: #ddd;
+          background-color: rgba(240, 104, 42, 0.15);
           margin: 0 5px;
           cursor: pointer;
           transition: all 0.3s ease;
         }}
         
         .carousel-dot.active {{
-          background-color: #2196F3;
+          background-color: #f0682a;
           width: 30px;
           border-radius: 6px;
         }}
         
         .carousel-dot:hover {{
-          background-color: #64B5F6;
+          background-color: rgba(240, 104, 42, 0.4);
         }}
       </style>
       

@@ -69,7 +69,6 @@ ui_inputs_multiComp = function (input, saved_scenarios, current_page, getCountry
   }
 }
 
-
 ui_resultados_multiComp = function(input,output,session,current_page, saved_scenarios, selectedScenarios) {
   
   if (get_page()!="multiComp") {return()} else {
@@ -194,7 +193,7 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       dplyr::filter(!indicador %in% c("RCEI_AVAD","ROI"))
     
     compa$value = str_replace_all(compa$value, "\\.", "")
-    compa$value = as.numeric(str_replace_all(compa$value, ",", "\\."))
+    compa$value = str_replace_all(compa$value, ",", "\\.")
     
     compa$indicador[compa$indicador=="AVAD"] = "Años de vida ajustados por discapacidad evitados"
     compa$indicador[compa$indicador=="COSTO_TOTAL"] = "Costo total de la intervención (USD)"
@@ -209,56 +208,55 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     compaBox$indicador[compaBox$indicador=="RCEI_AVAD"] = "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"
     
     
-    
-    # Colores de fondo para cada gráfico
-    background_colors <- c("#E3F2FD", "#E8F5E9", "#FFF3E0", "#F3E5F5", "#E0F2F1")
     unique_indicators <- unique(compa$indicador)
     
-    #  gráficos
+    # Crear gráficos con los nuevos estilos
     list_of_plots <- lapply(seq_along(unique(compaBox$indicador)), function(idx) {
       indicador <- unique_indicators[idx]
       data_subset <- dplyr::filter(compaBox, indicador == !!indicador)
       data_subset$value = str_replace_all(data_subset$value,"\\.","") 
-      data_subset$value = as.numeric(str_replace_all(data_subset$value,",","\\.") )
-      #data_subset$value = as.numeric(gsub("\\.", "", gsub(",", ".", data_subset$value)))
+      data_subset$value = as.numeric(str_replace_all(data_subset$value,",","\\."))
       
-      chart <- hchart(data_subset, "bar", hcaes(x = Intervencion_escenario, y = value, name = intervencion)) %>%
-        hc_chart(backgroundColor = background_colors[idx %% length(background_colors) + 1]) %>% # Establecer color de fondo
-        hc_title(text = paste("Indicador:", indicador),
-                 style = list(fontSize = "14px")) %>%
+      chart <- hchart(data_subset, "bar", hcaes(x = Intervencion_escenario, y = value, name = indicador)) %>%
+        hc_chart(
+          backgroundColor = "#FFFFFF",  # Fondo blanco
+          style = list(fontFamily = "Frutiger")  # Fuente Frutiger
+        ) %>%
+        hc_title(
+          text = paste("Indicador:", indicador),
+          style = list(fontSize = "14px", fontFamily = "Frutiger")
+        ) %>%
         hc_plotOptions(series = list(
-          color = '#596775', # Configurar el color de las barras a negro
-          dataLabels = list(
-            enabled = TRUE,
-            format = '{point.y}',  # Usar el nombre de la opción de punto para la etiqueta
-            color = 'black', # Cambiar el color del texto a negro
-            align = 'right', # Alinear a la derecha (fuera de la barra)
-            inside = FALSE, # Asegurar que la etiqueta esté fuera de la barra
-            verticalAlign = 'middle', # Alinear verticalmente en el medio
-            y = 0, # Ajustar posición vertical
-            x = 5  # Ajustar posición horizontal (un poco a la derecha de la barra)
-          )
+          color = '#1c98d6',  # Color de las columnas
+          dataLabels = list(enabled = FALSE)  # Eliminar valores dentro de las columnas
         )) %>%
-        hc_xAxis(title = list(text = "Escenario selecionado"),
-                 categories=data_subset$Intervencion_escenario) %>%
-        hc_yAxis(title = list(text = ""),
-                 opposite = TRUE,
-                 plotLines = list(list(
-                   value = 0,
-                   color = 'white',
-                   width = 2 # Puedes ajustar el grosor de la línea aquí
-                 )) )
+        hc_xAxis(
+          title = list(text = "Escenario seleccionado", style = list(fontFamily = "Frutiger")),
+          categories = data_subset$Intervencion_escenario,
+          labels = list(style = list(fontFamily = "Frutiger"))
+        ) %>%
+        hc_yAxis(
+          title = list(text = "", style = list(fontFamily = "Frutiger")),
+          opposite = TRUE,
+          labels = list(style = list(fontFamily = "Frutiger")),
+          plotLines = list(list(
+            value = 0,
+            color = '#CCCCCC',
+            width = 1
+          ))
+        ) %>%
+        hc_tooltip(
+          style = list(fontFamily = "Frutiger"),
+          headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>',
+          pointFormat = '<b>{series.name}:</b> {point.y}<br/>'  # Muestra el nombre del indicador en lugar de "Serie 1"
+        ) %>%
+        hc_legend(
+          enabled = FALSE  # Ocultar leyenda ya que solo hay una serie por gráfico
+        )
+      
       chart
     })
-    #     
-    #     # cuadrícula
-    #     
-    #     
-    # hw_grid(list_of_plots, rowheight = 240, ncol=5, add_htmlgrid_css = F) %>%
-    #   htmltools::browsable()
-    # 
-    #     
-    #     
+    
     output$grafico_multiple1 = renderHighchart({list_of_plots[[1]]})
     output$grafico_multiple2 = renderHighchart({list_of_plots[[2]]})
     output$grafico_multiple3 = renderHighchart({list_of_plots[[3]]})
@@ -286,18 +284,12 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
         defaultColDef = colDef(
           headerStyle = list(background = "#236292", color = "white", borderWidth = "0")
         )
-        
       )
-      
-      
-      
     })
     
     
     compaBox$value = str_replace_all(compaBox$value,"\\.","") 
-    compaBox$value = as.numeric(str_replace_all(compaBox$value,",","\\.") )
-    
-    #output$infoBoxAVAD = renderUI({
+    compaBox$value = as.numeric(str_replace_all(compaBox$value,",","\\."))
     
     best = first(max(compaBox$value[compaBox$indicador=="Años de vida ajustados por discapacidad evitados"]))
     nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Años de vida ajustados por discapacidad evitados" & compaBox$value == best])
@@ -311,9 +303,6 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       valor = valor,
       intervencion = intervencion)
     
-    #})
-    
-    #output$infoBoxCostoTotal = renderUI({
     best = first(min(compaBox$value[compaBox$indicador=="Costo total de la intervención (USD)"]))
     nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Costo total de la intervención (USD)" & compaBox$value == best])
     hito = "Menor costo total de la intervención (%)"
@@ -326,9 +315,6 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       valor = valor,
       intervencion = intervencion)
     
-    #})
-    
-    #output$infoBoxDiferenciaCosto = renderUI({
     best = first(min(compaBox$value[compaBox$indicador=="Diferencia de costos respecto al escenario basal (USD)"]))
     nombre_scn = first(compaBox$scenarioName[compaBox$indicador == "Diferencia de costos respecto al escenario basal (USD)" & compaBox$value == best])
     hito = "Menor diferencia de costo respecto del escenario basal (%)"
@@ -341,50 +327,11 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       valor = valor,
       intervencion = intervencion)
     
-    #})
-    
-    #output$infoBoxROI = renderUI({
-    # best = max(compa$value[compa$indicador=="Retorno de Inversión (%)"])
-    # nombre_scn = compa$scenarioName[compa$indicador == "Retorno de Inversión (%)" & compa$value == best]
-    # hito = "Mayor retorno de inversión (%)"
-    # valor = format(round(best,1),big.mark=".",decimal.mark=",")
-    # intervencion = compa$intervencion[compa$indicador == "Retorno de Inversión (%)" & compa$value == best]
-    # 
-    # ib4 = infoBox(
-    #   nombre_scn = nombre_scn,
-    #   hito = hito,
-    #   valor = valor,
-    #   intervencion = intervencion)
-    
-    #})
-    
-    #output$infoBoxRCEIAVAD = renderUI({
-    # best = min(compa$value[compa$indicador=="Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido"])
-    # nombre_scn = compa$scenarioName[compa$indicador == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido" & compa$value == best]
-    # hito = "Menor razón de costo incremental por AVAD evitado (%)"
-    # valor = format(round(best,1),big.mark=".",decimal.mark=",")
-    # intervencion = compa$intervencion[compa$indicador == "Razon de costo-efectividad incremental por año de vida ajustado por discapacidad prevenido" & compa$value == best]
-    # 
-    # ib5 = infoBox(
-    #   nombre_scn = nombre_scn,
-    #   hito = hito,
-    #   valor = valor,
-    #   intervencion = intervencion)
-    
-    #})
-    
-    
-    infoboxes = list(
-      ib1,ib2,ib3)
-    
+    infoboxes = list(ib1, ib2, ib3)
     
     output$carouselInfoBoxes = renderUI({
       infoBoxCarousel(infoboxes, carousel_id = "destacados_carousel")
     })
-    
-    
-    
-    
     
     shiny::tagList(
       fluidRow(
@@ -393,8 +340,6 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
                h4("Resumen de la comparación"),
                br(),
                reactableOutput("tabla_escenarios_guardados"), align="center") 
-        
-        
       ),
       br(),
       br(),
@@ -403,7 +348,6 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
       fluidRow(
         lapply(1:3, function (i) {
           column(4,
-                 
                  div(
                    class = "comp-box",
                    style = "padding: 5px; !important",
@@ -423,9 +367,3 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     )
   }
 }
-  
-  
-    
-      
-      
-      

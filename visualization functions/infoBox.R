@@ -46,7 +46,7 @@ infoBox = function(nombre_scn, hito, valor, intervencion) {
         <hr style='border: none; border-top: 1px solid #ddd; margin: 15px 0;'>
         
         <div style='
-          background-color: #4CAF50;
+          background-color: #236192;
           color: white;
           padding: 12px 16px;
           border-radius: 8px;
@@ -62,9 +62,9 @@ infoBox = function(nombre_scn, hito, valor, intervencion) {
         
         <div style='
           padding: 10px 16px;
-          background-color: #f0f8f0;
+          background-color: rgba(35, 97, 146, 0.05);
           border-radius: 8px;
-          border-left: 4px solid #4CAF50;
+          border-left: 4px solid #236192;
         '>
           <span style='color: #555; font-size: 14px;'>Intervención: </span>
           <span style='font-weight: 600; color: #2c3e50;'>{intervencion}</span>

@@ -42,7 +42,7 @@ comparisson_page <- div(
     }
     
     .back-btn {
-      background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+      background: #1e7fb8;
       color: white !important;
       border: none;
       border-radius: 50%;
@@ -86,7 +86,7 @@ comparisson_page <- div(
     div(
       style = "
         width: 100%;
-        background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+        background: #1e7fb8 !important;
         padding: 40px 20px;
         display: flex;
         justify-content: center;
@@ -94,7 +94,7 @@ comparisson_page <- div(
       
       div(
         style = "
-          background: rgba(255, 255, 255, 0.95);
+          background: #1e7fb8 !important;
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(0,0,0,0.2);
           padding: 30px;

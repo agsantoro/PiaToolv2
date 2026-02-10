@@ -86,7 +86,7 @@ multiComp_page <- div(
     div(
       style = "
         width: 100%;
-        background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
+        background: #1e7fb8 !important;
         padding: 40px 20px;
         display: flex;
         justify-content: center;
