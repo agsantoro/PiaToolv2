@@ -3,43 +3,23 @@ getStartModal = function () {
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
-        /* Contenedor principal sin bordes ni footer */
+        /* Contenedor principal con imagen de fondo simple */
         .pia-modal-wrapper {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
             
             position: relative;
             min-height: 70vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
-                        url('https://www.paho.org/sites/default/files/better-care-ninos_0.jpg');
+            background: url('landing-op2.jpg');
             background-size: cover;
             background-position: center;
-            border-radius: 15px;
-        }
-
-        .bg-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .shape-orange-top {
-            position: absolute;
-            opacity: 0.7;
-            width: 450px;
-            height: 450px;
-            background: linear-gradient(135deg, #ff6f00, #ff8f00);
-            border-radius: 50%;
-            top: -225px;
-            left: -150px;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            animation: scaleIn 0.8s ease-out;
+            background-repeat: no-repeat;
+            border-radius: 0;
         }
 
         header.pia-header {
@@ -71,50 +51,49 @@ getStartModal = function () {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 30px;
-            gap: 25px;
+            padding: 50px 60px;
+            gap: 30px;
             animation: fadeIn 1.2s ease-out;
         }
 
         .info-box {
-            background: rgba(255, 255, 255, 0.94);
-            opacity: 60%;
-            padding: 35px 45px;
-            border-radius: 12px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-            max-width: 650px;
-            text-align: center;
-            border-bottom: 5px solid #ff6f00;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            max-width: 500px;
+            text-align: left;
+            border: none;
         }
 
         .info-box p {
             font-size: 19px;
-            line-height: 1.5;
-            color: #222;
+            line-height: 1.6;
+            color: #ffffff;
             margin: 0;
         }
 
-        /* Botón más pequeño */
         .cta-button {
-            background: linear-gradient(135deg, #ffb74d, #ffa726);
-            color: #1a1a1a;
+            background: #f0682a;
+            color: #ffffff;
             padding: 14px 40px;
-            border-radius: 50px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(240, 104, 42, 0.4);
             transition: all 0.3s ease;
-            animation: pulse 2s infinite;
+            opacity: 0;
+            animation: fadeInButton 1s ease-out 3s forwards, pulse 2s infinite 4s;
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.6);
+            box-shadow: 0 8px 25px rgba(240, 104, 42, 0.6);
         }
 
         @keyframes fadeIn {
@@ -122,9 +101,15 @@ getStartModal = function () {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeInButton {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         @keyframes pulse {
@@ -132,14 +117,11 @@ getStartModal = function () {
             50% { transform: scale(1.03); }
         }
         
-    .pulse-highlight { animation: pulse 1s ease-out; }
-    
+        .pulse-highlight { 
+            animation: pulse 1s ease-out; 
+        }
+        
     </style>
-
-    <div class='bg-shapes'>
-        <div class='shape-orange-top'></div>
-    </div>
-
     
     <main class='content-main'>
         <div class='info-box'>

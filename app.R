@@ -63,6 +63,7 @@ source("visualization functions/infoBox.R")
 source("visualization functions/infoBoxCarousel.R")
 source("visualization functions/getModelName.R")
 source("visualization functions/functionJSToggle.R")
+source("visualization functions/includeCountries.R")
 
 source("functions/getStyle.R")
 
