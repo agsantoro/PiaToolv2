@@ -86,7 +86,7 @@ getStartModal = function () {
             border: none;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(240, 104, 42, 0.4);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             opacity: 0;
             animation: fadeInButton 1s ease-out 3s forwards, pulse 2s infinite 4s;
         }
