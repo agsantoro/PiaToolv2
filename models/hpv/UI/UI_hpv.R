@@ -1,7 +1,7 @@
 ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
   inputs_names = c(
     'Porcentaje de cobertura objetivo (esquema completo) (%)',
-    'Costo de vacunación (esquema completo)',
+    'Costo de vacunación (esquema completo) (USD)',
     'Grupo de edad objetivo',
     'Tamaño de la cohorte en edad de vacunación (mujeres) (n)',
     'Porcentaje de cobertura basal (esquema completo)',
@@ -10,27 +10,27 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     'Años de vida ajustados por discapacidad por diagnóstico de cáncer de cuello uterino',
     'Años de vida ajustados por discapacidad por secuelas de cáncer de cuello uterino',
     'Años de vida ajustados por discapacidad por cáncer de cuello uterino terminal',
-    'Costos administrativos de la vacuna (esquema completo)',
-    'Costo total de vacunación (esquema completo)',
-    'Costo del tratamiento del cáncer',
+    'Costos administrativos de la vacuna (esquema completo) (USD)',
+    'Costo total de vacunación (esquema completo) (USD)',
+    'Costo del tratamiento del cáncer (USD)',
     'Tasa de descuento (%)',
     'Costo programático anual de la intervención (USD)'
   )
   
   inputs_hover = c(
     'El porcentaje esperado de niñas en el grupo de edad relevante que recibirán el esquema completo de la vacuna luego de la intervención',
-    'Costo de vacunación completa por niña para abril de 2023 (USD oficial a tasa de cambio nominal de cada país)',
+    'Costo de vacunación completa por niña (USD oficial a tasa de cambio nominal de cada país)',
     'Edad a la que normalmente se administran las vacunas contra el VPH. Tenga en cuenta que PRIME solo es adecuado para evaluar las vacunas contra el HPV administradas a niñas en las edades recomendadas por la OMS, de 9 a 13 años',
     'Número de mujeres en el país correspondientes a la edad de vacunación de rutina, definida por el "grupo de edad objetivo"',
     'Se refiere al porcentaje de mujeres que actualmente reciben vacuna contra el VPH',
     'Indica la reducción del riesgo de infecciones persistentes y lesiones precancerosas por los tipos 16 y 18 del VPH',
-    'Porcentaje de casos de cáncer de cuello uterino que son atribuibles a las cepas 16 y 18 del VPH',
+    NA ,
     'Miden la carga total del cáncer de cuello uterino combinando años de vida perdidos por muerte prematura y años vividos con discapacidad. Se recomienda consultar a un economista de la salud antes de cambiar este parámetro',
     'Miden la carga total de las secuelas de cáncer de cuello uterino combinando años de vida perdidos por muerte prematura y años vividos con discapacidad. Se recomienda consultar a un economista de la salud antes de cambiar este parámetro',
     'Miden la carga total del cáncer de cuello uterino terminal combinando años de vida perdidos por muerte prematura y años vividos con discapacidad. Se recomienda consultar a un economista de la salud antes de cambiar este parámetro',
-    'Costo de administración, entrega y almacenamiento de la vacuna por niña completamente inmunizada para abril de 2023 (USD oficial a tasa de cambio nominal de cada país)',
-    'Costo total (precio de la vacuna más el costo administrativo) por niña completamente inmunizada para abril de 2023 (USD oficial a tasa de cambio nominal de cada país)',
-    'Costo promedio del tratamiento de un cáncer cervical a lo largo de la vida, expresado en dólares de abril de 2023 (USD oficial a tasa de cambio nominal de cada país)',
+    'Costo de administración, entrega y almacenamiento de la vacuna por niña completamente inmunizada (USD oficial a tasa de cambio nominal de cada país)',
+    'Costo total (precio de la vacuna más el costo administrativo) por niña completamente inmunizada (USD oficial a tasa de cambio nominal de cada país)',
+    'Costo promedio del tratamiento de un cáncer cervical a lo largo de la vida, expresado en dólares de (USD oficial a tasa de cambio nominal de cada país)',
     'Se utiliza para traer al presente los costos y beneficios en salud futuros',
     'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
     #'PIB per capita'
