@@ -419,7 +419,7 @@ hpv_page <- div(
   div(
     class = "floating-buttons-container",
     id = "floatingButtonsContainer_hpv",
-    introBox(
+    
       tags$a(
         actionButton(
           inputId = "show_comparisson_btn_hpv",
@@ -451,17 +451,31 @@ hpv_page <- div(
         title = "Crear Nuevo Escenario",
         style = "margin-bottom: 6px;"
       ),
+  
       
       # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
       # Usaré un icono de descarga y un ID genérico para este.
-      actionButton(
-        inputId = "download_scenario_btn_hpv",
-        label = NULL,
-        icon = icon("download"),
-        class = "floating-btn",
+      div(
         title = "Descargar Resultados",
-        style = "margin-bottom: 6px;"
+        downloadButton(
+          outputId = "download_scenario_btn_hpv",
+          label = NULL,
+          icon = icon("download"),
+          class = "floating-btn",
+          style = "color: white !important;",
+          title = "Descargar Resultados"
+        )
       ),
+    
+    actionButton(
+      inputId = "model_card_hpv",
+      label = NULL,
+      icon = icon("file-text"),
+      class = "floating-btn",
+      style = "color: white !important;",
+      title = "Documentación del modelo"
+    ),
+    
       actionButton(
         inputId = "help_hpv",
         label = NULL,
@@ -479,9 +493,7 @@ hpv_page <- div(
         title = "Colapsar/Expandir menú"
       )
     
-    )
-    
-  ),
+    ),
   div(
     class = "left-side-button",
     tags$a(

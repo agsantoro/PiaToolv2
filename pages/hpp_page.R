@@ -433,13 +433,27 @@ hpp_page <- div(
     
     # Botón Fijo Existente (Asumo que era un botón para algo como "Descargar")
     # Usaré un icono de descarga y un ID genérico para este.
-    actionButton(
-      inputId = "download_scenario_btn_hpp",
-      label = NULL,
-      icon = icon("download"),
-      class = "floating-btn",
-      title = "Descargar Resultados"
+    div(
+      title = "Descargar Resultados",
+      downloadButton(
+        outputId = "download_scenario_btn_hpp",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        style = "color: white !important;",
+        title = "Descargar Resultados"
+      )
     ),
+    
+    actionButton(
+      inputId = "model_card_hpp",
+      label = NULL,
+      icon = icon("file-text"),
+      class = "floating-btn",
+      style = "color: white !important;",
+      title = "Documentación del modelo"
+    ),
+    
     actionButton(
       inputId = "help_hpp",
       label = NULL,

@@ -304,7 +304,7 @@ naat_page <- div(
         border: 1px solid rgba(238, 130, 35, 0.1);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       ",
-        p("El modelo de la vacunación contra el virus del papiloma humano (VPH) permite evaluar el impacto del aumento de cobertura de vacunación contra el VPH para las niñas en la carga de enfermedad por cáncer de cuello uterino modificando diversos parámetros como el porcentaje de cobertura de vacunación objetivo, la edad de vacunación y el costo de vacunación.",
+        p("Este modelo de cohorte estático simula el proceso diagnóstico y terapéutico de la tuberculosis para evaluar el impacto de la incorporación de las pruebas de amplificación de ácidos nucleicos (NAAT). Lo anterior se logra modificando parámetros clave, como la reducción del retraso diagnóstico y la capacidad de detección temprana de resistencia a fármacos que ofrecen las NAAT.",
           style = "
           font-size: 0.9em; 
           margin-bottom: 5px; 
@@ -394,14 +394,27 @@ naat_page <- div(
       ),
       
       # Botón 3: Descargar
-      actionButton(
-        inputId = "fixed_original_btn_naat",
+    div(
+      title = "Descargar Resultados",
+      downloadButton(
+        outputId = "download_scenario_btn_naat",
         label = NULL,
         icon = icon("download"),
         class = "floating-btn",
+        style = "color: white !important;",
         title = "Descargar Resultados"
-      ),
-      
+      )
+    ),
+    
+    actionButton(
+      inputId = "model_card_naat",
+      label = NULL,
+      icon = icon("file-text"),
+      class = "floating-btn",
+      style = "color: white !important;",
+      title = "Documentación del modelo"
+    ),
+    
       # Botón 4: Ayuda
       actionButton(
         inputId = "help_naat",

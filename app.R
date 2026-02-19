@@ -138,7 +138,7 @@ ui <- fluidPage(
     /* Botón Especial Izquierda (Independiente) */
     #multiCompBtn.left-red-btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   left: 30px;
   z-index: 2500;
   
@@ -162,7 +162,7 @@ ui <- fluidPage(
 
 #multiCompBtn.left-red-btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   left: 30px;
   z-index: 2500;
   
@@ -1191,17 +1191,52 @@ server <- function(input, output, session) {
       
   })
   
-  output$download_scenario_btn_hearts <- downloadHandler(
-    filename = function() {
-      paste("data-", Sys.Date(), ".csv", sep="")
-    },
-    content = function(file) {
-      write.csv(data, file)
-    }
-  )
+  ##### DOWNLOAD HANDLERS #####
   
+  lapply(interventions, function(i) {
+    output[[glue("download_scenario_btn_{i}")]] <- downloadHandler(
+      filename = function() {
+        paste("data-", Sys.Date(), ".xlsx", sep="")
+      },
+      content = function(file) {
+        do::exec(glue("Inputs = isolate({i}_map_inputs())"))
+        do::exec(glue("Outputs = isolate({i}_map_outputs())"))
+        
+        resultados = list(
+          "Inputs" = Inputs,
+          "Outputs" = Outputs
+        )
+        
+        writexl::write_xlsx(resultados, file)
+        
+      }
+    )
+    
+  })
   
+  ##### MODEL CARDS #####
   
+  lapply(interventions, function (i) {
+    observeEvent(input[[glue("model_card_{i}")]], {
+      showModal(
+        modalDialog(
+          title = "Documentación del modelo",
+          tags$div(
+            style = "display: flex; justify-content: center;",
+            tags$iframe(
+              src = glue("modelCards/{i}.html"),
+              width = "800px",
+              height = "600px",
+              style = "border: none;"
+            )
+          ),
+          size = "l",
+          easyClose = TRUE,
+          footer = modalButton("Cerrar")
+        )
+      )
+    })
+  })
 }
 
 shinyApp(ui, server)

@@ -391,14 +391,25 @@ hearts_page <- div(
     ),
     
     # Botón 4: Descargar
-    shiny::downloadButton(
-      outputId = "download_scenario_btn_hearts",
+    div(
+      title = "Descargar Resultados",
+      shiny::downloadButton(
+        outputId = "download_scenario_btn_hearts",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        style = "color: white !important;"
+      )
+    ),
+    
+    # Botón 5: Ayuda
+    actionButton(
+      inputId = "model_card_hearts",
       label = NULL,
-      icon = icon("download"),
+      icon = icon("file-text"),
       class = "floating-btn",
       style = "color: white !important;",
-      title = "Descargar Resultados"
-      
+      title = "Documentación del modelo"
     ),
     
     # Botón 5: Ayuda

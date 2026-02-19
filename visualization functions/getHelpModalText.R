@@ -36,7 +36,7 @@ getHelpModalText = function(intervention) {
               style='background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
                      color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
                      font-size: 1.2em; display: flex; align-items: center; justify-content: center;
-                     cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+                     cursor: default; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
         <i class='fa fa-table'></i>
       </button>
     </div>
@@ -51,7 +51,7 @@ getHelpModalText = function(intervention) {
               style='background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
                      color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
                      font-size: 1.2em; display: flex; align-items: center; justify-content: center;
-                     cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+                     cursor: default; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
         <i class='fa fa-save'></i>
       </button>
     </div>
@@ -66,7 +66,7 @@ getHelpModalText = function(intervention) {
               style='background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
                      color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
                      font-size: 1.2em; display: flex; align-items: center; justify-content: center;
-                     cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+                     cursor: default; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
         <i class='fa fa-rocket'></i>
       </button>
     </div>
@@ -81,7 +81,7 @@ getHelpModalText = function(intervention) {
               style='background: linear-gradient(135deg, #2C5F8B 0%, #4A90A4 100%);
                      color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
                      font-size: 1.2em; display: flex; align-items: center; justify-content: center;
-                     cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+                     cursor: default; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
         <i class='fa fa-download'></i>
       </button>
     </div>
@@ -93,21 +93,25 @@ getHelpModalText = function(intervention) {
     
     <div style='grid-column: 2; display: flex; align-items: center; justify-content: center; margin-left: 10px; padding-top: 10px;'>
       <button type='button' 
-              style='background: linear-gradient(135deg, #e57373 0%, #c62828 100%);
-                     border: none;
-                     border-radius: 50%; /* Circular como los de la derecha */
-                     font-size: 1.2em;
-                     color: white !important;
-                     width: 50px;
-                     height: 50px;
-                     display: flex;
-                     align-items: center;
-                     justify-content: center;
-                     cursor: pointer;
-                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);'>
+              style='background: linear-gradient(135deg, #003d8f 0%, #00205C 100%);
+  color: white !important;
+  
+  
+  /* Identidad visual igual a los de la derecha */
+  border: none;
+  border-radius: 50%; /* Circular como los de la derecha */
+  width: 50px;
+  height: 50px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;'>
                      
                      
-        <i class='fa fa-download'></i>
+        <i class='fa fa-scale-balanced'></i>
       </button>
     </div>
     <div style='grid-column: 3; display: flex; align-items: center; padding-top: 10px;'>
