@@ -829,7 +829,7 @@ hepC_full = function(
   
   
   resultados$Comparacion[["Años de vida salvados"]] = anosVidaSalvados
-  #resultados$Comparacion[["Años de vida salvados (AVS) (descontado)"]] = anosVidaSalvadosDesc
+  #resultados$Comparacion[["Años de vida salvados (descontado)"]] = anosVidaSalvadosDesc
   
   resultados$Comparacion[["Años de Vida Ajustados por Discapacidad evitados"]] = dalysDiscEvitados
   resultados$Comparacion[["Costo total de la intervención (USD)"]] = resultados$`Con tratamiento`$`Costos Tratamiento`
