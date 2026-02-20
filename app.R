@@ -1237,6 +1237,19 @@ server <- function(input, output, session) {
       )
     })
   })
+  
+  ##### DOWNLOAD MANUAL #####
+  
+  output$handbookDownload <- downloadHandler(
+    filename = function() {
+      "manual-PIA_TOOL.pdf"
+    },
+    content = function(file) {
+      
+      file.copy("www/manual/manual-PIA_TOOL.pdf", file)
+      
+    }
+  )
 }
 
 shinyApp(ui, server)

@@ -278,6 +278,15 @@ visibility: hidden;
         data.intro = ""
         
         
+      ),
+      
+      downloadButton(
+        outputId = "handbookDownload",
+        label = NULL,
+        icon = icon("book"),
+        class = "floating-btn",
+        title = "Descarga de Manual",
+        style = "color: white !important; display: flex; align-items: center; justify-content: center;"
       )
     )
     ,
