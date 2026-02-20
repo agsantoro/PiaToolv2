@@ -775,7 +775,7 @@ server <- function(input, output, session) {
     output$resultados_hpv = renderUI({
       tagList(
         #ui_grafico_nuevo_hpv(run_hpv(), input, output),
-        ui_grafico_hpv(run_hpv(), input),
+        #ui_grafico_hpv(run_hpv(), input),
         ui_tabla_hpv(run_hpv(), input, hpv_map_outputs)
       )
       
