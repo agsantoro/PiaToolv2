@@ -41,7 +41,7 @@ source("models/prep/UI/UI_prep.R")
 source("models/prep/fn_prep4.R")
 
 source("models/sifilis/UI/UI_sifilis.R")
-source("models/sifilis/SifilisModel.R")
+source("models/sifilis/SifilisModel2.R")
 
 source("multiComp/UI/UI_multiComp.R")
 
@@ -623,8 +623,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  
-  
   
   router_server()
   

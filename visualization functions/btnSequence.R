@@ -128,9 +128,9 @@ btnSequence = function (page, input, output, session, map_inputs, map_outputs, s
   })
   
   output$resultados_comparisson = renderUI({
-    tagList(
-      ui_resultados_comparisson(input,output,session,saved_scenarios(), isolate(model_comp()))
-    )
+    
+      ui_resultados_comparisson(input,output,session,saved_scenarios(), isolate(model_comp()), saved_scenarios())
+    
   })
   
 }
