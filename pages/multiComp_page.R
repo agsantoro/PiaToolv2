@@ -149,14 +149,22 @@ multiComp_page <- div(
     div(
       class = "floating-buttons-container",
       
-        actionButton(
-          inputId = "help_multiComp",
-          label = NULL,
-          icon = icon("question"),
-          class = "floating-btn",
-          title = "Ayuda de navegación",
-          style = "margin-bottom: 6px;"
-        )
+      downloadButton(
+        outputId = "download_multiComp",
+        label = NULL,
+        icon = icon("download"),
+        class = "floating-btn",
+        title = "Descargar resultados completos",
+        style = "margin-bottom: 6px;"
+      ),
+      actionButton(
+        inputId = "help_multiComp",
+        label = NULL,
+        icon = icon("question"),
+        class = "floating-btn",
+        title = "Ayuda de navegación",
+        style = "margin-bottom: 6px;"
+      )
       
     )
     

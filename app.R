@@ -677,6 +677,9 @@ server <- function(input, output, session) {
   
   
   back_btn_clicked_comp = reactiveVal(F)
+  
+  comparisson_table = reactiveVal()
+  
   # mostrar parámetros avanzados
   #toggle_advanced_inputs(input, output, session)
   
@@ -1086,7 +1089,7 @@ server <- function(input, output, session) {
   
   output$resultados_multiComp = renderUI({
     tagList(
-      ui_resultados_multiComp(input,output,session,current_page(), saved_scenarios(), input$selectScenariosMulti)
+      ui_resultados_multiComp(input,output,session,current_page(), saved_scenarios(), input$selectScenariosMulti, comparisson_table)
     )
     
     
@@ -1219,7 +1222,7 @@ server <- function(input, output, session) {
   lapply(interventions, function (i) {
     observeEvent(input[[glue("model_card_{i}")]], {
       showModal(
-        modalDialog(
+        modalDialog( 
           title = "Documentación del modelo",
           tags$div(
             style = "display: flex; justify-content: center;",
@@ -1238,6 +1241,8 @@ server <- function(input, output, session) {
     })
   })
   
+  
+  
   ##### DOWNLOAD MANUAL #####
   
   output$handbookDownload <- downloadHandler(
@@ -1247,6 +1252,60 @@ server <- function(input, output, session) {
     content = function(file) {
       
       file.copy("www/manual/manual-PIA_TOOL.pdf", file)
+      
+    }
+  )
+  
+  
+  ##### DOWNLOAD MULTICOMP #####
+  
+  output$download_multiComp <- downloadHandler(
+    filename = function() {
+      paste0(Sys.Date(),"_multi_comp_data.xlsx")
+    },
+    content = function(file) {
+      
+      
+      ESCENARIOS = isolate(saved_scenarios())[input$selectScenariosMulti]
+      
+      COMPARACION = isolate(comparisson_table())
+      
+      ESCENARIOS[["COMPARACION"]] = COMPARACION
+      
+      # 1. Identificar los nombres de los escenarios excluyendo "COMPARACION"
+      escenarios <- setdiff(names(ESCENARIOS), "COMPARACION")
+      
+      # 2. Crear una lista vacía para almacenar los nuevos resultados
+      lista_transformada <- list()
+      
+      # 3. Iterar sobre cada escenario para reestructurarlo
+      for (esc in escenarios) {
+        
+        # Extraer el objeto actual para facilitar el acceso
+        obj_actual <- ESCENARIOS[[esc]]
+        
+        # A. Crear el objeto "Model" (Data Frame con País y Modelo)
+        lista_transformada[[paste(esc, "Model")]] <- data.frame(
+          Pais = obj_actual$country,
+          Modelo = obj_actual$model,
+          stringsAsFactors = FALSE
+        )
+        
+        # B. Crear el objeto "Inputs"
+        lista_transformada[[paste(esc, "Inputs")]] <- obj_actual$inputs
+        
+        # C. Crear el objeto "Outputs"
+        lista_transformada[[paste(esc, "Outputs")]] <- obj_actual$outputs
+      }
+      
+      # 4. Agregar el objeto COMPARACION original al final (sin cambios)
+      lista_transformada$COMPARACION <- ESCENARIOS$COMPARACION
+      
+      # Revisar los nuevos nombres
+      names(lista_transformada)
+      
+      writexl::write_xlsx(lista_transformada, file)
+      
       
     }
   )

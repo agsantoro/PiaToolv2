@@ -15,27 +15,45 @@ ui_inputs_multiComp = function (input, saved_scenarios, current_page, getCountry
     choices_with_flags <- lapply(names(choices_by_model), function(model_key) {
       scenario_ids <- choices_by_model[[model_key]]
       
-      # Crear vector: HTML_LABEL = ID_VALUE
       opciones <- sapply(scenario_ids, function(id) {
-        country_raw = saved_scenarios[[id]]$country
-        countryCode <- tolower(getCountryCode(country_raw))
+        scen_data   <- saved_scenarios[[id]]
+        df_inputs  <- scen_data$inputs # El data frame de resultados
+        
+        # --- Lógica para el Tooltip dinámico ---
+        # Tomamos el encabezado actual
+        header_text <- sprintf("Escenario: %s (País: %s)", id, scen_data$country)
+        
+        # Extraemos las filas del data frame y las formateamos como "Col1: Col2"
+        # Usamos un tryCatch por si el data frame está vacío o no existe
+        body_text <- tryCatch({
+          apply(df_inputs[, 1:2], 1, function(row) {
+            paste0(row[1], ": ", row[2])
+          }) %>% paste(collapse = "\n")
+        }, error = function(e) return(""))
+        
+        # Unimos encabezado y cuerpo con un salto de línea doble
+        tooltip_final <- paste0(header_text, "\n\n", body_text)
+        # ---------------------------------------
+        
+        countryCode <- tolower(getCountryCode(scen_data$country))
         
         if (!is.null(countryCode) && countryCode != "" && nchar(countryCode) > 0) {
           bandera_url <- sprintf("https://flagcdn.com/w20/%s.png", countryCode)
           
-          # HTML como STRING (sin HTML())
           label_html <- sprintf(
-            '<img src="%s" width="20" style="margin-right:8px;vertical-align:middle;"><span>%s</span>',
+            '<span title="%s"><img src="%s" width="20" style="margin-right:8px;vertical-align:middle;">%s</span>',
+            htmltools::htmlEscape(tooltip_final),
             bandera_url, 
             htmltools::htmlEscape(id)
           )
           return(label_html)
         } else {
-          return(id)
+          return(sprintf('<span title="%s">%s</span>', 
+                         htmltools::htmlEscape(tooltip_final), 
+                         htmltools::htmlEscape(id)))
         }
       }, USE.NAMES = FALSE)
       
-      # setNames( VALORES , ETIQUETAS_HTML )
       res <- setNames(scenario_ids, opciones)
       return(res)
     })
@@ -69,7 +87,7 @@ ui_inputs_multiComp = function (input, saved_scenarios, current_page, getCountry
   }
 }
 
-ui_resultados_multiComp = function(input,output,session,current_page, saved_scenarios, selectedScenarios) {
+ui_resultados_multiComp = function(input,output,session,current_page, saved_scenarios, selectedScenariosM, comparisson_table) {
   
   if (get_page()!="multiComp") {return()} else {
     
@@ -263,13 +281,14 @@ ui_resultados_multiComp = function(input,output,session,current_page, saved_scen
     output$grafico_multiple4 = renderHighchart({list_of_plots[[4]]})
     output$grafico_multiple5 = renderHighchart({list_of_plots[[5]]})
     
-    
     output$tabla_escenarios_guardados = renderReactable({
       table_data = data.frame(
         scenarioName = paste0(compa$scenarioName," (",compa$country," / ",compa$intervencion),
         indicador = compa$indicador,
         value = compa$value
-      ) 
+      )
+      
+      comparisson_table(table_data)
       
       reactable(
         table_data,
