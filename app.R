@@ -775,7 +775,7 @@ server <- function(input, output, session) {
     output$resultados_hpv = renderUI({
       tagList(
         #ui_grafico_nuevo_hpv(run_hpv(), input, output),
-        ui_grafico_hpv(run_hpv(), input),
+        #ui_grafico_hpv(run_hpv(), input),
         ui_tabla_hpv(run_hpv(), input, hpv_map_outputs)
       )
       
@@ -1237,6 +1237,19 @@ server <- function(input, output, session) {
       )
     })
   })
+  
+  ##### DOWNLOAD MANUAL #####
+  
+  output$handbookDownload <- downloadHandler(
+    filename = function() {
+      "manual-PIA_TOOL.pdf"
+    },
+    content = function(file) {
+      
+      file.copy("www/manual/manual-PIA_TOOL.pdf", file)
+      
+    }
+  )
 }
 
 shinyApp(ui, server)

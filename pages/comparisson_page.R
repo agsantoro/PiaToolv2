@@ -86,7 +86,7 @@ comparisson_page <- div(
     div(
       style = "
         width: 100%;
-        background: #1e7fb8 !important;
+        background: white !important;
         padding: 40px 20px;
         display: flex;
         justify-content: center;
@@ -94,7 +94,7 @@ comparisson_page <- div(
       
       div(
         style = "
-          background: #1e7fb8 !important;
+          background: white !important;
           border-radius: 12px;
           box-shadow: 0 8px 30px rgba(0,0,0,0.2);
           padding: 30px;
