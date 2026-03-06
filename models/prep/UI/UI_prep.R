@@ -28,12 +28,16 @@ ui_prep = function (input, prep_map_inputs) {
       
       
     }
-
+    
+    
+    
     tagList(
       
       lapply(bsc, function(i) {
-        numericInput(prep_map_inputs_current$i_names[i],
-                     prep_map_inputs_current$i_labels[i],
+        
+          numericInput(prep_map_inputs_current$i_names[i],
+                     tags$div(prep_map_inputs_current$i_labels[i], icon("circle-info", "fa-1x", 
+                                                    title = prep_map_inputs_current$i_labels[i], verify_fa = FALSE)),
                      get_prep_params(input$country)[[i]])
       }),
       
@@ -58,7 +62,8 @@ ui_prep = function (input, prep_map_inputs) {
 
       lapply(avz, function(i) {
         numericInput(prep_map_inputs_current$i_names[i],
-                     prep_map_inputs_current$i_labels[i],
+                     tags$div(prep_map_inputs_current$i_labels[i], icon("circle-info", "fa-1x", 
+                                                                        title = prep_map_inputs_current$i_labels[i], verify_fa = FALSE)),
                      get_prep_params(input$country)[[i]])
       })
     )),
