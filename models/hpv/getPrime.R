@@ -363,7 +363,7 @@ getPrime = function (
     "DALYs por diagnóstico de cáncer",
     "DALYs por secuelas no terminales del cáncer (por año)",
     "DALYs por cáncer terminal",
-    "Tasa de descuento",
+    #"Tasa de descuento",
     #"Proporción de casos de cáncer cervical debidos al HPV 16/18",
     #"PIB per cápita",
     "Cobertura target (todas las dosis)"
@@ -382,7 +382,7 @@ getPrime = function (
     input$DALYsForCancerDiagnosis,
     input$DALYsForNonTerminalCancerSequelaePperYear,
     input$DALYsForTerminalCancer,
-    input$discountRate,
+    #input$discountRate,
     #input$proportionOfCervicalCancerCasesThatAreDueToHPV16_18,
     #input$GDPPerCapita,
     input$coverageBase

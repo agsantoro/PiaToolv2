@@ -13,7 +13,7 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     'Costos administrativos de la vacuna (esquema completo) (USD)',
     'Costo total de vacunación (esquema completo) (USD)',
     'Costo del tratamiento del cáncer (USD)',
-    'Tasa de descuento (%)',
+    #'Tasa de descuento (%)',
     'Costo programático anual de la intervención (USD)'
   )
   
@@ -31,7 +31,7 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     'Costo de administración, entrega y almacenamiento de la vacuna por niña completamente inmunizada (USD oficial a tasa de cambio nominal de cada país)',
     'Costo total (precio de la vacuna más el costo administrativo) por niña completamente inmunizada (USD oficial a tasa de cambio nominal de cada país)',
     'Costo promedio del tratamiento de un cáncer cervical a lo largo de la vida, expresado en dólares de (USD oficial a tasa de cambio nominal de cada país)',
-    'Se utiliza para traer al presente los costos y beneficios en salud futuros',
+    #'Se utiliza para traer al presente los costos y beneficios en salud futuros',
     'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
     #'PIB per capita'
     
@@ -53,7 +53,7 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
         vaccineDeliveryCostPerFIG = as.numeric(parameters[parameters$Country==input$country,15]),
         totalVaccineCostPerFIG = as.numeric(parameters[parameters$Country==input$country,14])+as.numeric(parameters[parameters$Country==input$country,15]),
         cancerTreatmentCostPerEpisodeOverLifetime = as.numeric(parameters[parameters$Country==input$country,16]),
-        discountRate = as.numeric(parameters[parameters$Country==input$country,18]),
+        #discountRate = as.numeric(parameters[parameters$Country==input$country,18]),
         costoProg = 0
       )
       return(paramsList)
@@ -62,13 +62,13 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     
     
     i_names = c()
-    for (i in 1:15) {
+    for (i in 1:14) {
       i_names = c(i_names,names(parametersReactive()[i]))
     }
     
     i_labels = c()
     
-    for (i in 1:15) {
+    for (i in 1:14) {
       i_labels = c(i_labels,inputs_names[i])
     }
     
@@ -83,7 +83,7 @@ ui_hpv_basica = function (input,inputs_hpv, run_hpv, hpv_map_inputs) {
     
     bsc = c(1:2)
     avz = setdiff(seq(1,nrow(isolate(addData))),bsc)
-    prc = c(1,5,6,7,14)
+    prc = c(1,5,6,7)
     
     addData$avanzado = NA
     addData$avanzado[avz] = T

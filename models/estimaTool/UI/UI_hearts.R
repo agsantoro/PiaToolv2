@@ -14,7 +14,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       'Costo de seguimiento anual promedio por paciente (USD)',
       'Costo de evento de enfermedad coronaria isquémica (USD)',
       'Costo de un accidente cerebrovascular (USD)',
-      'Tasa de descuento (%)',
+      # 'Tasa de descuento (%)',
       'Costo programático anual (USD)'
     )
     
@@ -31,7 +31,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       'Costos de tratar un evento de enfermedad coronaria isquémica por país (USD oficial a tasa de cambio nominal de cada país)',
       'Costos de tratar un evento de accidente cerebrovascular (USD oficial a tasa de cambio nominal de cada país)',
       'Costos de seguimiento (farmacológico, consultas médicas, etc) anual por paciente (USD oficial a tasa de cambio nominal de cada país)',
-      'Se utiliza para traer al presente los costos y beneficios en salud futuros',
+      # 'Se utiliza para traer al presente los costos y beneficios en salud futuros',
       'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
     )
     
@@ -46,9 +46,11 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       base_line$costo_seguimiento[base_line$country==str_to_title(input$country)],
       base_line$costo_evento_eci[base_line$country==str_to_title(input$country)],
       costs$value[costs$parameter=="Evento de enfermedad cardiaca isquemica promedio  (***)" & costs$country==str_to_title(input$country)],
-      0.05,
+      #0.05,
       0
     )
+    
+    
     
     if (is.null(input$country) == F) {
       i_names = c()
@@ -84,11 +86,14 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       
       bsc = which(df_hearts_map_inputs$avanzado==F)
       avz = which(df_hearts_map_inputs$avanzado==T)
-      prc = c(3,4,5,6,11)
+      prc = c(3,4,5,6)
       
       
       
     }
+    
+    
+    
     tagList(
       tags$div(
         lapply(bsc, function(i) {

@@ -20,7 +20,7 @@ ui_hpp = function (input, hpp_map_inputs) {
       "hpp_uHisterectomia",
       "hpp_costo_oxitocina",
       "hpp_costo_programatico",
-      "hpp_tasa_descuento",
+      #"hpp_tasa_descuento",
       "hpp_costo_no_severa",
       "hpp_costo_severa"
     )
@@ -40,7 +40,7 @@ ui_hpp = function (input, hpp_map_inputs) {
       'Años de vida ajustados por calidad por  histerectomía',
       'Costo de oxitocina (USD)',
       'Costo programático de anual de la intervención (USD)',
-      'Tasa de descuento (%)',
+      #'Tasa de descuento (%)',
       'Costo de episodio de hemorragia postparto no severa',
       'Costo de episodio de hemorragia postparto severa'
     )
@@ -61,7 +61,7 @@ ui_hpp = function (input, hpp_map_inputs) {
       'Utilidad de vivir un año con una histerectomía',
       'Costo de 10 UI de oxitocina en el país para julio 2023 (USD oficial a tasa de cambio nominal de cada país)',
       'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)',
-      'Se utiliza para traer al presente los costos y beneficios en salud futuros',
+      #'Se utiliza para traer al presente los costos y beneficios en salud futuros',
       'Costo de hemorragia post parto no severa (< 1000 ml) en el país para julio 2023',
       'Costo de hemorragia post parto severa (≥1000 ml) en el país para julio 2023'
     )
@@ -83,14 +83,14 @@ ui_hpp = function (input, hpp_map_inputs) {
       0.985,
       datosPais$value[datosPais$indicador=="COSTO.Oxitocina"],
       0,
-      0.05,
+      #0.05,
       datosPais$value[datosPais$indicador=="COSTO.mHPP"],
       datosPais$value[datosPais$indicador=="COSTO.sHPP"]
     )
     
     bsc = c(1,2)
     avz = c(3:length(input_values))
-    porcentajes = c(1,2,5,7,8,9,10,11,15)
+    porcentajes = c(1,2,5,7,8,9,10,11)
     
     if (is.null(input$country_hpp) == F) {
       addData = data.frame(
@@ -253,7 +253,7 @@ ui_resultados_hpp = function(input,output,resultados, hpp_map_outputs) {
       hpp_map_outputs(table %>% dplyr::select(cat,indicador,valor))
       
       reactable(
-        table,
+        table[,c(1,2,4)],
         groupBy = "cat",
         defaultExpanded = T,
         pagination = F,
@@ -265,8 +265,7 @@ ui_resultados_hpp = function(input,output,resultados, hpp_map_outputs) {
         columns = list(
           cat = colDef(name = "Categoría", align = "left"),
           indicador = colDef(name = "Indicador", align = "left"),
-          valor = colDef(name = "Valor sin descontar", align = "right"),
-          valor_desc = colDef(name = "Valor descontado", align = "right")
+          valor = colDef(name = "Valor", align = "right")
         ),
         bordered = TRUE,
         highlight = TRUE

@@ -311,25 +311,8 @@ naat_page <- div(
           color: #495057; 
           text-align: justify; 
           line-height: 1.7;
-          padding: 0 20px;"),
+          padding: 0 20px;")
         
-        p("Con este modelo podrá calcular indicadores como el número de CCU evitados, las muertes evitadas, el costo total de la intervención y el retorno de inversión (ROI).",
-          style = "
-          font-size: 0.9em; 
-          margin-bottom: 5px; 
-          color: #495057; 
-          text-align: justify; 
-          line-height: 1.7;
-          padding: 0 20px;"),
-        
-        p("Este modelo está basado en la herramienta Papillomavirus Rapid Interface for Modelling and Economics (PRIME).",
-          style = "
-        font-size: 0.9em; 
-        margin-bottom: 5px; 
-        color: #495057; 
-          text-align: justify; 
-        line-height: 1.7;
-        padding: 0 20px;"),
         
       ),
       

@@ -165,8 +165,9 @@ ui_resultados_naat = function(input,output,resultados,naat_map_outputs) {
       
       naat_map_outputs(table %>% dplyr::select(cat, Indicador, Valor))
       
+      
       reactable(
-        table,
+        table[,c(1,2,4)],
         groupBy = "cat",
         defaultExpanded = T,
         pagination = F,
@@ -178,8 +179,7 @@ ui_resultados_naat = function(input,output,resultados,naat_map_outputs) {
         columns = list(
           cat = colDef(name = "Categoría", align = "left"),
           Parametro = colDef(name = "Indicador", align = "left"),
-          Valor = colDef(name = "Valor", align = "right"),
-          `Valor Descontado` = colDef(name = "Valor Descontado", align = "right")
+          Valor = colDef(name = "Valor", align = "right")
         ),
         bordered = TRUE,
         highlight = TRUE

@@ -114,6 +114,8 @@ ui <- fluidPage(
   tags$style(
     
     "
+    #descuento_nuevo { display: none !important; }
+    #descuento_nuevo-label { display: none !important; }
     
      @font-face {
         font-family: 'Frutiger';
@@ -623,7 +625,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  
   router_server()
   
   observeEvent(TRUE, {
@@ -743,7 +744,8 @@ server <- function(input, output, session) {
       DALYsForCancerDiagnosis = input$DALYsForCancerDiagnosis,
       DALYsForNonTerminalCancerSequelaePperYear = input$DALYsForNonTerminalCancerSequelaePperYear,
       DALYsForTerminalCancer = input$DALYsForTerminalCancer,
-      discountRate = input$discountRate,
+      discountRate = 0.05,
+      #discountRate = input$discountRate,
       proportionOfCervicalCancerCasesThatAreDueToHPV16_18 = input$proportionOfCervicalCancerCasesThatAreDueToHPV16_18,
       #input$GDPPerCapita,
       costoProg = input$costoProg,
@@ -821,7 +823,8 @@ server <- function(input, output, session) {
                          input$costoConsulta,
                          input$costo_trat_multires_induccion,
                          input$costo_trat_multires_consolidacion,
-                         input$tasa_descuento_anual/100,
+                         5/100,
+                         #input$tasa_descuento_anual/100,
                          input$costo_intervencion_vDOT)
       table
     }
@@ -928,7 +931,8 @@ server <- function(input, output, session) {
         eficaciaOxitocina = input$hpp_eficaciaOxitocina/100,  
         uHisterectomia = input$hpp_uHisterectomia,
         costo_oxitocina = input$hpp_costo_oxitocina,
-        descuento = input$hpp_tasa_descuento/100, #Tasa de descuento (INPUT)
+        descuento = 5/100, #Tasa de descuento (INPUT)
+        #descuento = input$hpp_tasa_descuento/100, #Tasa de descuento (INPUT)
         costoIntervencion = input$hpp_costo_programatico #Costo de la intervención  (INPUT)
       )
     }
@@ -964,7 +968,8 @@ server <- function(input, output, session) {
         corrida = c(corrida, input[[i]])
       }
       corrida = corrida[2:length(corrida)]
-      names(corrida) = names(get_prep_params(input$country))
+      
+      names(corrida) = names(get_prep_params(input$country))[!names(get_prep_params(input$country)) %in% c("descuento","descuento_nuevo")]
       
       resultados = funcionCalculos(corrida,toupper(input$country))
       resultados

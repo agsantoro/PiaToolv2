@@ -783,7 +783,7 @@ get_tbc_params = function (input) {
     select(VALOR) %>%
     as.numeric()
   
-  
+  params$tasa_descuento_anual <- NULL
   params
 }
 
@@ -819,7 +819,7 @@ get_tbc_params_labels = function () {
     'Costo de consulta a emergencias (USD)',
     'Costo de tratamiento mensual de inducción en tuberculosis multirresistente (USD)',
     'Costo de tratamiento mensual de consolidación en tuberculosis multirresistente (USD)',
-    'Tasa de descuento (%)',
+    #'Tasa de descuento (%)',
     'Costo programático anual de tratamiento directamente observado por video (USD)'
   )
 }
@@ -856,7 +856,7 @@ get_tbc_hover = function () {
     "Costo de 1 consulta a emergencias en pacientes con tuberculosis activa (USD oficial a tasa de cambio nominal de cada país)",
     "Costo mensual del tratamiento de inducción promedio para tuberculosis multirresistente (USD oficial a tasa de cambio nominal de cada país)",
     "Costo mensual del tratamiento de consolidación promedio para tuberculosis multiresistente (USD oficial a tasa de cambio nominal de cada país)",
-    "Se utiliza para traer al presente los costos y beneficios en salud futuros",
+    #"Se utiliza para traer al presente los costos y beneficios en salud futuros",
     "Costo de implementar y sostener tratamiento directamente observado por video en un año (USD oficial a tasa de cambio nominal de cada país)"
   )
 }
