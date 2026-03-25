@@ -1,42 +1,53 @@
 ui_hearts = function (input,base_line, targets_default, costs, population, hearts_map_inputs) {
   country_sel = str_to_title(isolate(input$country))
   renderUI({
-    input_labels = c(
-      'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (objetivo)',
-      'Población total del país (n)',
-      'Prevalencia de adultos con hipertensión, estandarizada por edad (%)',
-      'Porcentaje de adultos con hipertensión diagnosticados',
-      'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (basal)',
-      'Porcentaje de adultos con hipertensión controlada entre los tratados',
-      # 'Letalidad ponderada por edad y sexo para accidente cerebrovascular (grupo entre 30-79 años) (%)',
-      # 'Letalidad ponderada por edad y sexo para enfermedad cardíaca isquémica (grupo entre 30-79 años) (%)',
-      'Costo farmacológico anual promedio por paciente (USD)',
-      'Costo de seguimiento anual promedio por paciente (USD)',
-      'Costo de evento de enfermedad coronaria isquémica (USD)',
-      'Costo de un accidente cerebrovascular (USD)',
-      # 'Tasa de descuento (%)',
-      'Costo programático anual (USD)'
-    )
     
-    inputs_hover = c(
-      'Porcentaje de personas que están recibiendo tratamiento en relación con el total de individuos que han sido diagnosticados con hipertensión en un punto inicial o línea de base',
-      NA ,
-      'Prevalencia de individuos con hipertensión, diagnosticada o no, en el grupo etario de 30 a 79 años en cada país, proporcionando un punto de referencia inicial',
-      'Porcentaje de individuos entre 30 y 79 años previamente diagnosticados con hipertensión, proporcionando un punto de referencia inicial',
-      'Porcentaje de personas de 30 a 79 años, ya diagnosticadas con hipertensión y en tratamiento, que han conseguido controlar su presión arterial, proporcionando un punto de referencia inicial',
-      'Porcentaje de personas de 30 a 79 años, ya diagnosticadas con hipertensión y en tratamiento, que han conseguido controlar su presión arterial, proporcionando un punto de referencia inicial.',
-      # 'Índice de letalidad (tasa de letalidad ponderada por sexo y edad) para accidente cerebrovascular en el grupo de edad de 30 a 79 años',
-      # 'Índice de letalidad (tasa de letalidad ponderada por sexo y edad) para enfermedad coronaria isquémica en el grupo de edad de 30 a 79 años',
-      'Ponderado por la proporción de pacientes que están en cada STEP de hipertensión para el país específico.',
-      'Costos de tratar un evento de enfermedad coronaria isquémica por país (USD oficial a tasa de cambio nominal de cada país)',
-      'Costos de tratar un evento de accidente cerebrovascular (USD oficial a tasa de cambio nominal de cada país)',
-      'Costos de seguimiento (farmacológico, consultas médicas, etc) anual por paciente (USD oficial a tasa de cambio nominal de cada país)',
-      # 'Se utiliza para traer al presente los costos y beneficios en salud futuros',
-      'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
-    )
+    modelCard = read_xlsx("models/estimaTool/model_card_sheet/model_card_sheet.xlsx") %>% 
+      dplyr::filter(is.na(inputID) == F) %>% arrange(inputID)
+    
+    input_labels = modelCard$Parámetro
+    
+    # input_labels = c(
+    #   'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (objetivo)',
+    #   'Población total del país (n)',
+    #   'Prevalencia de adultos con hipertensión, estandarizada por edad (%)',
+    #   'Porcentaje de adultos con hipertensión diagnosticados',
+    #   'Porcentaje de personas diagnosticadas que se encuentran en tratamiento (basal)',
+    #   'Porcentaje de adultos con hipertensión controlada entre los tratados',
+    #   # 'Letalidad ponderada por edad y sexo para accidente cerebrovascular (grupo entre 30-79 años) (%)',
+    #   # 'Letalidad ponderada por edad y sexo para enfermedad cardíaca isquémica (grupo entre 30-79 años) (%)',
+    #   'Costo farmacológico anual promedio por paciente (USD)',
+    #   'Costo de seguimiento anual promedio por paciente (USD)',
+    #   'Costo de evento de enfermedad coronaria isquémica (USD)',
+    #   'Costo de un accidente cerebrovascular (USD)',
+    #   # 'Tasa de descuento (%)',
+    #   'Costo programático anual (USD)'
+    # )
+    
+    inputs_hover = modelCard$Descripción
+    # inputs_hover = c(
+    #   'Porcentaje de personas que están recibiendo tratamiento en relación con el total de individuos que han sido diagnosticados con hipertensión en un punto inicial o línea de base',
+    #   NA ,
+    #   'Prevalencia de individuos con hipertensión, diagnosticada o no, en el grupo etario de 30 a 79 años en cada país, proporcionando un punto de referencia inicial',
+    #   'Porcentaje de individuos entre 30 y 79 años previamente diagnosticados con hipertensión, proporcionando un punto de referencia inicial',
+    #   'Porcentaje de personas de 30 a 79 años, ya diagnosticadas con hipertensión y en tratamiento, que han conseguido controlar su presión arterial, proporcionando un punto de referencia inicial',
+    #   'Porcentaje de personas de 30 a 79 años, ya diagnosticadas con hipertensión y en tratamiento, que han conseguido controlar su presión arterial, proporcionando un punto de referencia inicial.',
+    #   # 'Índice de letalidad (tasa de letalidad ponderada por sexo y edad) para accidente cerebrovascular en el grupo de edad de 30 a 79 años',
+    #   # 'Índice de letalidad (tasa de letalidad ponderada por sexo y edad) para enfermedad coronaria isquémica en el grupo de edad de 30 a 79 años',
+    #   'Ponderado por la proporción de pacientes que están en cada STEP de hipertensión para el país específico.',
+    #   'Costos de tratar un evento de enfermedad coronaria isquémica por país (USD oficial a tasa de cambio nominal de cada país)',
+    #   'Costos de tratar un evento de accidente cerebrovascular (USD oficial a tasa de cambio nominal de cada país)',
+    #   'Costos de seguimiento (farmacológico, consultas médicas, etc) anual por paciente (USD oficial a tasa de cambio nominal de cada país)',
+    #   # 'Se utiliza para traer al presente los costos y beneficios en salud futuros',
+    #   'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
+    # )
+    
+    browser()
     
     input_values = c(
       targets_default$treatment[targets_default$country==str_to_title(input$country)],
+      costs$value[costs$parameter=="Evento de enfermedad cardiaca isquemica promedio  (***)" & costs$country==str_to_title(input$country)],
+      0,
       population$population[population$country==str_to_title(input$country)],
       base_line$prevalence_of_hypertension[base_line$country==str_to_title(input$country)],
       base_line$prevalence_previous_diagnosis[base_line$country==str_to_title(input$country)],
@@ -44,10 +55,8 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       base_line$control[base_line$country==str_to_title(input$country)],
       base_line$costo_farm[base_line$country==str_to_title(input$country)],
       base_line$costo_seguimiento[base_line$country==str_to_title(input$country)],
-      base_line$costo_evento_eci[base_line$country==str_to_title(input$country)],
-      costs$value[costs$parameter=="Evento de enfermedad cardiaca isquemica promedio  (***)" & costs$country==str_to_title(input$country)],
+      base_line$costo_evento_eci[base_line$country==str_to_title(input$country)]
       #0.05,
-      0
     )
     
     
@@ -72,8 +81,8 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       )
       
       df_hearts_map_inputs$avanzado = NA
-      df_hearts_map_inputs$avanzado[c(1)] = F
-      df_hearts_map_inputs$avanzado[is.na(df_hearts_map_inputs$avanzado)] = T
+      df_hearts_map_inputs$avanzado[which(modelCard$`Básico / Avanzado`== "Avanzado")] = T
+      df_hearts_map_inputs$avanzado[which(modelCard$`Básico / Avanzado`== "Básico")] = F
       rownames(df_hearts_map_inputs) = 1:nrow(df_hearts_map_inputs)
       
       hearts_map_inputs(cbind(
@@ -86,7 +95,7 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       
       bsc = which(df_hearts_map_inputs$avanzado==F)
       avz = which(df_hearts_map_inputs$avanzado==T)
-      prc = c(3,4,5,6)
+      prc = which(modelCard$Unidad=="Porcentaje")
       
       
       
@@ -97,13 +106,16 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
     tagList(
       tags$div(
         lapply(bsc, function(i) {
+          browser()
           if (!i %in% prc) {
             numericInput(
               paste0("hearts_input_", i),
               tags$div(input_labels[i], icon("circle-info", "fa-1x", 
                                              title = inputs_hover[i], verify_fa = FALSE)),
-              value = input_values[i],
-              step = 0.1
+              value = input_values[i]*100,
+              step = 1,
+              min = 1,
+              max = 100
             )
           } else {
             sliderInput(

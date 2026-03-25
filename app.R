@@ -19,7 +19,6 @@ library(shinyWidgets)
 library(shinycssloaders)
 library(rintrojs)
 
-
 source("modules/toggle_advanced_inputs.R")
 
 source("models/estimaTool/UI/UI_hearts.R")
@@ -689,18 +688,18 @@ server <- function(input, output, session) {
     if (is.null(input$hearts_input_1)==F) {
       estimaToolCosts(
         country = input$country,
-        Population = input$hearts_input_2,
-        `BASELINE_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad` = input$hearts_input_3/100,
-        `TARGET_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad` = input$hearts_input_3/100,
-        `BASELINE_Prevalencia de diagnóstico previo de hipertensión entre adultos de 30-79 años con hipertensión, estandarizada por edad` = input$hearts_input_4/100,
-        `TARGET_Prevalencia de diagnóstico previo de hipertensión entre adultos de 30-79 años con hipertensión, estandarizada por edad` = input$hearts_input_4/100,
-        `BASELINE_Tratamiento entre los diagnosticados (%)` = input$hearts_input_5/100,
-        `TARGET_Tratamiento entre los diagnosticados (%)` = input$hearts_input_1,
-        `BASELINE_Control de la hipertensión entre los tratados (%)` = input$hearts_input_6/100,
-        `TARGET_Control de la hipertensión entre los tratados (%)` = input$hearts_input_6/100,
-        `Costo farmacológico anual por paciente promedio (**)` = input$hearts_input_7,
-        `Evento de enfermedad cardiaca isquemica promedio  (***)` = input$hearts_input_9,
-        `Costo anual de consulta médica en paciente promedio (*)` = input$hearts_input_8
+        Population = input$hearts_input_4,
+        `BASELINE_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad` = input$hearts_input_5/100,
+        `TARGET_Prevalencia de hipertensión entre adultos de 30-79 años, estandarizada por edad` = input$hearts_input_5/100,
+        `BASELINE_Prevalencia de diagnóstico previo de hipertensión entre adultos de 30-79 años con hipertensión, estandarizada por edad` = input$hearts_input_6/100,
+        `TARGET_Prevalencia de diagnóstico previo de hipertensión entre adultos de 30-79 años con hipertensión, estandarizada por edad` = input$hearts_input_6/100,
+        `BASELINE_Tratamiento entre los diagnosticados (%)` = input$hearts_input_7/100,
+        `TARGET_Tratamiento entre los diagnosticados (%)` = input$hearts_input_1/100,
+        `BASELINE_Control de la hipertensión entre los tratados (%)` = input$hearts_input_8/100,
+        `TARGET_Control de la hipertensión entre los tratados (%)` = input$hearts_input_8/100,
+        `Costo farmacológico anual por paciente promedio (**)` = input$hearts_input_9,
+        `Evento de enfermedad cardiaca isquemica promedio  (***)` = input$hearts_input_2,
+        `Costo anual de consulta médica en paciente promedio (*)` = input$hearts_input_10
       )
     }
   })
