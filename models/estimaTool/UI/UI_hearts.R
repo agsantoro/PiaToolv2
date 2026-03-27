@@ -42,8 +42,6 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
     #   'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)'
     # )
     
-    browser()
-    
     input_values = c(
       targets_default$treatment[targets_default$country==str_to_title(input$country)],
       costs$value[costs$parameter=="Evento de enfermedad cardiaca isquemica promedio  (***)" & costs$country==str_to_title(input$country)],
@@ -59,6 +57,9 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       #0.05,
     )
     
+    
+    limites = modelCard[,c("inputID","Valor mínimo","Valor máximo", "Step")]
+    limites$`Valor máximo`[limites$`Valor máximo`=="Inf"] = NA
     
     
     if (is.null(input$country) == F) {
@@ -106,16 +107,15 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
     tagList(
       tags$div(
         lapply(bsc, function(i) {
-          browser()
           if (!i %in% prc) {
             numericInput(
               paste0("hearts_input_", i),
               tags$div(input_labels[i], icon("circle-info", "fa-1x", 
                                              title = inputs_hover[i], verify_fa = FALSE)),
-              value = input_values[i]*100,
-              step = 1,
-              min = 1,
-              max = 100
+              value = input_values[i],
+              min = limites$`Valor mínimo`[limites$inputID == paste0("hearts_input_", i)],
+              max = as.numeric(limites$`Valor máximo`[limites$inputID == paste0("hearts_input_", i)]),
+              step = limites$Step[limites$inputID == paste0("hearts_input_", i)]
             )
           } else {
             sliderInput(
@@ -123,9 +123,9 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
               tags$div(input_labels[i], icon("circle-info", "fa-1x", 
                                              title = inputs_hover[i], verify_fa = FALSE)),
               value = input_values[i] * 100,
-              min = 0,
-              max = 100,
-              step = 0.1
+              min = limites$`Valor mínimo`[limites$inputID == paste0("hearts_input_", i)],
+              max = as.numeric(limites$`Valor máximo`[limites$inputID == paste0("hearts_input_", i)]),
+              step = limites$Step[limites$inputID == paste0("hearts_input_", i)]/100
             )
           }
         })

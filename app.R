@@ -113,6 +113,15 @@ ui <- fluidPage(
   tags$style(
     
     "
+    
+    
+    #cohortSizeAtVaccinationAgeFemale {
+        opacity: 0.4 !important;
+        transition: 0.01s !important;
+        pointer-events: none !important;
+    }
+      
+      
     #descuento_nuevo { display: none !important; }
     #descuento_nuevo-label { display: none !important; }
     
