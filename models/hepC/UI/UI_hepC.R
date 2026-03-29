@@ -1,51 +1,62 @@
 ui_hepC = function (input, datosPais, hepC_map_inputs) {
   country_sel = str_to_title(input$country)
   
+  modelCard = read_xlsx("models/hepC/model_card_sheet/model_card_sheet.xlsx") %>% dplyr::filter(is.na(inputID)==F)
+  
   renderUI({
-    input_names = c(
-      'Duración del tratamiento (meses)' = "tDuracion_Meses",
-      'Costo de tratamiento mensual con Sofosbuvir/ Velpatasvir (Epclusa®) (USD)' = "Costo_Tratamiento",
-      'Eficacia de Sofosbuvir/ Velpatasvir (Epclusa®) (%)' = "pSVR", 
-      'Porcentaje de pacientes que abandonan el tratamiento (%)' = "pAbandono", 
-      'Tamaño de la cohorte (n)' = "cohorte", 
-      'Porcentaje de personas en estadío de fibrosis F0 al diagnóstico (%)' = "F0", 
-      'Porcentaje de personas en estadío de fibrosis F1 al diagnóstico (%)' = "F1", 
-      'Porcentaje de personas en estadío de fibrosis F2 al diagnóstico (%)' = "F2", 
-      'Porcentaje de personas en estadío de fibrosis F3 al diagnóstico (%)' = "F3", 
-      'Porcentaje de personas en estadío de fibrosis F4 al diagnóstico (%)' = "F4", 
-      'Costos de estadío de fibrosis F0 a F2 al diagnóstico' = "aCostoF0F2", 
-      'Costos de estadío de fibrosis F3 al diagnóstico' = "aCostoF3", 
-      'Costos de estadío de fibrosis F4 al diagnóstico' = "aCostoF4",
-      'Costo anual de cirrosis descompensada (USD)' = "aCostoDC", 
-      'Costos anual de carcinoma hepatocelular (USD)' = "aCostoHCC", 
-      #'Tasa de descuento (%)' = "AtasaDescuento", 
-      'Costo de la evaluación de la respuesta al tratamiento' = "Costo_Evaluacion")
+    # input_names = c(
+      # 'Duración del tratamiento (meses)' = "tDuracion_Meses",
+      # 'Costo de tratamiento mensual con Sofosbuvir/ Velpatasvir (Epclusa®) (USD)' = "Costo_Tratamiento",
+      # 'Eficacia de Sofosbuvir/ Velpatasvir (Epclusa®) (%)' = "pSVR", 
+      # 'Porcentaje de pacientes que abandonan el tratamiento (%)' = "pAbandono", 
+      # 'Tamaño de la cohorte (n)' = "cohorte", 
+      # 'Porcentaje de personas en estadío de fibrosis F0 al diagnóstico (%)' = "F0", 
+      # 'Porcentaje de personas en estadío de fibrosis F1 al diagnóstico (%)' = "F1", 
+      # 'Porcentaje de personas en estadío de fibrosis F2 al diagnóstico (%)' = "F2", 
+      # 'Porcentaje de personas en estadío de fibrosis F3 al diagnóstico (%)' = "F3", 
+      # 'Porcentaje de personas en estadío de fibrosis F4 al diagnóstico (%)' = "F4", 
+      # 'Costos de estadío de fibrosis F0 a F2 al diagnóstico' = "aCostoF0F2", 
+      # 'Costos de estadío de fibrosis F3 al diagnóstico' = "aCostoF3", 
+      # 'Costos de estadío de fibrosis F4 al diagnóstico' = "aCostoF4",
+      # 'Costo anual de cirrosis descompensada (USD)' = "aCostoDC", 
+      # 'Costos anual de carcinoma hepatocelular (USD)' = "aCostoHCC", 
+      # #'Tasa de descuento (%)' = "AtasaDescuento", 
+      # 'Costo de la evaluación de la respuesta al tratamiento' = "Costo_Evaluacion")
     
-    inputs_hover = c(
-      "Duración del tratamiento con Sofosbuvir (400 mg) y Velpatasvir (100 mg) en meses",
-      "Costo de tratamiento mensual de Sofosbuvir/ Velpatasvir (Epclusa®). Régimen de AAD (antivirales de acción directa) de 4 semanas.",
-      "Porcentaje de pacientes que logran la eliminación viral con el tratamiento antiviral específico que combina los medicamentos Sofosbuvir y Velpatasvir",
-      "Porcentaje de pacientes que abandonan el tratamiento",
-      "Número de personas mayores de 18 años con infección por VHC que ingresan al modelo",
-      "Porcentaje de personas en estadío de fibrosis F0 al diagnóstico",
-      "Porcentaje de personas en estadío de fibrosis F1 al diagnóstico",
-      "Porcentaje de personas en estadío de fibrosis F2 al diagnóstico",
-      "Porcentaje de personas en estadío de fibrosis F3 al diagnóstico",
-      "Porcentaje de personas en estadío de fibrosis F4 al diagnóstico",
-      "Costo anual del seguimiento, tratamiento y complicaciones de estadíos de fibrosis F0 a F2",
-      "Costo anual del seguimiento, tratamiento y complicaciones de estadio de fibrosis F3",
-      "Costo anual del seguimiento, tratamiento y complicaciones de estadio de fibrosis F4 (cirrosis)",
-      "Costo anual del seguimiento, tratamiento y complicaciones de la cirrosis descompensada",
-      "Costo anual del seguimiento, tratamiento y complicaciones del cáncer de hígado",
-      #"Tasa para traer al presente los costos y beneficios en salud futuros",
-      "Costo de implementar y sostener la intervención en un año"
+      input_names = modelCard$Parámetro
       
-    )
+    #   inputs_hover = c(
+    #   "Duración del tratamiento con Sofosbuvir (400 mg) y Velpatasvir (100 mg) en meses",
+    #   "Costo de tratamiento mensual de Sofosbuvir/ Velpatasvir (Epclusa®). Régimen de AAD (antivirales de acción directa) de 4 semanas.",
+    #   "Porcentaje de pacientes que logran la eliminación viral con el tratamiento antiviral específico que combina los medicamentos Sofosbuvir y Velpatasvir",
+    #   "Porcentaje de pacientes que abandonan el tratamiento",
+    #   "Número de personas mayores de 18 años con infección por VHC que ingresan al modelo",
+    #   "Porcentaje de personas en estadío de fibrosis F0 al diagnóstico",
+    #   "Porcentaje de personas en estadío de fibrosis F1 al diagnóstico",
+    #   "Porcentaje de personas en estadío de fibrosis F2 al diagnóstico",
+    #   "Porcentaje de personas en estadío de fibrosis F3 al diagnóstico",
+    #   "Porcentaje de personas en estadío de fibrosis F4 al diagnóstico",
+    #   "Costo anual del seguimiento, tratamiento y complicaciones de estadíos de fibrosis F0 a F2",
+    #   "Costo anual del seguimiento, tratamiento y complicaciones de estadio de fibrosis F3",
+    #   "Costo anual del seguimiento, tratamiento y complicaciones de estadio de fibrosis F4 (cirrosis)",
+    #   "Costo anual del seguimiento, tratamiento y complicaciones de la cirrosis descompensada",
+    #   "Costo anual del seguimiento, tratamiento y complicaciones del cáncer de hígado",
+    #   #"Tasa para traer al presente los costos y beneficios en salud futuros",
+    #   "Costo de implementar y sostener la intervención en un año"
+    #   
+    # )
+    # 
     
-    bsc = 1:2
-    avz = setdiff(1:length(inputs_hover),bsc)
-    porcentajes = c(3,4,6:10)
+    inputs_hover = modelCard$Descripción
+      
+    #bsc = 1:2
+    bsc = which(modelCard$`Básico / Avanzado` == "Básico")
     
+    #avz = setdiff(1:length(inputs_hover),bsc)
+    avz = which(modelCard$`Básico / Avanzado` == "Avanzado")
+    
+    #porcentajes = c(3,4,6:10)
+    porcentajes = which(modelCard$Unidad == "Porcentaje")
     
     default = list()
     default$cohorte = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="epi" & datosPais$indicador=="Cohorte"]
@@ -65,18 +76,20 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
     default$pAbandono = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="tratamiento" & datosPais$indicador=="%Abandono"]
     default$Costo_Tratamiento = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="costos" & datosPais$indicador=="Costo Mensual"]
     default$Costo_Evaluacion = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="costos" & datosPais$indicador=="Assesment"]
-    
+    browser()
     if (is.null(input$country) == F) {
-      i_names = c()
-      for (i in 1:length(inputs_hover)) {
-        i_names = c(i_names,input_names[i])
-      }
+      # i_names = c()
+      # for (i in 1:length(inputs_hover)) {
+      #   i_names = c(i_names,input_names[i])
+      # }
       
-      i_labels = c()
+      i_names = input_names
       
-      for (i in 1:length(inputs_hover)) {
-        i_labels = c(i_labels,names(input_names)[i])
-      }
+      i_labels = modelCard$Parámetro
+      
+      # for (i in 1:length(inputs_hover)) {
+      #   i_labels = c(i_labels,names(input_names)[i])
+      # }
       
       addData = data.frame(
         intervencion = "Hepatitis C",
@@ -107,29 +120,32 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
       lapply(input_names[bsc], function(i) {
         
         if (which(input_names==i) %in% porcentajes) {
+          browser()
           sliderInput(
-            i,
+            modelCard$inputID[which(input_names == i)],
             tags$div(
-              names(input_names[input_names==i]),
+              i,
               icon("circle-info",
                    "fa-1x",
                    title = inputs_hover[which(input_names==i)])
             ),
             min = 0,
             max = 100,
-            default[[i]]*100
+            value = default[which(names(default)==modelCard$inputID[which(input_names == i)])] * 100
             
             
           )
-        } else {numericInput(
-          i,
+        } else {
+          numericInput(
+          modelCard$inputID[which(input_names == i)],
           tags$div(
-            names(input_names[input_names==i]),
+            input_names[input_names==i],
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[which(input_names==i)])
           ),
-          default[[i]]
+          value = as.numeric(default[which(names(default)==modelCard$inputID[which(input_names == i)])]),
+          min = 0
           
         )}
         
@@ -160,28 +176,29 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
           lapply(input_names[avz], function(i) {
             if (which(input_names==i) %in% porcentajes) {
               sliderInput(
-                i,
+                modelCard$inputID[which(input_names == i)],
                 tags$div(
-                  names(input_names[input_names==i]),
+                  input_names[input_names==i],
                   icon("circle-info",
                        "fa-1x",
                        title = inputs_hover[which(input_names==i)])
                 ),
                 min=0,
                 max=100,
-                default[[i]]*100
+                value = as.numeric(default[which(names(default)==modelCard$inputID[which(input_names == i)])]) *100
                 
               )
             } else {
               numericInput(
-                i,
+                modelCard$inputID[which(input_names == i)],
                 tags$div(
-                  names(input_names[input_names==i]),
+                  input_names[input_names==i],
                   icon("circle-info",
                        "fa-1x",
                        title = inputs_hover[which(input_names==i)])
                 ),
-                default[[i]]
+                value = as.numeric(default[which(names(default)==modelCard$inputID[which(input_names == i)])]),
+                min = 0
                 
               )
             }

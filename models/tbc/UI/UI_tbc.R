@@ -1,16 +1,24 @@
 ui_tbc = function (input, tbc_map_inputs) {
   renderUI({
     
+    modelCard = read.xlsx("models/tbc/model_card_sheet/model_card_sheet.xlsx")
+    
+    
+    
     if (is.null(input$country) == F) {
       addData = data.frame(
         intervencion = "VDOT Tuberculosis",
-        i_names = names(get_tbc_params(input=input)),
-        i_labels = get_tbc_params_labels()
+        #i_names = names(get_tbc_params(input=input)),
+        i_names = modelCard$input_ID,
+        #i_labels = get_tbc_params_labels()
+        i_labels = modelCard$Parámetro
       )
       
-      bsc = 1:3
-      avz = 4:nrow(addData)
-    
+      #bsc = 1:3
+      bsc = which(modelCard$`Básico./.Avanzado` == "Básico")
+      #avz = 4:nrow(addData)
+      avz = which(modelCard$`Básico./.Avanzado` == "Avanzado")
+      
       addData$avanzado = NA
       addData$avanzado[bsc] = F
       addData$avanzado[avz] = T
@@ -33,9 +41,10 @@ ui_tbc = function (input, tbc_map_inputs) {
     
     
     
-    porcentajes = c(2,6,7,8,14,20,31)
-    
-    inputs_hover = get_tbc_hover()
+    #orcentajes = c(2,6,7,8,14,20,31)
+    porcentajes = which(modelCard$Unidad=="Porcentaje")
+      
+    inputs_hover = modelCard$Descripción
     
     tagList(
       
@@ -61,7 +70,9 @@ ui_tbc = function (input, tbc_map_inputs) {
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])
-          ),get_tbc_params(input)[[i]])
+            
+          ),get_tbc_params(input)[[i]],
+          min= 0)
         }
         
       }),
@@ -102,7 +113,8 @@ ui_tbc = function (input, tbc_map_inputs) {
             icon("circle-info",
                  "fa-1x",
                  title = inputs_hover[i])
-          ),get_tbc_params(input)[[i]])
+          ),get_tbc_params(input)[[i]],
+          min = 0)
         }
         
       })),

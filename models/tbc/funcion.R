@@ -1,6 +1,8 @@
 library(tidyverse)
 
 inputs_tbc <- readxl::read_excel("models/tbc/data/inputs_tbc.xlsx")
+modelCard = read.xlsx("models/tbc/model_card_sheet/model_card_sheet.xlsx")
+
 
 modelo_tbc <- function(pais_seleccionado,
                        VOTrrExito,
