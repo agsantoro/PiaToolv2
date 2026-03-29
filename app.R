@@ -860,7 +860,6 @@ server <- function(input, output, session) {
   
   hepC_run = reactive({
     if (length(input$cohorte) > 0) {
-      browser()
       hepC = hepC_full(
         input,
         output,

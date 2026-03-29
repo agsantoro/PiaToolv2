@@ -76,7 +76,6 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
     default$pAbandono = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="tratamiento" & datosPais$indicador=="%Abandono"]
     default$Costo_Tratamiento = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="costos" & datosPais$indicador=="Costo Mensual"]
     default$Costo_Evaluacion = datosPais$valor[datosPais$pais==country_sel & datosPais$dimension=="costos" & datosPais$indicador=="Assesment"]
-    browser()
     if (is.null(input$country) == F) {
       # i_names = c()
       # for (i in 1:length(inputs_hover)) {

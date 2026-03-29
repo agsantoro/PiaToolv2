@@ -1,9 +1,10 @@
 ui_hpp = function (input, hpp_map_inputs) {
   renderUI({
     datosPais = readxl::read_xlsx("models/hpp/data/datosPais.xlsx", col_types = c("text","text","numeric","text","text","text"))
-    print("lee datos HPV")
     country = str_to_title(input$country_hpp)
     datosPais = datosPais %>% dplyr::filter(pais==country)
+    
+    browser()
     
     nombres_input = c(
       "hpp_uso_oxitocina_base",
