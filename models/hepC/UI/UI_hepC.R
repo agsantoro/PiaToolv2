@@ -119,7 +119,6 @@ ui_hepC = function (input, datosPais, hepC_map_inputs) {
       lapply(input_names[bsc], function(i) {
         
         if (which(input_names==i) %in% porcentajes) {
-          browser()
           sliderInput(
             modelCard$inputID[which(input_names == i)],
             tags$div(

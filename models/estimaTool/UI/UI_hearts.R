@@ -108,7 +108,6 @@ ui_hearts = function (input,base_line, targets_default, costs, population, heart
       tags$div(
         lapply(bsc, function(i) {
           if (!i %in% prc) {
-            browser()
             numericInput(
               paste0("hearts_input_", i),
               tags$div(input_labels[i], icon("circle-info", "fa-1x", 

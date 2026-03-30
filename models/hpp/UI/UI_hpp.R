@@ -4,94 +4,101 @@ ui_hpp = function (input, hpp_map_inputs) {
     country = str_to_title(input$country_hpp)
     datosPais = datosPais %>% dplyr::filter(pais==country)
     
-    browser()
+    modelCard = read.xlsx("models/hpp/model_card_sheet/model_card_sheet.xlsx") %>%
+      dplyr::filter(is.na(input_ID)==F)
     
-    nombres_input = c(
-      "hpp_uso_oxitocina_base",
-      "hpp_uso_oxitocina_taget",
-      "hpp_partos_anuales",
-      "hpp_edad_parto",
-      "hpp_partos_institucionales",
-      "hpp_mortalidad_materna",
-      "hpp_mortalidad_hpp",
-      "hpp_pHPP",
-      "hpp_pHPP_Severa",
-      "hpp_pHisterectomia",
-      "hpp_eficaciaOxitocina",  
-      "hpp_uHisterectomia",
-      "hpp_costo_oxitocina",
-      "hpp_costo_programatico",
-      #"hpp_tasa_descuento",
-      "hpp_costo_no_severa",
-      "hpp_costo_severa"
-    )
+    nombres_input = modelCard$input_ID
     
-    label_inputs = c(
-      'Cobertura actual del uso de oxitocina (%)',
-      'Cobertura esperada del uso de oxitocina (%)',
-      'Partos anuales (n)',
-      'Edad promedio al parto',
-      'Partos institucionales (%)',
-      'Mortalidad materna',
-      'Mortalidad materna por hemorragia postparto (%)',
-      'Riesgo de hemorragia postparto sin profilaxis (%)',
-      'Riesgo de hemorragia postparto severa dada una hemorragia postparto (%)',
-      'Riesgo de histerectomía dada una hemorragia postparto severa (%)',
-      'Riesgo Relativo de hemorragia postparto con oxitocina',
-      'Años de vida ajustados por calidad por  histerectomía',
-      'Costo de oxitocina (USD)',
-      'Costo programático de anual de la intervención (USD)',
-      #'Tasa de descuento (%)',
-      'Costo de episodio de hemorragia postparto no severa',
-      'Costo de episodio de hemorragia postparto severa'
-    )
+    # nombres_input = c(
+    #   "hpp_uso_oxitocina_base",
+    #   "hpp_uso_oxitocina_taget",
+    #   "hpp_partos_anuales",
+    #   "hpp_edad_parto",
+    #   "hpp_partos_institucionales",
+    #   "hpp_mortalidad_materna",
+    #   "hpp_mortalidad_hpp",
+    #   "hpp_pHPP",
+    #   "hpp_pHPP_Severa",
+    #   "hpp_pHisterectomia",
+    #   "hpp_eficaciaOxitocina",  
+    #   "hpp_uHisterectomia",
+    #   "hpp_costo_oxitocina",
+    #   "hpp_costo_programatico",
+    #   #"hpp_tasa_descuento",
+    #   "hpp_costo_no_severa",
+    #   "hpp_costo_severa"
+    # )
     
+    label_inputs = modelCard$Parámetro
     
-    inputs_hover = c(
-      'Porcentaje de uso de oxitocina durante el parto en el país',
-      'Porcentaje de uso de oxitocina durante el parto en el país luego de la intervención',
-      'Número de partos registrados en el país por año',
-      'Edad materna promedio en el momento del parto en el país',
-      'Porcentaje de partos institucionales para el país',
-      'Número de muertes maternas por cada 100.000 partos en el país',
-      'Porcentaje de muertes maternas atribuibles a HPP en el país',
-      'Porcentaje de que al momento del parto se presente una hemorragia postparto (≥500 ml) en ausencia de intervención profiláctica',
-      'Porcentaje condicional estimado de que ocurra una hemorragia postparto severa (≥1000 ml) después de haber experimentado una hemorragia postparto',
-      'Porcentaje estimado de que una mujer que experimenta una hemorragia postparto severa requiera una histerectomía como resultado de esta complicación',
-      'Riesgo relativo de desarrollar hemorragia postparto en pacientes que recibieron oxitocina en comparación con aquellos que no la recibieron',
-      'Utilidad de vivir un año con una histerectomía',
-      'Costo de 10 UI de oxitocina en el país para julio 2023 (USD oficial a tasa de cambio nominal de cada país)',
-      'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)',
-      #'Se utiliza para traer al presente los costos y beneficios en salud futuros',
-      'Costo de hemorragia post parto no severa (< 1000 ml) en el país para julio 2023',
-      'Costo de hemorragia post parto severa (≥1000 ml) en el país para julio 2023'
-    )
+    # label_inputs = c(
+    #   'Cobertura actual del uso de oxitocina (%)',
+    #   'Cobertura esperada del uso de oxitocina (%)',
+    #   'Partos anuales (n)',
+    #   'Edad promedio al parto',
+    #   'Partos institucionales (%)',
+    #   'Mortalidad materna',
+    #   'Mortalidad materna por hemorragia postparto (%)',
+    #   'Riesgo de hemorragia postparto sin profilaxis (%)',
+    #   'Riesgo de hemorragia postparto severa dada una hemorragia postparto (%)',
+    #   'Riesgo de histerectomía dada una hemorragia postparto severa (%)',
+    #   'Riesgo Relativo de hemorragia postparto con oxitocina',
+    #   'Años de vida ajustados por calidad por  histerectomía',
+    #   'Costo de oxitocina (USD)',
+    #   'Costo programático de anual de la intervención (USD)',
+    #   #'Tasa de descuento (%)',
+    #   'Costo de episodio de hemorragia postparto no severa',
+    #   'Costo de episodio de hemorragia postparto severa'
+    # )
+    # 
+    
+    inputs_hover = modelCard$Descripción
+    
+    # inputs_hover = c(
+    #   'Porcentaje de uso de oxitocina durante el parto en el país',
+    #   'Porcentaje de uso de oxitocina durante el parto en el país luego de la intervención',
+    #   'Número de partos registrados en el país por año',
+    #   'Edad materna promedio en el momento del parto en el país',
+    #   'Porcentaje de partos institucionales para el país',
+    #   'Número de muertes maternas por cada 100.000 partos en el país',
+    #   'Porcentaje de muertes maternas atribuibles a HPP en el país',
+    #   'Porcentaje de que al momento del parto se presente una hemorragia postparto (≥500 ml) en ausencia de intervención profiláctica',
+    #   'Porcentaje condicional estimado de que ocurra una hemorragia postparto severa (≥1000 ml) después de haber experimentado una hemorragia postparto',
+    #   'Porcentaje estimado de que una mujer que experimenta una hemorragia postparto severa requiera una histerectomía como resultado de esta complicación',
+    #   'Riesgo relativo de desarrollar hemorragia postparto en pacientes que recibieron oxitocina en comparación con aquellos que no la recibieron',
+    #   'Utilidad de vivir un año con una histerectomía',
+    #   'Costo de 10 UI de oxitocina en el país para julio 2023 (USD oficial a tasa de cambio nominal de cada país)',
+    #   'Costo de implementar y sostener la intervención en un año (USD oficial a tasa de cambio nominal de cada país)',
+    #   #'Se utiliza para traer al presente los costos y beneficios en salud futuros',
+    #   'Costo de hemorragia post parto no severa (< 1000 ml) en el país para julio 2023',
+    #   'Costo de hemorragia post parto severa (≥1000 ml) en el país para julio 2023'
+    # )
+    # 
     
     datosPais = datosPais[datosPais$pais==str_to_title(input$country_hpp),]
-    
     input_values = c(
-      round(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"] * datosPais$value[datosPais$indicador=="USO.DE.OXITOCINA"] /(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"]*datosPais$value[datosPais$indicador=="pINSTITUCIONALES"]),5), 
-      round(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"] * datosPais$value[datosPais$indicador=="USO.DE.OXITOCINA"] /(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"]*datosPais$value[datosPais$indicador=="pINSTITUCIONALES"]),5)*1.2, 
-      datosPais$value[datosPais$indicador=="PARTOS.ANUALES"],
-      datosPais$value[datosPais$indicador=="EDAD.AL.PARTO"],
-      datosPais$value[datosPais$indicador=="pINSTITUCIONALES"],
-      datosPais$value[datosPais$indicador=="MORTALIDAD.MATERNA"],
-      datosPais$value[datosPais$indicador=="pMORTALIDAD.MATERNA.POR.HPP"],
-      0.108,
-      0.1759,
-      0.03,
-      0.51,
-      0.985,
-      datosPais$value[datosPais$indicador=="COSTO.Oxitocina"],
-      0,
+      hpp_uso_oxitocina_base = round(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"] * datosPais$value[datosPais$indicador=="USO.DE.OXITOCINA"] /(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"]*datosPais$value[datosPais$indicador=="pINSTITUCIONALES"]),5), 
+      hpp_uso_oxitocina_taget = round(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"] * datosPais$value[datosPais$indicador=="USO.DE.OXITOCINA"] /(datosPais$value[datosPais$indicador=="PARTOS.ANUALES"]*datosPais$value[datosPais$indicador=="pINSTITUCIONALES"]),5)*1.2, 
+      hpp_partos_anuales = datosPais$value[datosPais$indicador=="PARTOS.ANUALES"],
+      hpp_edad_parto = datosPais$value[datosPais$indicador=="EDAD.AL.PARTO"],
+      hpp_partos_institucionales = datosPais$value[datosPais$indicador=="pINSTITUCIONALES"],
+      hpp_mortalidad_materna = datosPais$value[datosPais$indicador=="MORTALIDAD.MATERNA"],
+      hpp_mortalidad_hpp = datosPais$value[datosPais$indicador=="pMORTALIDAD.MATERNA.POR.HPP"],
+      hpp_pHPP = 0.108,
+      hpp_pHPP_Severa = 0.1759,
+      hpp_pHisterectomia = 0.03,
+      hpp_eficaciaOxitocina = 0.51,
+      hpp_uHisterectomia = 0.985,
+      hpp_costo_oxitocina = datosPais$value[datosPais$indicador=="COSTO.Oxitocina"],
+      hpp_costo_programatico = 0,
       #0.05,
-      datosPais$value[datosPais$indicador=="COSTO.mHPP"],
-      datosPais$value[datosPais$indicador=="COSTO.sHPP"]
+      hpp_costo_no_severa = datosPais$value[datosPais$indicador=="COSTO.mHPP"],
+      hpp_costo_severa = datosPais$value[datosPais$indicador=="COSTO.sHPP"]
     )
     
-    bsc = c(1,2)
-    avz = c(3:length(input_values))
-    porcentajes = c(1,2,5,7,8,9,10,11)
+    bsc = which(modelCard$`Básico./.Avanzado` == "Básico")
+    avz = which(modelCard$`Básico./.Avanzado` == "Avanzado")
+    porcentajes = which(modelCard$Unidad == "Porcentaje")
     
     if (is.null(input$country_hpp) == F) {
       addData = data.frame(
@@ -120,23 +127,36 @@ ui_hpp = function (input, hpp_map_inputs) {
     tagList(
       
           lapply(bsc, function(i) {
-            sliderInput(
-              nombres_input[i],
-              tags$div(
+            if (i %in% porcentajes) {
+              sliderInput(
+                nombres_input[i],
+                tags$div(
+                  label_inputs[i],
+                  icon("circle-info",
+                       "fa-1x",
+                       title = inputs_hover[i])
+                ),
+                min = 0,
+                max = 100,
+                step = 0.01,
+                as.numeric(input_values[names(input_values) == nombres_input[i]])*100)
+            } else {
+              numericInput(
+                nombres_input[i],tags$div(
                 label_inputs[i],
                 icon("circle-info",
                      "fa-1x",
                      title = inputs_hover[i])
-              ),
-              min = 0,
-              max = 100,
-              step = 0.01,
-              input_values[i]*100)
+              ),value = as.numeric(input_values[names(input_values) == nombres_input[i]]),
+              min = 0)
+            }
+            
           }),
           
           hr(),
           
           tags$div(
+            
             tags$button(
               class = "btn btn-default btn-block",
               `data-toggle` = "collapse",
@@ -166,14 +186,15 @@ ui_hpp = function (input, hpp_map_inputs) {
                                  min=0,
                                  max=100,
                                  step = 0.01,
-                                 input_values[i]*100)
+                          as.numeric(input_values[names(input_values) == nombres_input[i]])*100)
             } else {
               numericInput(nombres_input[i],tags$div(
                 label_inputs[i],
                 icon("circle-info",
                      "fa-1x",
                      title = inputs_hover[i])
-              ),input_values[i])
+              ),value = as.numeric(input_values[names(input_values) == nombres_input[i]]),
+              min = 0)
             }
             
           })    

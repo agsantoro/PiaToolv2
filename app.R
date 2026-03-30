@@ -920,9 +920,8 @@ server <- function(input, output, session) {
   ##### HPP #####
   
   hpp_run = reactive({
-    
     if (length(input$hpp_uso_oxitocina_base)>0) {
-      
+      browser()
       resultados = resultados_comparados(
         pais = str_to_title(input$country),
         usoOxitocina_base = input$hpp_uso_oxitocina_base/100,
@@ -936,7 +935,7 @@ server <- function(input, output, session) {
         pHPP = input$hpp_pHPP/100,
         pHPP_Severa = input$hpp_pHPP_Severa/100,
         pHisterectomia = input$hpp_pHisterectomia/100,
-        eficaciaOxitocina = input$hpp_eficaciaOxitocina/100,  
+        eficaciaOxitocina = input$hpp_eficaciaOxitocina,  
         uHisterectomia = input$hpp_uHisterectomia,
         costo_oxitocina = input$hpp_costo_oxitocina,
         descuento = 5/100, #Tasa de descuento (INPUT)
