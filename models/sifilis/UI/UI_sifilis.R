@@ -1,6 +1,7 @@
 UI_sifilis = function (input, sifilis_map_inputs) {
   renderUI({
     if (is.null(input$country) == F) {
+      
       inputs = sifilisInputList() %>% dplyr::filter(sifilisInputList()$tipo != "No Incluido")
       
       addData = data.frame(
@@ -198,11 +199,7 @@ ui_resultados_sifilis = function(input,output,resultados, sifilis_map_outputs) {
                     reactableOutput("sifilis_summaryTable")
              )
     )
-    
-    
   )
-  
-  
 }
 
 

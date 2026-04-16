@@ -29,12 +29,8 @@ ui_prep = function (input, prep_map_inputs) {
       
     }
     
-    
-    
     tagList(
-      
       lapply(bsc, function(i) {
-        
           numericInput(prep_map_inputs_current$i_names[i],
                      tags$div(prep_map_inputs_current$i_labels[i], icon("circle-info", "fa-1x", 
                                                     title = prep_map_inputs_current$i_labels[i], verify_fa = FALSE)),

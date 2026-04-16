@@ -648,5 +648,6 @@ sifilisInputList = function() {
   colnames(data) = c("grupo","var","label","tipo")
   data$porc = F
   data$porc[substring(data$var,1,1) == "p"] = T
+  data$porc[3:4] = F
   data
 }
