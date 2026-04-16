@@ -921,7 +921,6 @@ server <- function(input, output, session) {
   
   hpp_run = reactive({
     if (length(input$hpp_uso_oxitocina_base)>0) {
-      browser()
       resultados = resultados_comparados(
         pais = str_to_title(input$country),
         usoOxitocina_base = input$hpp_uso_oxitocina_base/100,
