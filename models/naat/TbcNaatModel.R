@@ -1,3 +1,9 @@
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(tibble)
+
 INFO_ROI_NOAPLICA <- "El retorno de inversión no fue estimado debido a que la intervención es menos costosa que el comparador."
 ICER_C_SUP_IZQ <- "La intervención es menos costosa y menos efectiva, el valor presente representa el RCEI del comparador contra la intervención. Por tanto, la intervención será costo-efectiva si RCEI está por encima del umbral."
 
@@ -25,8 +31,7 @@ formatear_porcentaje_naat <- function(x, decimales = 0) {
     return(paste0(formatC(x*100, format = "f", big.mark = ".", decimal.mark = ",", digits = decimales), " %"))} else 
     { return(x)}
 }
-
-procesarResultados <- function(basal, proyectado) {
+procesarResultados_naat <- function(basal, proyectado) {
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Recibe los resultados de cada escenario y prepara los outputs%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Leandro Pastori - 12/25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,7 +111,7 @@ procesarResultados <- function(basal, proyectado) {
   #Modificado 23/12 <<<--
   
   #[ROI/ICER] Modifique esta parte para implementarlo en una funcion simple
-  estimarRoi <- function(inversion, diferencia_otros_costos){
+  estimarRoi_naat <- function(inversion, diferencia_otros_costos){
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #Estima el ROI, solo si corresponde.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #Leandro Pastori - 23/12 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,10 +124,10 @@ procesarResultados <- function(basal, proyectado) {
       return(list(valor = "-", info = INFO_ROI_NOAPLICA))
     }
   }
-  roi <- estimarRoi(inversion, diferencia_otros_costos)
-  dRoi <- estimarRoi(inversion, dDiferencia_otros_costos)
+  roi <- estimarRoi_naat(inversion, diferencia_otros_costos)
+  dRoi <- estimarRoi_naat(inversion, dDiferencia_otros_costos)
   
-  interpretacionDecision <- function(deltaCosto, deltaBeneficio) {
+  interpretacionDecision_naat <- function(deltaCosto, deltaBeneficio) {
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #Estima el ICER, si es costo-ahorrativo devuelve Dominante para evitar confusión con ICER negativo.%%%%%%%%%%%%%%%%%%%%%
     #Leandro Pastori - 12/25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,10 +155,10 @@ procesarResultados <- function(basal, proyectado) {
   }
   
   #Estima los ICERS.
-  icer_añosVida <- interpretacionDecision(diferencia_costos, (basal$lyLost - proyectado$lyLost))
-  icer_añosVidaDesc <- interpretacionDecision(dDiferencia_costos, (basal$dLyLost - proyectado$dLyLost))
-  icer_dalys <- interpretacionDecision(diferencia_costos, basal$dalys - proyectado$dalys)
-  icer_dalysDesc <- interpretacionDecision(dDiferencia_costos, basal$dDalys - proyectado$dDalys)
+  icer_añosVida <- interpretacionDecision_naat(diferencia_costos, (basal$lyLost - proyectado$lyLost))
+  icer_añosVidaDesc <- interpretacionDecision_naat(dDiferencia_costos, (basal$dLyLost - proyectado$dLyLost))
+  icer_dalys <- interpretacionDecision_naat(diferencia_costos, basal$dalys - proyectado$dalys)
+  icer_dalysDesc <- interpretacionDecision_naat(dDiferencia_costos, basal$dDalys - proyectado$dDalys)
   
   
   #[ROI/ICER] en la tabla ahora mostramos el objeto valor dentro de la lista que representa el ICER y el ROI
@@ -231,7 +236,7 @@ procesarResultados <- function(basal, proyectado) {
 
 
 
-descontar <- function(años, tasa)
+descontar_naat <- function(años, tasa)
 {
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Trae al presente valor futuro de x cantidad de años%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,7 +245,7 @@ descontar <- function(años, tasa)
   
   return(1 + ((1 - (1 + tasa) ^ (- (años - 1) )) / tasa))
 }
-descontarValorCiclo <- function(valor, tasa, ciclo) {
+descontarValorCiclo_naat <- function(valor, tasa, ciclo) {
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Descuento clásico de un valor x al ciclo y.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Leandro Pastori - 12/25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -248,7 +253,7 @@ descontarValorCiclo <- function(valor, tasa, ciclo) {
   
   return(valor / ((1 + tasa) ^ ciclo))
 }
-descontarAñosFuturos <- function(valor, tasa, cicloInicial, duracion, valorInicial) {
+descontarAñosFuturos_naat <- function(valor, tasa, cicloInicial, duracion, valorInicial) {
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Descuenta un valor en el tiempo, por una duración dada.%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Sirve para calcular años de vida perdido que empiezan a contar mas adelante que el primer año%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -262,7 +267,7 @@ descontarAñosFuturos <- function(valor, tasa, cicloInicial, duracion, valorInic
   )
   
 }
-descontarMensual <- function(valor, mes_inicio, duracion, tasa_anual) {
+descontarMensual_naat <- function(valor, mes_inicio, duracion, tasa_anual) {
   
   # Convertir tasa anual a mensual
   tasa_mensual <- (1 + tasa_anual)^(1/12) - 1
@@ -280,22 +285,22 @@ descontarMensual <- function(valor, mes_inicio, duracion, tasa_anual) {
   return(vp)
 }
 
-correrFuncion <- function() {
+correrFuncion_naat <- function() {
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Función dummy, carga valores del excel, seleciona argentina y corre el modelo%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #Leandro Pastori - 12/25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
   
-  parametros <- cargar()
+  parametros <- cargar_naat()
   
-  resultados <- correrModelo(parametros[['ARGENTINA']])
+  resultados <- correrModelo_naat(parametros[['ARGENTINA']])
   
   return(resultados)
 }
-correrModelo <- function(parametros) {
+correrModelo_naat <- function(parametros) {
   
   
-  calcularResultados <- function(outcomesSensible, outcomesSensiblesNAAT, outcomesMDR, outcomesMDRNAAT, pNAAT, parametros) {
+  calcularResultados_naat <- function(outcomesSensible, outcomesSensiblesNAAT, outcomesMDR, outcomesMDRNAAT, pNAAT, parametros) {
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #Calcula eventos, dalys y costos por escenario%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #Leandro Pastori - 12/25 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -318,16 +323,16 @@ correrModelo <- function(parametros) {
     costosTesteoBCP <- sospechosos_sinNAAT * (parametros$nBaciloscopias * parametros$cBCP + parametros$cCultivo) + confirmados_sinNAAT * parametros$cAntibiograma
     
     
-    desenlacesBCP <- estimarDesenlaces(sospechosos = sospechosos_sinNAAT, confirmados = confirmados_sinNAAT, sensibilidad = parametros$pBCPSensibilidad, especificidad = parametros$pBCPEspecificidad, sensibilidadResistencia = 0, especificidadResistencia = 1, pEmpirico = parametros$pTtoEmpiricoBCP, pResistencia = parametros$pResistencia, pPreXDR = parametros$pPreXDR)
+    desenlacesBCP <- estimarDesenlaces_naat(sospechosos = sospechosos_sinNAAT, confirmados = confirmados_sinNAAT, sensibilidad = parametros$pBCPSensibilidad, especificidad = parametros$pBCPEspecificidad, sensibilidadResistencia = 0, especificidadResistencia = 1, pEmpirico = parametros$pTtoEmpiricoBCP, pResistencia = parametros$pResistencia, pPreXDR = parametros$pPreXDR)
     
     
-    costosBCP <- estimarPayoffsCostos(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = 0)
+    costosBCP <- estimarPayoffsCostos_naat(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = 0)
     
-    dCostosBCP <- estimarPayoffsCostos(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = parametros$rTasaDescuento)
+    dCostosBCP <- estimarPayoffsCostos_naat(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = parametros$rTasaDescuento)
     
-    disBCP <- estimarPayoffsDalys(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = 0)
+    disBCP <- estimarPayoffsDalys_naat(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = 0)
     
-    dDisBCP <- estimarPayoffsDalys(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = parametros$rTasaDescuento)
+    dDisBCP <- estimarPayoffsDalys_naat(desenlacesBCP, parametros, outcomesSensible$pMuerte, outcomesMDR$pMuerte, tasaDescuento = parametros$rTasaDescuento)
     
     muertesBCP <- confirmados_sinNAAT * (((1 - parametros$pResistencia) * outcomesSensible$pMuerte) + (parametros$pResistencia * outcomesMDR$pMuerte))
     
@@ -335,7 +340,7 @@ correrModelo <- function(parametros) {
     
     dalysBCP <- lyBCP + disBCP$Total
     
-    dLyBCP <- muertesBCP * descontar(tasa = parametros$rTasaDescuento, años = (parametros$tExpectativaVidaEdadTBC - parametros$tEdadMediaTBC))
+    dLyBCP <- muertesBCP * descontar_naat(tasa = parametros$rTasaDescuento, años = (parametros$tExpectativaVidaEdadTBC - parametros$tEdadMediaTBC))
     
     dDalysBCP <- dLyBCP + dDisBCP$Total
     
@@ -351,21 +356,21 @@ correrModelo <- function(parametros) {
     
     costosTesteoNAAT <- sospechosos_conNAAT * (parametros$cNAAT + parametros$cCultivo) + confirmados_conNAAT * parametros$cAntibiograma
     
-    desenlacesNAAT <- estimarDesenlaces(sospechosos = sospechosos_conNAAT, confirmados = confirmados_conNAAT, sensibilidad = parametros$pNAATSensibilidad, especificidad = parametros$pNAATEspecificidad, sensibilidadResistencia = parametros$pNAATRifSensibilidad, especificidadResistencia = parametros$pNAATRifEspecificidad, pEmpirico = parametros$pTtoEmpiricoNAAT, pResistencia = parametros$pResistencia, pPreXDR = parametros$pPreXDR)
+    desenlacesNAAT <- estimarDesenlaces_naat(sospechosos = sospechosos_conNAAT, confirmados = confirmados_conNAAT, sensibilidad = parametros$pNAATSensibilidad, especificidad = parametros$pNAATEspecificidad, sensibilidadResistencia = parametros$pNAATRifSensibilidad, especificidadResistencia = parametros$pNAATRifEspecificidad, pEmpirico = parametros$pTtoEmpiricoNAAT, pResistencia = parametros$pResistencia, pPreXDR = parametros$pPreXDR)
     
-    costosNAAT <- estimarPayoffsCostos(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = 0)
+    costosNAAT <- estimarPayoffsCostos_naat(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = 0)
     
-    dCostosNAAT <- estimarPayoffsCostos(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = parametros$rTasaDescuento)
+    dCostosNAAT <- estimarPayoffsCostos_naat(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = parametros$rTasaDescuento)
     
-    disNAAT <- estimarPayoffsDalys(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = 0)
+    disNAAT <- estimarPayoffsDalys_naat(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = 0)
     
-    dDisNAAT <- estimarPayoffsDalys(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = parametros$rTasaDescuento)
+    dDisNAAT <- estimarPayoffsDalys_naat(desenlacesNAAT, parametros, outcomesSensiblesNAAT$pMuerte, outcomesMDRNAAT$pMuerte, tasaDescuento = parametros$rTasaDescuento)
     
     muertesNAAT <- confirmados_conNAAT * (((1 - parametros$pResistencia) * outcomesSensiblesNAAT$pMuerte) + (parametros$pResistencia * outcomesMDRNAAT$pMuerte))
     
     lyNAAT <- muertesNAAT * (parametros$tExpectativaVidaEdadTBC - parametros$tEdadMediaTBC)
     
-    dLyNAAT <- muertesNAAT * descontar(tasa = parametros$rTasaDescuento, años = (parametros$tExpectativaVidaEdadTBC - parametros$tEdadMediaTBC))
+    dLyNAAT <- muertesNAAT * descontar_naat(tasa = parametros$rTasaDescuento, años = (parametros$tExpectativaVidaEdadTBC - parametros$tEdadMediaTBC))
     
     dalysNAAT <- lyNAAT + disNAAT$Total
     
@@ -408,31 +413,31 @@ correrModelo <- function(parametros) {
   
   #[06/02 LJP]
   #Ajustamos outcome según el porcentaje de MDR y los outcome de MDR.
-  outcomeSensible <- ajustarOutcomePorMDR(pTtoExitoso = parametros$pTtoExitoso, pMuerte = parametros$pMuerte, pTtoExitosoMDR =  parametros$pTtoExitosoMDR, pMuerteMDR = parametros$pMuerteMDR, pResistencia = parametros$pResistencia)
+  outcomeSensible <- ajustarOutcomePorMDR_naat(pTtoExitoso = parametros$pTtoExitoso, pMuerte = parametros$pMuerte, pTtoExitosoMDR =  parametros$pTtoExitosoMDR, pMuerteMDR = parametros$pMuerteMDR, pResistencia = parametros$pResistencia)
   #Ajustamos outcomes del pais según el porcentaje de uso basal de NAAT
-  outcomeSensibleSinNAAT <- ajustarOutcomePorNAAT(outcomeSensible$pTtoExitoso, outcomeSensible$pMuerte, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, pTesteadosNAAT = parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 0)
+  outcomeSensibleSinNAAT <- ajustarOutcomePorNAAT_naat(outcomeSensible$pTtoExitoso, outcomeSensible$pMuerte, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, pTesteadosNAAT = parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 0)
   
   
   #Ajustamos outcomes del pais según el porcentaje de uso proyectado de NAAT
-  outcomeSensibleNAAT <- ajustarOutcomePorNAAT(outcomeSensible$pTtoExitoso, outcomeSensible$pMuerte, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, pTesteadosNAAT = parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 1)
+  outcomeSensibleNAAT <- ajustarOutcomePorNAAT_naat(outcomeSensible$pTtoExitoso, outcomeSensible$pMuerte, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, pTesteadosNAAT = parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 1)
   #Ajustamos outcomes MDR del pais según el porcentaje de uso basal de NAAT
-  outcomeMDRSinNAAT  <- ajustarOutcomePorNAAT(parametros$pTtoExitosoMDR, parametros$pMuerteMDR, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, parametros$pTesteadosNAATIndicadores, 0)
+  outcomeMDRSinNAAT  <- ajustarOutcomePorNAAT_naat(parametros$pTtoExitosoMDR, parametros$pMuerteMDR, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, parametros$pTesteadosNAATIndicadores, 0)
   
   #Ajustamos outcomes MDR del pais según el porcentaje de uso basal de NAAT
-  outcomeMDRNAAT  <- ajustarOutcomePorNAAT(parametros$pTtoExitosoMDR, parametros$pMuerteMDR, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 1)
+  outcomeMDRNAAT  <- ajustarOutcomePorNAAT_naat(parametros$pTtoExitosoMDR, parametros$pMuerteMDR, parametros$rRRMuerteNAAT, parametros$rORExitosoNAAT, parametros$pTesteadosNAATIndicadores, pTesteadosNAATObj = 1)
   
   
-  resultadosBasal <- calcularResultados(outcomeSensibleSinNAAT, outcomeSensibleNAAT, outcomeMDRSinNAAT, outcomeMDRNAAT, parametros$pTesteadosNAAT, parametros)
+  resultadosBasal <- calcularResultados_naat(outcomeSensibleSinNAAT, outcomeSensibleNAAT, outcomeMDRSinNAAT, outcomeMDRNAAT, parametros$pTesteadosNAAT, parametros)
   
-  resultadosProyectado <- calcularResultados(outcomeSensibleSinNAAT, outcomeSensibleNAAT, outcomeMDRSinNAAT, outcomeMDRNAAT, parametros$pTesteadosNAATObj, parametros)
+  resultadosProyectado <- calcularResultados_naat(outcomeSensibleSinNAAT, outcomeSensibleNAAT, outcomeMDRSinNAAT, outcomeMDRNAAT, parametros$pTesteadosNAATObj, parametros)
   #[/06/02 LJP]
   resultadosProyectado$costoProgramatico <- parametros$cCostoProgramatico
   
-  return(procesarResultados(resultadosBasal, resultadosProyectado))
+  return(procesarResultados_naat(resultadosBasal, resultadosProyectado))
   
   
 }
-estimarPayoffsCostos <- function(desenlaces, parametros, pMuerte, pMuerteMDR, tasaDescuento) {
+estimarPayoffsCostos_naat <- function(desenlaces, parametros, pMuerte, pMuerteMDR, tasaDescuento) {
   
   
   #Costos
@@ -440,92 +445,92 @@ estimarPayoffsCostos <- function(desenlaces, parametros, pMuerte, pMuerteMDR, ta
   #hasta cultivo negativo.
   
   #Costos de tratamiento y seguimiento de los pacientes innecesarios.
-  #cInnecesarios <- desenlaces$innecesarios * estimarCostoTTO(costoTTO =  parametros$cTratamiento, costoSTO =  parametros$cSeguimientoTBC, meses =  parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
+  #cInnecesarios <- desenlaces$innecesarios * estimarCostoTTO_naat(costoTTO =  parametros$cTratamiento, costoSTO =  parametros$cSeguimientoTBC, meses =  parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
   
   #innecesariosMDR - Pacientes sin tuberculosis que son catalogados como TBC MDR
-  #cInnecesariosMDR <- desenlaces$innecesariosMDR * estimarCostoTTO(costoTTO =  parametros$cTratamientoMDR, costoSTO =   parametros$cSeguimientoTBCMDR, meses = parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
+  #cInnecesariosMDR <- desenlaces$innecesariosMDR * estimarCostoTTO_naat(costoTTO =  parametros$cTratamientoMDR, costoSTO =   parametros$cSeguimientoTBCMDR, meses = parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
   
   #adecuadosSensibles - Pacientes con tuberculosis que son catalogados como TBC sensibles
-  cAdecuadosSensiblesTTO <- desenlaces$adecuadosSensibles * estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tTtoSensibles * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = 0, descuento = tasaDescuento)
+  cAdecuadosSensiblesTTO <- desenlaces$adecuadosSensibles * estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tTtoSensibles * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = 0, descuento = tasaDescuento)
   
-  cAdecuadosSensiblesTBC <- desenlaces$adecuadosSensibles * estimarCostoTBC(costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsulta, costoHosp =  parametros$cHospitalizacion, pHosp =  parametros$pHospitalizacion, diasHosp =  parametros$tDiasHospTBC, meses =  parametros$tTtoSensibles * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = 0, descuento = tasaDescuento)
+  cAdecuadosSensiblesTBC <- desenlaces$adecuadosSensibles * estimarCostoTBC_naat(costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsulta, costoHosp =  parametros$cHospitalizacion, pHosp =  parametros$pHospitalizacion, diasHosp =  parametros$tDiasHospTBC, meses =  parametros$tTtoSensibles * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = 0, descuento = tasaDescuento)
   
   cAdecuadosSensibles <- cAdecuadosSensiblesTTO + cAdecuadosSensiblesTBC
   
   #inadecuadosSensibles - Pacientes con tuberculosis falsamente interpretados como MDR
   
-  cInadecuadosSensiblesTTO <- desenlaces$inadecuadosSensibles * (estimarCostoTTO(costoTTO =  parametros$cTratamientoMDR, costoSTO =  parametros$cSeguimientoTBCMDR, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-                                                                   estimarCostoTTO(costoTTO =  parametros$cTratamiento, costoSTO =  parametros$cSeguimientoTBC, meses = (parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento))
+  cInadecuadosSensiblesTTO <- desenlaces$inadecuadosSensibles * (estimarCostoTTO_naat(costoTTO =  parametros$cTratamientoMDR, costoSTO =  parametros$cSeguimientoTBCMDR, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+                                                                   estimarCostoTTO_naat(costoTTO =  parametros$cTratamiento, costoSTO =  parametros$cSeguimientoTBC, meses = (parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + pMuerte * parametros$tMuerte, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento))
   
   
-  cInadecuadosSensiblesTBC <- desenlaces$inadecuadosSensibles * estimarCostoTBC( costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsulta, costoHosp =  parametros$cHospitalizacion , pHosp =  parametros$pHospitalizacion ,diasHosp =  parametros$tDiasHospTBC, meses = parametros$tResultadoResistencia + ((parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + pMuerte * parametros$tMuerte), inicio = 0, descuento = tasaDescuento)
+  cInadecuadosSensiblesTBC <- desenlaces$inadecuadosSensibles * estimarCostoTBC_naat( costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsulta, costoHosp =  parametros$cHospitalizacion , pHosp =  parametros$pHospitalizacion ,diasHosp =  parametros$tDiasHospTBC, meses = parametros$tResultadoResistencia + ((parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + pMuerte * parametros$tMuerte), inicio = 0, descuento = tasaDescuento)
   
   
   cInadecuadosSensibles <- cInadecuadosSensiblesTTO + cInadecuadosSensiblesTBC
   
   #adecuadosResistentes 
-  cAdecuadosResistentesTTO <- desenlaces$adecuadosResistentes * estimarCostoTTO(costoTTO =  parametros$cTratamientoMDR, costoSTO =  parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = 0, descuento = tasaDescuento)
+  cAdecuadosResistentesTTO <- desenlaces$adecuadosResistentes * estimarCostoTTO_naat(costoTTO =  parametros$cTratamientoMDR, costoSTO =  parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = 0, descuento = tasaDescuento)
   
   
-  cAdecuadosResistentesTBC <- desenlaces$adecuadosResistentes *  estimarCostoTBC(costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsultaMDR, costoHosp = parametros$cHospitalizacion , pHosp =  parametros$pHospitalizacionMDR, diasHosp =  parametros$tDiasHospTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = 0, descuento = tasaDescuento)
+  cAdecuadosResistentesTBC <- desenlaces$adecuadosResistentes *  estimarCostoTBC_naat(costoConsulta =  parametros$cConsulta, cantEspConsulta =  parametros$ceConsultaMDR, costoHosp = parametros$cHospitalizacion , pHosp =  parametros$pHospitalizacionMDR, diasHosp =  parametros$tDiasHospTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = 0, descuento = tasaDescuento)
   
   cAdecuadosResistentes <- cAdecuadosResistentesTTO + cAdecuadosResistentesTBC
   #adecuadosResistentesPreXDR Pacientes con TBC MDR PreXDR que se diagnostican como MDR,
   #reciben tratamiento MDR hasta resultado de la resistencia y luego siguen como preXDR.
-  cAdecuadosResistentesPreXDRTTO <- desenlaces$adecuadosResistentesPreXDR * (estimarCostoTTO(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) + 
-                                                                               estimarCostoTTO(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = (parametros$tTtoPreXDR - parametros$tResultadoResistencia) * ( 1- pMuerteMDR) + parametros$tMuerte * pMuerteMDR , inicio = parametros$tResultadoResistencia, descuento = tasaDescuento))
+  cAdecuadosResistentesPreXDRTTO <- desenlaces$adecuadosResistentesPreXDR * (estimarCostoTTO_naat(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) + 
+                                                                               estimarCostoTTO_naat(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = (parametros$tTtoPreXDR - parametros$tResultadoResistencia) * ( 1- pMuerteMDR) + parametros$tMuerte * pMuerteMDR , inicio = parametros$tResultadoResistencia, descuento = tasaDescuento))
   
   
-  cAdecuadosResistentesPreXDRTBC <- desenlaces$adecuadosResistentesPreXDR * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, costoHosp = parametros$cHospitalizacion, pHosp = parametros$pHospitalizacionMDR, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + ((parametros$tTtoPreXDR - parametros$tResultadoResistencia) * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  cAdecuadosResistentesPreXDRTBC <- desenlaces$adecuadosResistentesPreXDR * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, costoHosp = parametros$cHospitalizacion, pHosp = parametros$pHospitalizacionMDR, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + ((parametros$tTtoPreXDR - parametros$tResultadoResistencia) * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   cAdecuadosResistentesPreXDR <- cAdecuadosResistentesPreXDRTTO + cAdecuadosResistentesPreXDRTBC
   #inadecuadosResistentes - Pacientes con TBC diagnosticados como sensible pero que son MDR 
   
   cInadecuadosResistentesTTO <- desenlaces$inadecuadosResistentes * (
-    estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-      estimarCostoTTO(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
+    estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+      estimarCostoTTO_naat(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
       parametros$pHospMDRCambio * parametros$tDiasHospTBCMDRATB * parametros$cHospitalizacion
   )
   
-  cInadecuadosResistentesTBC <- desenlaces$inadecuadosResistentes * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  cInadecuadosResistentesTBC <- desenlaces$inadecuadosResistentes * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   cInadecuadosResistentes <- cInadecuadosResistentesTTO + cInadecuadosResistentesTBC
   
   #inadecuadosResistentesPreXDR - Pacientes con TBC diagnosticados como sensible pero que son Pre XDR
   cInadecuadosResistentesPreXDRTTO <- desenlaces$inadecuadosResistentesPreXDR * (
-    estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-      estimarCostoTTO(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
+    estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+      estimarCostoTTO_naat(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
       parametros$pHospMDRCambio * parametros$tDiasHospTBCMDRATB * parametros$cHospitalizacion
   )
-  cInadecuadosResistentesPreXDRTBC <- desenlaces$inadecuadosResistentesPreXDR * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoPreXDR * (1-pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  cInadecuadosResistentesPreXDRTBC <- desenlaces$inadecuadosResistentesPreXDR * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoPreXDR * (1-pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   cInadecuadosResistentesPreXDR <- cInadecuadosResistentesPreXDRTTO + cInadecuadosResistentesPreXDRTBC
   
   
   #tardiosSensibles - Pacientes que se diagnostican tardiamente con TBC sensible.
-  cTardiosSensiblesTTO <- desenlaces$tardiosSensibles * estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento)
-  cTardiosSensiblesTBC <- desenlaces$tardiosSensibles * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsulta, costoHosp = parametros$cHospitalizacion, pHosp = parametros$pHospitalizacion, diasHosp = parametros$tDiasHospTBC, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte) + parametros$tCultivoPositivo, inicio = 0, descuento = tasaDescuento)
+  cTardiosSensiblesTTO <- desenlaces$tardiosSensibles * estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento)
+  cTardiosSensiblesTBC <- desenlaces$tardiosSensibles * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsulta, costoHosp = parametros$cHospitalizacion, pHosp = parametros$pHospitalizacion, diasHosp = parametros$tDiasHospTBC, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte) + parametros$tCultivoPositivo, inicio = 0, descuento = tasaDescuento)
   
   
   cTardiosSensibles <- cTardiosSensiblesTTO + cTardiosSensiblesTBC
   #tardiosMDR - Pacientes que se diagnostican tardiamente y luego resultan MDR
   
   cTardiosMDRTTO <- desenlaces$tardiosMDR * (
-    estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia - parametros$tCultivoPositivo, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento) +
-      estimarCostoTTO(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
+    estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia - parametros$tCultivoPositivo, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento) +
+      estimarCostoTTO_naat(costoTTO = parametros$cTratamientoMDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
       parametros$pHospMDRCambio * parametros$tDiasHospTBCMDRATB * parametros$cHospitalizacion
   )  
-  cTardiosMDRTBC <- desenlaces$tardiosMDR * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  cTardiosMDRTBC <- desenlaces$tardiosMDR * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   cTardiosMDR <- cTardiosMDRTTO + cTardiosMDRTBC
   
   #tardiosPreXDR - Pacientes que se diagnostican tardiamente y luego resultan MDR PreXDR
   cTardiosPreXDRTTO <- desenlaces$tardiosPreXDR * (
-    estimarCostoTTO(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia - parametros$tCultivoPositivo, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento) +
-      estimarCostoTTO(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
+    estimarCostoTTO_naat(costoTTO = parametros$cTratamiento, costoSTO = parametros$cSeguimientoTBC, meses = parametros$tResultadoResistencia - parametros$tCultivoPositivo, inicio = parametros$tCultivoPositivo, descuento = tasaDescuento) +
+      estimarCostoTTO_naat(costoTTO = parametros$cTratamientoPreXDR, costoSTO = parametros$cSeguimientoTBCMDR, meses = parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR, inicio = parametros$tResultadoResistencia, descuento = tasaDescuento) +
       parametros$pHospMDRCambio * parametros$tDiasHospTBCMDRATB * parametros$cHospitalizacion
   )  
-  cTardiosPreXDRTBC <- desenlaces$tardiosPreXDR * estimarCostoTBC(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  cTardiosPreXDRTBC <- desenlaces$tardiosPreXDR * estimarCostoTBC_naat(costoConsulta = parametros$cConsulta, cantEspConsulta = parametros$ceConsultaMDR, pHosp = parametros$pHospitalizacionMDR, costoHosp = parametros$cHospitalizacion, diasHosp = parametros$tDiasHospTBCMDR, meses = parametros$tResultadoResistencia + (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   
   cTardiosPreXDR <- cTardiosPreXDRTTO + cTardiosPreXDRTBC
@@ -549,59 +554,59 @@ estimarPayoffsCostos <- function(desenlaces, parametros, pMuerte, pMuerteMDR, ta
     )
   )
 }
-estimarPayoffsDalys <- function(desenlaces, parametros, pMuerte, pMuerteMDR, tasaDescuento) {
+estimarPayoffsDalys_naat <- function(desenlaces, parametros, pMuerte, pMuerteMDR, tasaDescuento) {
   
   #Costos
   #innecesarios - Pacientes sin tuberculosis que reciben tratamiento
   #hasta cultivo negativo.
   #Costos de tratamiento y seguimiento de los pacientes innecesarios.
-  #uInnecesarios <- desenlaces$innecesarios * estimarDisutilidad(valor =  parametros$uSANOTratado, meses =  parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
+  #uInnecesarios <- desenlaces$innecesarios * estimarDisutilidad_naat(valor =  parametros$uSANOTratado, meses =  parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
   
   #innecesariosMDR - Pacientes sin tuberculosis que son catalogados como TBC MDR
-  #uInnecesariosMDR <- desenlaces$innecesariosMDR * estimarDisutilidad(valor = parametros$uSANOTratado , meses = parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
+  #uInnecesariosMDR <- desenlaces$innecesariosMDR * estimarDisutilidad_naat(valor = parametros$uSANOTratado , meses = parametros$tCultivoNegativo, inicio = 0, descuento = tasaDescuento)
   
   #adecuadosSensibles - Pacientes con tuberculosis que son catalogados como TBC sensibles
-  uAdecuadosSensibles <- desenlaces$adecuadosSensibles * estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte), inicio = 0, descuento = tasaDescuento)
+  uAdecuadosSensibles <- desenlaces$adecuadosSensibles * estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte), inicio = 0, descuento = tasaDescuento)
   
   
   #inadecuadosSensibles - Pacientes con tuberculosis falsamente interpretados como MDR
-  uInadecuadosSensibles <- desenlaces$inadecuadosSensibles * estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tResultadoResistencia + ((parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + parametros$tMuerte * pMuerte)), inicio = 0, descuento = tasaDescuento)
+  uInadecuadosSensibles <- desenlaces$inadecuadosSensibles * estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tResultadoResistencia + ((parametros$tTtoSensibles - parametros$tResultadoResistencia) * (1 - pMuerte) + parametros$tMuerte * pMuerte)), inicio = 0, descuento = tasaDescuento)
   
   #adecuadosResistentes 
-  uAdecuadosResistentes <- desenlaces$adecuadosResistentes * estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
+  uAdecuadosResistentes <- desenlaces$adecuadosResistentes * estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = 0, descuento = tasaDescuento)
   
   #adecuadosResistentesPreXDR Pacientes con TBC MDR PreXDR que se diagnostican como MDR,
   #reciben tratamiento MDR hasta resultado de la resistencia y luego siguen como preXDR.
-  uAdecuadosResistentesPreXDR <- desenlaces$adecuadosResistentesPreXDR * estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tResultadoResistencia + ((parametros$tTtoPreXDR - parametros$tResultadoResistencia) * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR)), inicio = 0, descuento = tasaDescuento)
+  uAdecuadosResistentesPreXDR <- desenlaces$adecuadosResistentesPreXDR * estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tResultadoResistencia + ((parametros$tTtoPreXDR - parametros$tResultadoResistencia) * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR)), inicio = 0, descuento = tasaDescuento)
   
   #inadecuadosResistentes - Pacientes con TBC diagnosticados como sensible pero que son MDR 
   uInadecuadosResistentes <- desenlaces$inadecuadosResistentes * (
-    estimarDisutilidad(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) + 
-      estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
+    estimarDisutilidad_naat(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) + 
+      estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
   )
   
   
   #inadecuadosResistentesPreXDR - Pacientes con TBC diagnosticados como sensible pero que son Pre XDR
   uInadecuadosResistentesPreXDR <- desenlaces$inadecuadosResistentesPreXDR * (
-    estimarDisutilidad(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-      estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
+    estimarDisutilidad_naat(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+      estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
   )
   
   #tardiosSensibles - Pacientes que se diagnostican tardiamente con TBC sensible.
   uTardiosSensibles <- desenlaces$tardiosSensibles * ( 
-    estimarDisutilidad(valor = parametros$uTBCNoTratada, meses = parametros$tCultivoPositivo, inicio = 0, descuento = tasaDescuento) +
-      estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte), inicio = parametros$tCultivoPositivo, descuento = tasaDescuento)
+    estimarDisutilidad_naat(valor = parametros$uTBCNoTratada, meses = parametros$tCultivoPositivo, inicio = 0, descuento = tasaDescuento) +
+      estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoSensibles * (1 - pMuerte) + parametros$tMuerte * pMuerte), inicio = parametros$tCultivoPositivo, descuento = tasaDescuento)
   )
   #tardiosMDR - Pacientes que se diagnostican tardiamente y luego resultan MDR
   uTardiosMDR <- desenlaces$tardiosMDR * (
-    estimarDisutilidad(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-      estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
+    estimarDisutilidad_naat(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+      estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoMDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
   )  
   
   #tardiosPreXDR - Pacientes que se diagnostican tardiamente y luego resultan MDR PreXDR
   uTardiosPreXDR <- desenlaces$tardiosPreXDR * (
-    estimarDisutilidad(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
-      estimarDisutilidad(valor = parametros$uTBCTratada, meses = (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
+    estimarDisutilidad_naat(valor = parametros$uTBCNoTratada, meses = parametros$tResultadoResistencia, inicio = 0, descuento = tasaDescuento) +
+      estimarDisutilidad_naat(valor = parametros$uTBCTratada, meses = (parametros$tTtoPreXDR * (1 - pMuerteMDR) + parametros$tMuerte * pMuerteMDR), inicio = parametros$tResultadoResistencia, descuento = tasaDescuento)
   )  
   
   Total <- uAdecuadosSensibles + uInadecuadosSensibles + uAdecuadosResistentes + uAdecuadosResistentesPreXDR + uInadecuadosResistentes + uInadecuadosResistentesPreXDR + uTardiosSensibles + uTardiosMDR + uTardiosPreXDR #+ uInnecesarios + uInnecesariosMDR
@@ -624,20 +629,20 @@ estimarPayoffsDalys <- function(desenlaces, parametros, pMuerte, pMuerteMDR, tas
   )
 }
 
-estimarDisutilidad <- function(meses, valor, inicio, descuento) {
+estimarDisutilidad_naat <- function(meses, valor, inicio, descuento) {
   
   if (meses + inicio <= 12 || descuento == 0) {
     res <- valor / 12 * meses
   } else {
     
-    res <- valor / 12 * max(0, 12 - inicio)  + descontarMensual(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses - max(0, 12 - inicio), valor = valor / 12)
+    res <- valor / 12 * max(0, 12 - inicio)  + descontarMensual_naat(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses - max(0, 12 - inicio), valor = valor / 12)
   }
   return(
     res
   )
 }
 
-estimarCostoTBC <- function(cantEspConsulta, costoConsulta, pHosp, diasHosp, costoHosp, meses, inicio, descuento) {
+estimarCostoTBC_naat <- function(cantEspConsulta, costoConsulta, pHosp, diasHosp, costoHosp, meses, inicio, descuento) {
   
   
   valor <- (costoConsulta * cantEspConsulta) + (costoHosp * pHosp * diasHosp)
@@ -646,12 +651,12 @@ estimarCostoTBC <- function(cantEspConsulta, costoConsulta, pHosp, diasHosp, cos
     res <- valor * meses
   } else {
     
-    res <- valor * max(0, 12 - inicio)  + descontarMensual(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses - max(0, 12 - inicio), valor = valor)
+    res <- valor * max(0, 12 - inicio)  + descontarMensual_naat(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses - max(0, 12 - inicio), valor = valor)
     
   }
   return(res)
 }
-estimarCostoTTO <- function(costoTTO, costoSTO, meses, inicio, descuento) {
+estimarCostoTTO_naat <- function(costoTTO, costoSTO, meses, inicio, descuento) {
   valor <- (costoTTO + costoSTO)
   if (meses + inicio <= 12 || descuento == 0)
   {
@@ -659,12 +664,12 @@ estimarCostoTTO <- function(costoTTO, costoSTO, meses, inicio, descuento) {
     
   } else {
     
-    res <- valor * max(0, 12 - inicio)  + descontarMensual(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses -  max(0, 12 - inicio), valor = valor)
+    res <- valor * max(0, 12 - inicio)  + descontarMensual_naat(tasa_anual = descuento, mes_inicio = max(13, inicio), duracion = meses -  max(0, 12 - inicio), valor = valor)
     
   }
   return(res)
 }
-estimarDesenlaces <- function(sospechosos, confirmados, sensibilidad, especificidad, sensibilidadResistencia, especificidadResistencia = 1, pEmpirico, pResistencia, pPreXDR) {
+estimarDesenlaces_naat <- function(sospechosos, confirmados, sensibilidad, especificidad, sensibilidadResistencia, especificidadResistencia = 1, pEmpirico, pResistencia, pPreXDR) {
   
   
   
@@ -742,7 +747,7 @@ estimarDesenlaces <- function(sospechosos, confirmados, sensibilidad, especifici
   
 }
 #cargarDatos()
-ajustarOutcomePorMDR <- function(pTtoExitoso, pMuerte, pTtoExitosoMDR, pMuerteMDR, pResistencia) {
+ajustarOutcomePorMDR_naat <- function(pTtoExitoso, pMuerte, pTtoExitosoMDR, pMuerteMDR, pResistencia) {
   res <-
     list(
       pTtoExitoso = (pTtoExitoso - (pTtoExitosoMDR * pResistencia)) / (1 - pResistencia),
@@ -754,7 +759,7 @@ ajustarOutcomePorMDR <- function(pTtoExitoso, pMuerte, pTtoExitosoMDR, pMuerteMD
   
 }
 
-ajustarOutcomePorNAAT <- function(pTtoExitoso, pMuerte, rRRMuerteNAAT, rORExitosoNAAT, pTesteadosNAAT, pTesteadosNAATObj) {
+ajustarOutcomePorNAAT_naat <- function(pTtoExitoso, pMuerte, rRRMuerteNAAT, rORExitosoNAAT, pTesteadosNAAT, pTesteadosNAATObj) {
   crudo <- 
     list(
       pTtoExitoso = ((pTtoExitoso / (1 - pTtoExitoso)) / (pTesteadosNAAT * rORExitosoNAAT + (1 - pTesteadosNAAT)))  / (1 + ((pTtoExitoso / (1 - pTtoExitoso)) / (pTesteadosNAAT * rORExitosoNAAT + (1 - pTesteadosNAAT)))),
@@ -776,12 +781,12 @@ ajustarOutcomePorNAAT <- function(pTtoExitoso, pMuerte, rRRMuerteNAAT, rORExitos
 }
 
 
-cargar <- function() {
+cargar_naat <- function() {
   
-  data <- read_excel("lparametros.xlsx", sheet = "parametros")
+  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros")
   
   parametros_paises <- list()
-  lista_paises <- c("ARGENTINA", "BRASIL", "CHILE", "COLOMBIA", "ECUADOR", "MEXICO", "COSTA RICA", "PERU", "URUGUAY", "JAMAICA", "REPUBLICA DOMINICANA")
+  lista_paises <- c("ARGENTINA", "BRAZIL", "CHILE", "COLOMBIA", "ECUADOR", "MEXICO", "COSTA RICA", "PERU", "URUGUAY", "JAMAICA", "REPÚBLICA DOMINICANA")
   
   for (i in lista_paises) {
     datafiltrada <- data[toupper(data$Pais) %in% c(i, "GLOBAL"), ]
@@ -794,8 +799,9 @@ cargar <- function() {
 }
 
 
+
 naatInputList = function() {
-  data <- read_excel("C:/Users/Adrian/Desktop/Nuevo TBC NAAT/Parametros TBC.xlsx", sheet = "clasificacion", range = cell_cols("A:D"))
+  data <- read_excel("models/naat/data/lparametros.xlsx", sheet = "clasificacion", range = cell_cols("A:D"))
   colnames(data) = c("grupo","var","label","tipo")
   data$label = NULL
   labels = read_excel("models/naat/data/lparametros.xlsx", sheet = "parametros", range = cell_cols("B:C")) %>% distinct()
@@ -811,9 +817,9 @@ naatInputList = function() {
 }
 
 
-# parametros = cargar_naat()[["ARGENTINA"]]
+
+# parametros = cargar_naat()[["REPÚBLICA DOMINICANA"]]
 # 
 # correrModelo_naat(parametros)
 # 
 # correrFuncion_naat()
-
