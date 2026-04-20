@@ -1,5 +1,4 @@
 UI_naat = function (input, naat_map_inputs) {
-  
   renderUI({
     if (is.null(input$country) == F) {
       inputs_naat = isolate(naatInputList())
@@ -23,6 +22,8 @@ UI_naat = function (input, naat_map_inputs) {
       addData$i_names = paste0(addData$i_names,"_naat")
       
       valuesInputs = cargar_naat()[[input$country]]
+      valuesInputs[valuesInputs>1] = lapply(valuesInputs[valuesInputs>1], round, digits = 2)
+      
       valuesInputs = valuesInputs[paste0(names(valuesInputs),"_naat") %in% addData$i_names]
       valuesInputs = data.frame(
         i_names = paste0(names(valuesInputs),"_naat"),
@@ -41,6 +42,8 @@ UI_naat = function (input, naat_map_inputs) {
     inputs_hover = inputs_naat$label
     
     values = cargar_naat()[[input$country]]
+    values[values>1] = lapply(values[values>1], round, digits = 2)
+    
     names(values) = paste0(names(values),"_naat")
     
     tagList(
